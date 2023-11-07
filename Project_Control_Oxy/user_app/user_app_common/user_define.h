@@ -10,6 +10,9 @@
 
 #include "user_app_comm.h"
 
+
+#include "user_define_oxygen.h"
+
 /* 
     - Using lib app sim
     #define INC_APP_SIM_FEATURE
@@ -91,7 +94,7 @@
 #define MAX_MESS_IN_PACKET                              1       //1 ban tin 31 byte. Max 512 byte - 45 byte header
 
 /*--- ID cua thiet bi -------*/
-#define DEVICE_ID                                       "SVVT1230600004"  
+#define DEVICE_ID                                       "SVWMCO23000001"  
 
 
 #define DEFAULT_FREQ_SEND_ONLINE                        2

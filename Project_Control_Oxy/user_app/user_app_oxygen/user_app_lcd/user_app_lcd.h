@@ -59,6 +59,8 @@ typedef enum
     _LCD_C_MAIN_1_STATE_OXY_2_OFF,
     _LCD_C_MAIN_1_STATE_OXY_3_ON,
     _LCD_C_MAIN_1_STATE_OXY_3_OFF,
+    _LCD_C_MAIN_1_STATE_OXY_4_ON,
+    _LCD_C_MAIN_1_STATE_OXY_4_OFF,
     
     _LCD_C_MAIN_1_END,
 }eKindLcd_C_Main_1;
@@ -77,8 +79,9 @@ typedef enum
 {
     _LCD_C_MAIN_2_ID,
     _LCD_C_MAIN_2_ID_VALUE,
-    _LCD_C_MAIN_2_CYCLE,
-    _LCD_C_MAIN_2_FREE,
+    _LCD_C_MAIN_2_OXY_UPPER,
+    _LCD_C_MAIN_2_OXY_LOWER,
+    _LCD_C_MAIN_2_SALINITY,
     _LCD_C_MAIN_2_STATE,
     _LCD_C_MAIN_2_STATE_OXY_1_ON,
     _LCD_C_MAIN_2_STATE_OXY_1_OFF,
@@ -86,14 +89,17 @@ typedef enum
     _LCD_C_MAIN_2_STATE_OXY_2_OFF,
     _LCD_C_MAIN_2_STATE_OXY_3_ON,
     _LCD_C_MAIN_2_STATE_OXY_3_OFF,
+    _LCD_C_MAIN_2_STATE_OXY_4_ON,
+    _LCD_C_MAIN_2_STATE_OXY_4_OFF,
     
     _LCD_C_MAIN_2_END,
 }eKindLcd_C_Main_2;
 
 typedef enum
 {
-    _LCD_U_MAIN_2_RUN,
-    _LCD_U_MAIN_2_FREE,
+    _LCD_U_MAIN_2_OXY_UPPER,
+    _LCD_U_MAIN_2_OXY_LOWER,
+    _LCD_U_MAIN_2_SALINITY,
     
     _LCD_U_MAIN_2_END,
 }eKindLcd_U_Main_2;
@@ -135,7 +141,7 @@ typedef enum
     _LCD_C_SETTING_MAIN_TITLE,
     _LCD_C_SETTING_MAIN_CYCLE,
     _LCD_C_SETTING_MAIN_CALIB,
-    _LCD_C_SETTING_MAIN_SATILITY,
+    _LCD_C_SETTING_MAIN_PARAMETER,
     _LCD_C_SETTING_MAIN_PASSWORD,
     _LCD_C_SETTING_MAIN_PLEASE,
     
@@ -146,12 +152,25 @@ typedef enum
 typedef enum
 {
     _LCD_C_SETTING_CALIB_TITLE,
-    _LCD_C_SETTING_CALIB_0,
-    _LCD_C_SETTING_CALIB_100,
+    _LCD_C_SETTING_CALIB_100_CALIB,
+    _LCD_C_SETTING_CALIB_SALINITY,
+    _LCD_C_SETTING_CALIB_TEMPERATURE,
+    _LCD_C_SETTING_CALIB_RESET_CALIB,
     _LCD_C_SETTING_CALIB_PLEASE,
+    _LCD_C_SETTING_CALIB_SELECT,
+    _LCD_C_SETTING_CALIB_ENTER_CALIB,
+    _LCD_C_SETTING_CALIB_CONFIRM_RESET,
     
     _LCD_C_SETTING_CALIB_END,
 }eKindLcd_C_Setting_Calib;
+
+typedef enum
+{
+    _LCD_U_SETTING_CALIB_SALINITY,
+    _LCD_U_SETTING_CALIB_TEMPERATURE,
+    
+    _LCD_U_SETTING_CALIB_END,
+}eKindLcd_U_Setting_Calib;
 
 /*---------------------------Enum setting cycle---------------------------*/
 typedef enum
@@ -159,8 +178,10 @@ typedef enum
     _LCD_C_SETTING_CYCLE_TITLE,
     _LCD_C_SETTING_CYCLE_RUN,
     _LCD_C_SETTING_CYCLE_FREE,
+    _LCD_C_SETTING_CYCLE_SLAVE,
     _LCD_C_SETTING_CYCLE_PLEASE,
     _LCD_C_SETTING_CYCLE_CLICK,
+    _LCD_C_SETTING_CYCLE_SUCCESS,
     
     _LCD_C_SETTING_CYCLE_END,
 }eKindLcd_C_Setting_Cycle;
@@ -176,20 +197,26 @@ typedef enum
 /*----------------------------Enum setting cycle--------------------------*/
 typedef enum
 {
-    _LCD_C_SETTING_SATILITY,
-    _LCD_C_SETTING_SATILITY_PARAM,
-    _LCD_C_SETTING_SATILITY_PLEASE,
-    _LCD_C_SETTING_SATILITY_CLICK,
+    _LCD_C_SETTING_PARAMETER,
+    _LCD_C_SETTING_PARAMETER_OXY_UPPER,
+    _LCD_C_SETTING_PARAMETER_OXY_LOWER,
+    _LCD_C_SETTING_PARAMETER_TIME_DELAY,
+    _LCD_C_SETTING_PARAMETER_WARNING,
+    _LCD_C_SETTING_PARAMETER_PLEASE,
+    _LCD_C_SETTING_PARAMETER_CLICK,
     
-    LCD_C_SETTING_SATILITY_END,
-}eKindLcd_C_Setting_Satility;
+    LCD_C_SETTING_PARAMETER_END,
+}eKindLcd_C_Setting_Parameter;
 
 typedef enum
 {
-    _LCD_U_SETTING_SATILITY_PARAM,
+    _LCD_U_SETTING_PARAMETER_OXY_UPPER,
+    _LCD_U_SETTING_PARAMETER_OXY_LOWER,
+    _LCD_U_SETTING_PARAMETER_TIME_DELAY,
+    _LCD_U_SETTING_PARAMETER_WARNING,
     
-    _LCD_U_SETTING_SATILITY_END,
-}eKindLcd_U_Setting_Satility;
+    _LCD_U_SETTING_PARAMETER_END,
+}eKindLcd_U_Setting_Parameter;
 /*---------------------------Enum LCD Login------------------------*/
 typedef enum
 {
@@ -227,6 +254,8 @@ typedef enum
 {
     _LCD_C_CALIB_OXY_0,
     _LCD_C_CALIB_OXY_100,
+    _LCD_C_CALIB_OXY_SALINITY,
+    _LCD_C_CALIB_OXY_TEMPERATURE,
     _LCD_C_CALIB_OXY_STATE_LOAD,
     _LCD_C_CALIB_OXY_STATE_DONE,
     _LCD_C_CALIB_OXY_STATE_ERROR,
@@ -296,10 +325,11 @@ extern LCD_Char_Display                    oLCD_C_Login[];
 extern LCD_Uint_Display                    oLCD_U_Login[];
 extern LCD_Char_Display                    oLCD_C_Setting_Main[];
 extern LCD_Char_Display                    oLCD_C_Setting_Calib[];
+extern LCD_Uint_Display                    oLCD_U_Setting_Calib[];
 extern LCD_Char_Display                    oLCD_C_Setting_Cycle[];
 extern LCD_Uint_Display                    oLCD_U_Setting_Cycle[];
-extern LCD_Char_Display                    oLCD_C_Setting_Satility[];
-extern LCD_Uint_Display                    oLCD_U_Setting_Satility[];
+extern LCD_Char_Display                    oLCD_C_Setting_Parameter[];
+extern LCD_Uint_Display                    oLCD_U_Setting_Parameter[];
 extern LCD_Char_Display                    oLCD_C_Setting_Password[];
 extern LCD_Uint_Display                    oLCD_U_Setting_Password[];
 extern LCD_Char_Display                    oLCD_C_Calib_Oxy[];
@@ -320,7 +350,7 @@ void        DLCD_Login(void);
 void        DLCD_Setting_Main(void);
 void        DLCD_Setting_Calib(void);
 void        DLCD_Setting_Cycle(void);
-void        DLCD_Setting_Satility(void);
+void        DLCD_Setting_Parameter(void);
 void        DLCD_Setting_Password(void);
 void        DLCD_Calib_Oxy(void);
 
@@ -330,7 +360,7 @@ void        DLCD_Login_Entry(void);
 void        DLCD_Setting_Main_Entry(void);
 void        DLCD_Setting_Cycle_Entry(void);
 void        DLCD_Setting_Calib_Entry(void);
-void        DLCD_Setting_Satility_Entry(void);
+void        DLCD_Setting_Parameter_Entry(void);
 void        DLCD_Setting_Password_Entry(void);
 void        DLCD_Calib_Oxy_Entry(void);
 
@@ -338,7 +368,8 @@ void        DLCD_Main_1_Alter(void);
 void        DLCD_Main_2_Alter(void);
 void        DLCD_Login_Alter(void);
 void        DLCD_Setting_Cycle_Alter(void);
-void        DLCD_Setting_Satility_Alter(void);
+void        DLCD_Setting_Calib_Alter(void);
+void        DLCD_Setting_Parameter_Alter(void);
 void        DLCD_Setting_Password_Alter(void);
 
 #endif

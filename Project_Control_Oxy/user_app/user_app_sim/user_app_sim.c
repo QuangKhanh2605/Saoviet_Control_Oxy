@@ -485,12 +485,12 @@ void _CbAppSim_Recv_PUBACK (void)
             break;
         case DATA_GPS:
         #ifdef USING_APP_MEM
-            if (AppMem_Inc_Index_Send_2(&sRecGPS, 1) == false)
-            {
-                //set lai timeout cho qua trinh luu phan B truoc khi doc tiep ban tin
-                sAppMem.CountPendingNewRec = 0;  
-                AppMem_Write_Data(_MEM_DATA_GPS_B, sAppSimVar.sDataFlashSim.Data_a8, sAppSimVar.sDataFlashSim.Length_u16, sRecGPS.SizeRecord_u16);
-            }
+//            if (AppMem_Inc_Index_Send_2(&sRecGPS, 1) == false)
+//            {
+//                //set lai timeout cho qua trinh luu phan B truoc khi doc tiep ban tin
+//                sAppMem.CountPendingNewRec = 0;  
+//                AppMem_Write_Data(_MEM_DATA_GPS_B, sAppSimVar.sDataFlashSim.Data_a8, sAppSimVar.sDataFlashSim.Length_u16, sRecGPS.SizeRecord_u16);
+//            }
         #endif
             //Unmark mess 
             AppSim_Unmark_Mess_Share_Buff();
@@ -1079,94 +1079,94 @@ uint8_t AppSim_GPS_Check_Moving (void)
 
 void AppSim_GPS_Packet_Record (uint8_t CheckResult)
 {
-#ifdef SIM_EC200U_LIB
-    uint16_t  i = 0, Count = 0;
-    
-    Reset_Buff(&sAppSimVar.sDataGPS);
-    //Them Stime vao truoc
-    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = OBIS_TIME_DEVICE;   // sTime
-    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = 0x06;
-    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sRTC.year;
-    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sRTC.month;
-    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sRTC.date;
-    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sRTC.hour;
-    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sRTC.min;
-    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sRTC.sec;
-    
-    if (CheckResult == 0xFF)
-    {          
-        for (i = 0; i < sAppSimVar.sGPS.Index_u8; i++)
-        {
-            //Ngan cach giua cac toa do la dau ;
-            if (i != 0)
-                *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = ';';
-            //Data cua tung vi tri
-            for (Count = 0; Count < sAppSimVar.sGPS.sLocation[i].Length_u8; Count++)
-            {
-                *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sAppSimVar.sGPS.sLocation[i].aData[Count];
-            }
-            
-            if (sAppSimVar.sDataGPS.Length_u16 >= 236)
-            {
-                break;
-            }
-        }
-    #ifdef USING_APP_MEM
-        //Send to queue write 
-        AppMem_Write_Data(_MEM_DATA_GPS_A, sAppSimVar.sDataGPS.Data_a8, sAppSimVar.sDataGPS.Length_u16, sRecGPS.SizeRecord_u16);
-    #endif
-        //Lay lai toa do goc: Toa do cuoi cung (neu di chuyen): tim vi tri toa do khac 0 tu cuoi
-        for (i = sAppSimVar.sGPS.Index_u8; i > 0; i--)
-        {
-            if ( (sAppSimVar.sGPS.sLocation[i - 1].Lat != 0) || (sAppSimVar.sGPS.sLocation[i - 1].Long != 0 ) )
-                break;
-        }
-        
-        sAppSimVar.sGPS.sLocaOrigin.Lat = sAppSimVar.sGPS.sLocation[i - 1].Lat;
-        sAppSimVar.sGPS.sLocaOrigin.Long = sAppSimVar.sGPS.sLocation[i - 1].Long;
-        
-        sAppSimVar.sGPS.sLocaOrigin.Length_u8 = sAppSimVar.sGPS.sLocation[i - 1].Length_u8;
-        
-        for (Count = 0; Count < sAppSimVar.sGPS.sLocaOrigin.Length_u8; Count++)
-            sAppSimVar.sGPS.sLocaOrigin.aData[Count] = sAppSimVar.sGPS.sLocation[i - 1].aData[Count];
-    } else
-    {
-        //Dong goi tat ca gps là toa do gan nhat
-        for (i = 0; i < sAppSimVar.sGPS.Index_u8; i++)
-        {
-            //Ngan cach giua cac toa do la dau ;
-            if (i != 0)
-                *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = ';';
-            
-            if ( (sAppSimVar.sGPS.sLocation[i].Lat == 0) && (sAppSimVar.sGPS.sLocation[i].Long == 0) )
-            {
-                //Data tai vi tri mat ket noi van giu nguyen
-                for (Count = 0; Count < sAppSimVar.sGPS.sLocation[i].Length_u8; Count++)
-                    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sAppSimVar.sGPS.sLocation[i].aData[Count];
-            } else
-            {
-                //Data cua tung vi tri
-//                for (Count = 0; Count < sAppSimVar.sGPS.sLocation[CheckResult].Length_u8; Count++)
-//                    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sAppSimVar.sGPS.sLocation[CheckResult].aData[Count];
-                
-                for (Count = 0; Count < sAppSimVar.sGPS.sLocaOrigin.Length_u8; Count++)
-                    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sAppSimVar.sGPS.sLocaOrigin.aData[Count];
-            }
-            
-            if (sAppSimVar.sDataGPS.Length_u16 >= 236)
-            {
-                break;
-            }
-        }
-    #ifdef USING_APP_MEM
-        //Send to queue write 
-        AppMem_Write_Data(_MEM_DATA_GPS_A, sAppSimVar.sDataGPS.Data_a8, sAppSimVar.sDataGPS.Length_u16, sRecGPS.SizeRecord_u16);
-    #endif
-//        //Lay lai toa do goc: toa do diem gan nhat (neu dung yen)
-//        sAppSimVar.sGPS.sLocaOrigin.Lat = sAppSimVar.sGPS.sLocation[CheckResult].Lat;
-//        sAppSimVar.sGPS.sLocaOrigin.Long = sAppSimVar.sGPS.sLocation[CheckResult].Long;
-    }    
-#endif
+//#ifdef SIM_EC200U_LIB
+//    uint16_t  i = 0, Count = 0;
+//    
+//    Reset_Buff(&sAppSimVar.sDataGPS);
+//    //Them Stime vao truoc
+//    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = OBIS_TIME_DEVICE;   // sTime
+//    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = 0x06;
+//    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sRTC.year;
+//    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sRTC.month;
+//    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sRTC.date;
+//    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sRTC.hour;
+//    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sRTC.min;
+//    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sRTC.sec;
+//    
+//    if (CheckResult == 0xFF)
+//    {          
+//        for (i = 0; i < sAppSimVar.sGPS.Index_u8; i++)
+//        {
+//            //Ngan cach giua cac toa do la dau ;
+//            if (i != 0)
+//                *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = ';';
+//            //Data cua tung vi tri
+//            for (Count = 0; Count < sAppSimVar.sGPS.sLocation[i].Length_u8; Count++)
+//            {
+//                *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sAppSimVar.sGPS.sLocation[i].aData[Count];
+//            }
+//            
+//            if (sAppSimVar.sDataGPS.Length_u16 >= 236)
+//            {
+//                break;
+//            }
+//        }
+//    #ifdef USING_APP_MEM
+//        //Send to queue write 
+//        AppMem_Write_Data(_MEM_DATA_GPS_A, sAppSimVar.sDataGPS.Data_a8, sAppSimVar.sDataGPS.Length_u16, sRecGPS.SizeRecord_u16);
+//    #endif
+//        //Lay lai toa do goc: Toa do cuoi cung (neu di chuyen): tim vi tri toa do khac 0 tu cuoi
+//        for (i = sAppSimVar.sGPS.Index_u8; i > 0; i--)
+//        {
+//            if ( (sAppSimVar.sGPS.sLocation[i - 1].Lat != 0) || (sAppSimVar.sGPS.sLocation[i - 1].Long != 0 ) )
+//                break;
+//        }
+//        
+//        sAppSimVar.sGPS.sLocaOrigin.Lat = sAppSimVar.sGPS.sLocation[i - 1].Lat;
+//        sAppSimVar.sGPS.sLocaOrigin.Long = sAppSimVar.sGPS.sLocation[i - 1].Long;
+//        
+//        sAppSimVar.sGPS.sLocaOrigin.Length_u8 = sAppSimVar.sGPS.sLocation[i - 1].Length_u8;
+//        
+//        for (Count = 0; Count < sAppSimVar.sGPS.sLocaOrigin.Length_u8; Count++)
+//            sAppSimVar.sGPS.sLocaOrigin.aData[Count] = sAppSimVar.sGPS.sLocation[i - 1].aData[Count];
+//    } else
+//    {
+//        //Dong goi tat ca gps là toa do gan nhat
+//        for (i = 0; i < sAppSimVar.sGPS.Index_u8; i++)
+//        {
+//            //Ngan cach giua cac toa do la dau ;
+//            if (i != 0)
+//                *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = ';';
+//            
+//            if ( (sAppSimVar.sGPS.sLocation[i].Lat == 0) && (sAppSimVar.sGPS.sLocation[i].Long == 0) )
+//            {
+//                //Data tai vi tri mat ket noi van giu nguyen
+//                for (Count = 0; Count < sAppSimVar.sGPS.sLocation[i].Length_u8; Count++)
+//                    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sAppSimVar.sGPS.sLocation[i].aData[Count];
+//            } else
+//            {
+//                //Data cua tung vi tri
+////                for (Count = 0; Count < sAppSimVar.sGPS.sLocation[CheckResult].Length_u8; Count++)
+////                    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sAppSimVar.sGPS.sLocation[CheckResult].aData[Count];
+//                
+//                for (Count = 0; Count < sAppSimVar.sGPS.sLocaOrigin.Length_u8; Count++)
+//                    *(sAppSimVar.sDataGPS.Data_a8 + sAppSimVar.sDataGPS.Length_u16++) = sAppSimVar.sGPS.sLocaOrigin.aData[Count];
+//            }
+//            
+//            if (sAppSimVar.sDataGPS.Length_u16 >= 236)
+//            {
+//                break;
+//            }
+//        }
+//    #ifdef USING_APP_MEM
+//        //Send to queue write 
+//        AppMem_Write_Data(_MEM_DATA_GPS_A, sAppSimVar.sDataGPS.Data_a8, sAppSimVar.sDataGPS.Length_u16, sRecGPS.SizeRecord_u16);
+//    #endif
+////        //Lay lai toa do goc: toa do diem gan nhat (neu dung yen)
+////        sAppSimVar.sGPS.sLocaOrigin.Lat = sAppSimVar.sGPS.sLocation[CheckResult].Lat;
+////        sAppSimVar.sGPS.sLocaOrigin.Long = sAppSimVar.sGPS.sLocation[CheckResult].Long;
+//    }    
+//#endif
 }
 
 /*

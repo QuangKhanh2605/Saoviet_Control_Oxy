@@ -10,7 +10,6 @@
 
 #include "user_l508.h"
 #include "user_string.h"
-
      
 /* ========= handler Sim driver ============*/
 /* define static functions */
@@ -107,19 +106,22 @@ uint8_t aSimStepBlockInit[9] = {
 
   
 #ifdef MQTT_PROTOCOL
-uint8_t aSimStepBlockNework[6] = 
+uint8_t aSimStepBlockNework[8] = 
 {
 	_SIM_NET_CHECK_ATTACH,
 //    _SIM_SMS_READ_UNREAD,
 //    _SIM_SMS_DEL_ALL,
     _SIM_AT_CHECK_RSSI,
 	_SIM_NET_SYN_TIME_ZONE,
+    _SIM_NET_CFUN_0,
+    _SIM_NET_CFUN_1,
+    
 	_SIM_NET_GET_RTC,
 	_SIM_AT_SET_APN_1,
     _SIM_AT_SET_APN_2,
 };
 #else
-uint8_t aSimStepBlockNework[12] = 
+uint8_t aSimStepBlockNework[15] = 
 {
 	_SIM_NET_CHECK_ATTACH,
     _SIM_AT_CHECK_RSSI,
@@ -127,7 +129,11 @@ uint8_t aSimStepBlockNework[12] =
     _SIM_SMS_DEL_ALL,
     _SIM_AT_CHECK_RSSI,
 	_SIM_NET_SYN_TIME_ZONE,
+    _SIM_NET_CFUN_0,
+    _SIM_NET_CFUN_1,
+    
 	_SIM_NET_GET_RTC,
+    _SIM_NET_NTP_SERVER,
     
     _SIM_AT_SET_APN_1,
     _SIM_AT_SET_APN_2,
@@ -369,7 +375,7 @@ const sCommand_Sim_Struct aSimL506Step[] =
 {
     //Cmd Pre Init
 	{	_SIM_AT_AT,			    at_callback_success,        at_callback_failure,            "OK", 			    "AT\r" 	        },
-	{	_SIM_AT_ECHO,			at_callback_success,        at_callback_failure,            "OK", 			    "ATE0\r" 	 	},
+    {	_SIM_AT_ECHO,			at_callback_success,        at_callback_failure,            "OK", 			    "ATE0\r" 	 	},
 	{   _SIM_AT_MAN_LOG,    	at_callback_success,        at_callback_failure,            "OK",	            "AT+MLOGK=5\r"  },
     //Cmd Init
     {   _SIM_AT_BAUD_RATE, 		at_callback_success,        at_callback_failure,            "OK",			    "AT+IPR=115200\r"	},
@@ -404,8 +410,10 @@ const sCommand_Sim_Struct aSimL506Step[] =
 	{	_SIM_NET_CEREG, 	    at_callback_success,        at_callback_failure,            "OK",			    "AT+CEREG=0\r"	},
 	{	_SIM_NET_CHECK_ATTACH,	_Cb_AT_CHECK_ATTACH,        at_callback_failure,            "OK",	            "AT+CGATT?\r"	},
     //Cmd Config
-	{	_SIM_NET_SYN_TIME_ZONE, at_callback_success,        at_callback_failure,            "OK",			    "AT+CTZR=1\r"	},
-	{	_SIM_NET_GET_RTC, 		_CbAT_GET_CLOCK,            at_callback_failure,            "+MNTP:",		    "AT+MNTP?\r"	},
+	{	_SIM_NET_SYN_TIME_ZONE, at_callback_success,        at_callback_failure,            "OK",			    "AT+CTZR=1\r"	},     
+    {   _SIM_NET_CFUN_0,        at_callback_success,        at_callback_failure,            "OK",               "AT\r"   },    
+    {   _SIM_NET_CFUN_1,        at_callback_success,        at_callback_failure,            "OK",               "AT\r"   },
+    {	_SIM_NET_GET_RTC, 		_CbAT_GET_CLOCK,            at_callback_failure,            "+MNTP:",		    "AT+MNTP?\r"	},
     //Cmd Data mode and command mode
 #ifdef USING_TRANSPARENT_MODE
     {   _SIM_TCP_OUT_DATAMODE, 	_CbAT_NON_TRANPARENT_MODE,  at_callback_failure,            NULL,               "+++" 			}, 
@@ -413,7 +421,7 @@ const sCommand_Sim_Struct aSimL506Step[] =
     {   _SIM_TCP_IN_DATAMODE,   _CbAT_TRANPARENT_MODE,      at_callback_failure,            "CONNECT",          "ATO\r"		    },
 #else
     {   _SIM_TCP_OUT_DATAMODE, 	_CbAT_NON_TRANPARENT_MODE,  at_callback_failure,            NULL, 			    NULL            }, 
-    {   _SIM_TCP_TRANS, 		_CbAT_TRANPARENT_MODE,      at_callback_failure,            "OK",               "AT+CCLK?\r", 		}, 
+    {   _SIM_TCP_TRANS, 		at_callback_success,        at_callback_failure,            "+CCLK:",           "AT+CCLK?\r",   },  // Bo lenh AT+CIPCLOSE
     {   _SIM_TCP_IN_DATAMODE,   _CbAT_TRANPARENT_MODE,      at_callback_failure,            NULL,		        NULL            },
 #endif   
     
@@ -450,7 +458,7 @@ const sCommand_Sim_Struct aSimL506Step[] =
 	{   _SIM_MQTT_PUB_FB_2, 	_Cb_MQTT_PUBLISH_2,         at_callback_failure,            DataPuback_8a,      NULL   			},  // 4,"40020001"
     //Ping
     {   _SIM_TCP_PING_TEST1,    _CbAT_PING_TEST,            at_callback_failure,            NULL,               "AT+MPING=\""  	},    
-    {   _SIM_TCP_PING_TEST2,    at_callback_success,        at_callback_failure,            "+MPING:3",         "\",1,4\r"     	},
+    {   _SIM_TCP_PING_TEST2,    at_callback_success,        at_callback_failure,            "+MPING:2",         "\",1,4\r"     	},
     
     // File	 
     {   _SIM_SYS_DEL_FILE_1,    _CbSYS_DEL_FILE,            at_callback_failure,            NULL,               "AT+MFSDEL=\"" 	},
@@ -641,13 +649,33 @@ static uint8_t _Cb_AT_CHECK_ATTACH(sData *str_Receive)
 	return 0;
 }
 
-
 static uint8_t _CbAT_GET_CLOCK (sData *uart_string)
 {
-	sData  strCheck = {(uint8_t*) aSimL506Step[_SIM_NET_GET_RTC].at_response, strlen(aSimL506Step[_SIM_NET_GET_RTC].at_response)};
-    //Call Func Get sTime BTS
-    Sim_Common_Get_Stime_BTS (&strCheck, uart_string);
-        
+    uint8_t Pos = uart_string->Length_u16;
+    
+    while(Pos > 0)
+    {
+        if(uart_string->Data_a8[Pos] == '+') break;
+        else Pos--;
+    }
+    
+    if(uart_string->Data_a8[Pos+1] == '2' && uart_string->Data_a8[Pos+2] == '8')
+    {
+        sData  strCheck = {(uint8_t*) aSimL506Step[_SIM_NET_GET_RTC].at_response, strlen(aSimL506Step[_SIM_NET_GET_RTC].at_response)};
+        //Call Func Get sTime BTS
+        Sim_Common_Get_Stime_BTS (&strCheck, uart_string);
+    }
+    else
+    {
+        Sim_Common_Send_AT_Cmd(&uart_sim, (uint8_t*)"AT+CCLK=\"01/01/01,00:00:00+28\"\r", sizeof("AT+CCLK=\"01/01/01,00:00:00+28\"\r")-1, 1000);
+        HAL_Delay(3000);
+        Sim_Common_Send_AT_Cmd(&uart_sim, (uint8_t*)"AT+RESET\r", sizeof("AT+RESET\r")-1, 1000);
+        HAL_Delay(3000);
+        __disable_irq();
+        //Reset
+        NVIC_SystemReset(); // Reset MCU
+    }
+    
     return 1;
 }
 

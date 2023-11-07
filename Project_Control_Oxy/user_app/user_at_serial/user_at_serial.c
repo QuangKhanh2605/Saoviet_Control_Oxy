@@ -7,6 +7,7 @@
 #include "user_at_serial.h"
 #include "user_string.h"
 #include "onchipflash.h"
+#include "user_convert_variable.h"
 
 /*======================== Structs var======================*/
 
@@ -89,6 +90,29 @@ const struct_CheckList_AT CheckList_AT_CONFIG[] =
         
         {_SET_POWER_ON_TEMH,	_fSET_POWER_ON_TEMH,	    {(uint8_t*)"at+ontemh?",10}},
         {_SET_POWER_OFF_TEMH,	_fSET_POWER_OFF_TEMH,	    {(uint8_t*)"at+offtemh?",11}},
+        
+        {_GET_PASSWORD_OXY,     fGET_PASSWORD_OXY,          {(uint8_t*)"at+password?",12}},
+        {_SET_PASSWORD_OXY,     fSET_PASSWORD_OXY,          {(uint8_t*)"at+password=",12}},
+        
+        {_GET_TIMECHANGE_OXY,   fGET_TIMECHANGE_OXY,        {(uint8_t*)"at+timechange?",14}},
+        {_SET_TIMECHANGE_OXY,   fSET_TIMECHANGE_OXY,        {(uint8_t*)"at+timechange=",14}},
+        
+        {_GET_TIMEDELAY_OXY,    fGET_TIMEDELAY_OXY,         {(uint8_t*)"at+timedelay?",13}},
+        {_SET_TIMEDELAY_OXY,    fSET_TIMEDELAY_OXY,         {(uint8_t*)"at+timedelay=",13}},
+        
+        {_GET_TIMEWARNING_OXY,  fGET_TIMEWARNING_OXY,       {(uint8_t*)"at+timewarning?",15}},
+        {_SET_TIMEWARNING_OXY,  fSET_TIMEWARNING_OXY,       {(uint8_t*)"at+timewarning=",15}},
+        
+        {_GET_ID_SLAVE_485,     fGET_ID_SLAVE_485,          {(uint8_t*)"at+slaveid?",11}},
+        {_SET_ID_SLAVE_485,     fSET_ID_SLAVE_485,          {(uint8_t*)"at+slaveid=",11}},
+        
+        {_GET_OXY_UPPER,        fGET_OXY_UPPER,             {(uint8_t*)"at+oxyupper?",12}},
+        {_SET_OXY_UPPER,        fSET_OXY_UPPER,             {(uint8_t*)"at+oxyupper=",12}},
+        
+        {_GET_OXY_LOWER,        fGET_OXY_LOWER,             {(uint8_t*)"at+oxylower?",12}},
+        {_SET_OXY_LOWER,        fSET_OXY_LOWER,             {(uint8_t*)"at+oxylower=",12}},
+      
+        {_GET_OXY_MEASURE,      fGET_OXY_MEASURE,           {(uint8_t*)"at+oxymeasure?",14}},
         
         {_END_AT_CMD,	        NULL,	                    {(uint8_t*)"at+end",6}},
 };
@@ -1585,3 +1609,280 @@ void _fSET_POWER_OFF_TEMH (sData *str_Receiv, uint16_t Pos)
     DCU_Respond(PortConfig, (uint8_t *)"OK", 2, 0);
 #endif
 }
+
+void        fGET_PASSWORD_OXY (sData *str_Receiv, uint16_t Pos)
+{
+#ifdef USING_APP_OXYGEN
+    uint8_t array[20]="Password:";
+    array[9] = sPassword.Pass1 + 0x30;
+    array[10] = sPassword.Pass2 + 0x30;
+    array[11] = sPassword.Pass3 + 0x30;
+    array[12] = sPassword.Pass4 + 0x30;
+    array[13] = sPassword.Pass5 + 0x30;
+    array[14] = sPassword.Pass6 + 0x30;
+    DCU_Respond(PortConfig, (uint8_t *)array, 15, 0);
+#endif
+}
+
+void        fSET_PASSWORD_OXY (sData *str_Receiv, uint16_t Pos)
+{
+#ifdef USING_APP_OXYGEN
+    sMenuStamp.Pass1 = str_Receiv->Data_a8[Pos++] - 0x30;
+    sMenuStamp.Pass2 = str_Receiv->Data_a8[Pos++] - 0x30;
+    sMenuStamp.Pass3 = str_Receiv->Data_a8[Pos++] - 0x30;
+    sMenuStamp.Pass4 = str_Receiv->Data_a8[Pos++] - 0x30;
+    sMenuStamp.Pass5 = str_Receiv->Data_a8[Pos++] - 0x30;
+    sMenuStamp.Pass6 = str_Receiv->Data_a8[Pos++] - 0x30;
+    if(sMenuStamp.Pass1 <= 0x09 && sMenuStamp.Pass2 <= 0x09 && 
+       sMenuStamp.Pass3 <= 0x09 && sMenuStamp.Pass4 <= 0x09 && 
+       sMenuStamp.Pass5 <= 0x09 && sMenuStamp.Pass6 <= 0x09 )
+    {
+        Save_Password();
+        DCU_Respond(PortConfig, (uint8_t *)"OK", 2, 0);
+    }
+    else
+    {
+        DCU_Respond(PortConfig, (uint8_t *)"ERROR", 5, 0);
+    }
+    Stamp_Menu_Exit();
+#endif
+}
+
+void        fGET_TIMECHANGE_OXY (sData *str_Receiv, uint16_t Pos)
+{
+    uint8_t aTemp[20] = "TimeChange:";   //13 ki tu dau tien
+    sData StrResp = {&aTemp[0], 11}; 
+
+    Convert_Uint64_To_StringDec (&StrResp, (uint64_t) (sParamCtrlOxy.TimeChange), 0);
+
+	DCU_Respond(PortConfig, StrResp.Data_a8, StrResp.Length_u16, 0);
+}
+
+void        fSET_TIMECHANGE_OXY (sData *str_Receiv, uint16_t Pos)
+{
+    uint32_t TempU32 = 0;
+    if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
+    {
+        uint8_t length = 0;
+        for(uint8_t i = 0; i < str_Receiv->Length_u16; i++)
+        {
+            if( str_Receiv->Data_a8[i] < '0' || str_Receiv->Data_a8[i]>'9') break;
+            else length++;
+        }
+        TempU32 = Convert_String_To_Dec(str_Receiv->Data_a8 , length);
+        Save_TimeCtrl(sParamCtrlOxy.TimeDelay, TempU32, sParamCtrlOxy.TimeWarning);
+        DCU_Respond(PortConfig, (uint8_t*)"OK", 2, 0);
+    }
+    else
+    {
+        DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
+    }
+}
+
+void        fGET_TIMEDELAY_OXY (sData *str_Receiv, uint16_t Pos)
+{
+    uint8_t aTemp[20] = "TimeDelay:";   //13 ki tu dau tien
+    sData StrResp = {&aTemp[0], 10}; 
+
+    Convert_Uint64_To_StringDec (&StrResp, (uint64_t) (sParamCtrlOxy.TimeDelay), 0);
+
+	DCU_Respond(PortConfig, StrResp.Data_a8, StrResp.Length_u16, 0);
+}
+
+void        fSET_TIMEDELAY_OXY (sData *str_Receiv, uint16_t Pos)
+{
+    uint32_t TempU32 = 0;
+    if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
+    {
+        uint8_t length = 0;
+        for(uint8_t i = 0; i < str_Receiv->Length_u16; i++)
+        {
+            if( str_Receiv->Data_a8[i] < '0' || str_Receiv->Data_a8[i]>'9') break;
+            else length++;
+        }
+        TempU32 = Convert_String_To_Dec(str_Receiv->Data_a8 , length);
+        if(TempU32 <=TIMEDELAY_MAX && TempU32 >=TIMEDELAY_MIN)
+        {
+            Save_TimeCtrl(TempU32, sParamCtrlOxy.TimeChange, sParamCtrlOxy.TimeWarning);
+            DCU_Respond(PortConfig, (uint8_t*)"OK", 2, 0);
+        }
+        else
+        {
+            DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
+        }
+    }
+    else
+    {
+        DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
+    }
+}
+
+void        fGET_TIMEWARNING_OXY (sData *str_Receiv, uint16_t Pos)
+{
+    uint8_t aTemp[20] = "TimeWarning:";   //13 ki tu dau tien
+    sData StrResp = {&aTemp[0], 12}; 
+
+    Convert_Uint64_To_StringDec (&StrResp, (uint64_t) (sParamCtrlOxy.TimeWarning), 0);
+
+	DCU_Respond(PortConfig, StrResp.Data_a8, StrResp.Length_u16, 0);
+}
+
+void        fSET_TIMEWARNING_OXY (sData *str_Receiv, uint16_t Pos)
+{
+    uint32_t TempU32 = 0;
+    if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
+    {
+        uint8_t length = 0;
+        for(uint8_t i = 0; i < str_Receiv->Length_u16; i++)
+        {
+            if( str_Receiv->Data_a8[i] < '0' || str_Receiv->Data_a8[i]>'9') break;
+            else length++;
+        }
+        TempU32 = Convert_String_To_Dec(str_Receiv->Data_a8 , length);
+        if(TempU32 <=TIMEDELAY_MAX && TempU32 >=TIMEDELAY_MIN)
+        {
+            Save_TimeCtrl(sParamCtrlOxy.TimeDelay, sParamCtrlOxy.TimeChange, TempU32);
+            DCU_Respond(PortConfig, (uint8_t*)"OK", 2, 0);
+        }
+        else
+        {
+            DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
+        }
+    }
+    else
+    {
+        DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
+    }
+}
+
+void        fGET_ID_SLAVE_485 (sData *str_Receiv, uint16_t Pos)
+{
+    uint8_t aTemp[20] = "Slave_Id:";   //13 ki tu dau tien
+    sData StrResp = {&aTemp[0], 9}; 
+
+    Convert_Uint64_To_StringDec (&StrResp, (uint64_t) (ID_Slave), 0);
+
+	DCU_Respond(PortConfig, StrResp.Data_a8, StrResp.Length_u16, 0);
+}
+
+void        fSET_ID_SLAVE_485 (sData *str_Receiv, uint16_t Pos)
+{
+    uint32_t TempU32 = 0;
+    if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
+    {
+        uint8_t length = 0;
+        for(uint8_t i = 0; i < str_Receiv->Length_u16; i++)
+        {
+            if( str_Receiv->Data_a8[i] < '0' || str_Receiv->Data_a8[i]>'9') break;
+            else length++;
+        }
+        TempU32 = Convert_String_To_Dec(str_Receiv->Data_a8 , length);
+        if(TempU32 < 256)
+        {
+            Save_IdSlave(TempU32);
+            DCU_Respond(PortConfig, (uint8_t*)"OK", 2, 0);
+        }
+        else
+        {
+            DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
+        }
+    }
+    else
+    {
+        DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
+    }
+}
+
+void        fGET_OXY_UPPER (sData *str_Receiv, uint16_t Pos)
+{
+    uint8_t aTemp[20] = "Oxy_Upper:";   //11 ki tu dau tien
+    uint16_t length = 10;
+
+    Convert_Point_Int_To_String_Scale (aTemp, &length, (int)(sParamCtrlOxy.Oxy_Upper), 0xFE);
+
+	DCU_Respond(PortConfig, aTemp, length, 0);
+}
+
+void        fSET_OXY_UPPER (sData *str_Receiv, uint16_t Pos)
+{
+    uint32_t TempU32 = 0;
+    if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
+    {
+        uint8_t length = 0;
+        for(uint8_t i = 0; i < str_Receiv->Length_u16; i++)
+        {
+            if( str_Receiv->Data_a8[i] < '0' || str_Receiv->Data_a8[i]>'9') break;
+            else length++;
+        }
+        TempU32 = Convert_String_To_Dec(str_Receiv->Data_a8 , length);
+        if(TempU32 > sParamCtrlOxy.Oxy_Lower && TempU32 <= OXY_UPPER_MAX)
+        {
+            Save_OxyUpperLower(TempU32, sParamCtrlOxy.Oxy_Lower);
+            DCU_Respond (PortConfig, (uint8_t *)"OK", 2, 1);
+        }
+        else
+            DCU_Respond(PortConfig, (uint8_t *)"FAIL", 4, 0);
+    }
+    else
+    {
+        DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
+    }
+}
+
+void        fGET_OXY_LOWER (sData *str_Receiv, uint16_t Pos)
+{
+    uint8_t aTemp[20] = "Oxy_Lower:";   //11 ki tu dau tien
+    uint16_t length = 10;
+
+    Convert_Point_Int_To_String_Scale (aTemp, &length, (int)(sParamCtrlOxy.Oxy_Lower), 0xFE);
+
+	DCU_Respond(PortConfig, aTemp, length, 0);
+}
+
+void        fSET_OXY_LOWER (sData *str_Receiv, uint16_t Pos)
+{
+    uint32_t TempU32 = 0;
+    if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
+    {
+        uint8_t length = 0;
+        for(uint8_t i = 0; i < str_Receiv->Length_u16; i++)
+        {
+            if( str_Receiv->Data_a8[i] < '0' || str_Receiv->Data_a8[i]>'9') break;
+            else length++;
+        }
+        TempU32 = Convert_String_To_Dec(str_Receiv->Data_a8 , length);
+        if(TempU32 < sParamCtrlOxy.Oxy_Upper && TempU32 >= OXY_LOWER_MIN)
+        {
+            Save_OxyUpperLower(sParamCtrlOxy.Oxy_Upper, TempU32);
+            DCU_Respond (PortConfig, (uint8_t *)"OK", 2, 1);
+        }
+        else
+            DCU_Respond(PortConfig, (uint8_t *)"FAIL", 4, 0);
+    }
+    else
+    {
+        DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
+    }
+}
+
+void        fGET_OXY_MEASURE (sData *str_Receiv, uint16_t Pos)
+{
+    uint8_t aTemp[60] = "Oxy_Measure:Temp=";   //11 ki tu dau tien
+    uint16_t length = 17;
+
+    Convert_Point_Int_To_String_Scale (aTemp, &length, (int)(sParamMeasure.Temp), 0xFE);
+    Insert_String_To_String(aTemp, &length, (uint8_t*)"'C,Oxy=",0 , 7);
+    
+    Convert_Point_Int_To_String_Scale (aTemp, &length, (int)(sParamMeasure.Oxy_Mg_L), 0xFE);
+    Insert_String_To_String(aTemp, &length, (uint8_t*)"mg/L,Oxy=",0 , 9);
+    
+    Convert_Point_Int_To_String_Scale (aTemp, &length, (int)(sParamMeasure.Oxy_Percent), 0xFE);
+    Insert_String_To_String(aTemp, &length, (uint8_t*)"%,Sali=",0 , 7);
+    
+    Convert_Point_Int_To_String_Scale (aTemp, &length, (int)(sParamMeasure.Salinity), 0xFE);
+    Insert_String_To_String(aTemp, &length, (uint8_t*)"ppt",0 , 3);
+
+	DCU_Respond(PortConfig, aTemp, length, 0);
+}
+
+

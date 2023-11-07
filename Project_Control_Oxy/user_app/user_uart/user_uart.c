@@ -17,7 +17,7 @@ uint8_t UartDebugBuff[1200] = {0};
 sData 	sUartDebug = {&UartDebugBuff[0], 0};
 
 
-uint8_t Uart485Buff[50] = {0};
+uint8_t Uart485Buff[100] = {0};
 sData   sUart485 = {&Uart485Buff[0], 0};
 
 uint8_t UartSimRxByte = 0;
@@ -119,9 +119,9 @@ void DeInit_RX_Mode_Uart_485 (void)
 
 void Init_Uart_Module (void)
 {   
+    Init_RX_Mode_Uart_485();
     Init_RX_Mode_Uart_Sim();
     Init_RX_Mode_Uart_Debug();
-    Init_RX_Mode_Uart_485();
 }
 
 

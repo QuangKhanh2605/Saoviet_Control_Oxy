@@ -58,8 +58,6 @@ D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_component
 -I
 D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_component\user_sim
 -I
-D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\user_component\user_sim\user_l508
--I
 D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_eventdriven
 -I
 D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_queue
@@ -71,6 +69,8 @@ D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_util
 D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_app\user_app_mem
 -I
 D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_component\user_sim\user_l506
+-I
+D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_component\user_convert_variable
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.3\arm\inc
 -I
@@ -124,8 +124,6 @@ D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\user_component\user_mem
 -I
 D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\user_component\user_sim
 -I
-D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\user_component\user_sim\user_l508
--I
 D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\user_eventdriven
 -I
 D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\user_queue
@@ -137,6 +135,8 @@ D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\user_util
 D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\user_app\user_app_mem
 -I
 D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\user_component\user_sim\user_l506
+-I
+D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\user_component\user_convert_variable
 -D__CHAR_BITS__=8
 -D__CHAR_MAX__=0xff
 -D__CHAR_MIN__=0

@@ -15,7 +15,7 @@
 
 //#define USING_TRANSPARENT_MODE     
 
-#define CID_SERVER          0x32
+#define CID_SERVER          0x31
 #define HTTP_HEADER_MAX     3
      
 #define MQTT_PROTOCOL     
@@ -64,6 +64,8 @@ typedef enum
 	_SIM_NET_CHECK_ATTACH,
     //Cmd Config
 	_SIM_NET_SYN_TIME_ZONE,
+    _SIM_NET_CFUN_0,
+    _SIM_NET_CFUN_1,
 	_SIM_NET_GET_RTC,
     //Cmd Data mode and command mode
     _SIM_TCP_OUT_DATAMODE,
@@ -175,9 +177,9 @@ extern const sCommand_Sim_Struct aSimUrc[];
 
 extern uint8_t aSimStepBlockInit[9];
 #ifdef MQTT_PROTOCOL
-    extern uint8_t aSimStepBlockNework[6];
+    extern uint8_t aSimStepBlockNework[8];
 #else
-    extern uint8_t aSimStepBlockNework[12];
+    extern uint8_t aSimStepBlockNework[15];
 #endif
 
 #ifdef USING_TRANSPARENT_MODE

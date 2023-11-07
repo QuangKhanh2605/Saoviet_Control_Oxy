@@ -765,13 +765,14 @@ uint8_t SIM_POWER_ON(void)
         #endif
 			break;
         case 3:      
-            SIM_PWKEY_OFF1;
         #ifdef SIM_L506_LIB
+            SIM_PWKEY_OFF1;
 			UTIL_TIMER_SetPeriod(&TimerControlBC66, 15000);
             UTIL_TIMER_Start(&TimerControlBC66);
         #endif
             
         #ifdef SIM_EC200U_LIB
+            SIM_PWKEY_OFF1;
             UTIL_TIMER_SetPeriod(&TimerControlBC66, 5000);
             UTIL_TIMER_Start(&TimerControlBC66);
         #endif

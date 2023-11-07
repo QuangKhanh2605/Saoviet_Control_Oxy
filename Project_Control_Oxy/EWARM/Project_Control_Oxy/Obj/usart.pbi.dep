@@ -33,11 +33,10 @@ usart.pbi: \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_flash_ex.h \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_flash_ramfunc.h \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Drivers/STM32L1xx_HAL_Driver/Inc\stm32l1xx_hal_i2c.h \
+  D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Drivers/STM32L1xx_HAL_Driver/Inc\stm32l1xx_hal_iwdg.h \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Drivers/STM32L1xx_HAL_Driver/Inc\stm32l1xx_hal_pwr.h \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_pwr_ex.h \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Drivers/STM32L1xx_HAL_Driver/Inc\stm32l1xx_hal_rtc.h \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_rtc_ex.h \
-  D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Drivers/STM32L1xx_HAL_Driver/Inc\stm32l1xx_hal_tim.h \
-  D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_tim_ex.h \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Drivers/STM32L1xx_HAL_Driver/Inc\stm32l1xx_hal_uart.h \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Drivers/STM32L1xx_HAL_Driver/Inc\stm32l1xx_hal_exti.h

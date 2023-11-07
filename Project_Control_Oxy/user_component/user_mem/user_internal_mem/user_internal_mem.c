@@ -18,7 +18,6 @@ sEvent_struct sEventOnChipFlash[] =
     { _EVENT_ON_FLASH_CHECK_QUEUE, 	    0, 0, 10,               _Cb_On_Flash_Check_Queue   },
 };
 
-
 static uint8_t aDATA_READ[256];
 
 static sQueueMemWriteManager     sQOnFlashWrite[5];

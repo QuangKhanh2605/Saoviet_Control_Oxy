@@ -679,10 +679,38 @@ static uint8_t _Cb_AT_CHECK_ATTACH(sData *str_Receive)
 
 static uint8_t _CbAT_GET_CLOCK (sData *uart_string)
 {
-	sData  strCheck = {(uint8_t*) aSimL506Step[_SIM_NET_GET_RTC].at_response, strlen(aSimL506Step[_SIM_NET_GET_RTC].at_response)};
-    //Call Func Get sTime BTS
-    Sim_Common_Get_Stime_BTS (&strCheck, uart_string);
-        
+//	sData  strCheck = {(uint8_t*) aSimL506Step[_SIM_NET_GET_RTC].at_response, strlen(aSimL506Step[_SIM_NET_GET_RTC].at_response)};
+//    //Call Func Get sTime BTS
+//    Sim_Common_Get_Stime_BTS (&strCheck, uart_string);
+//        
+//    return 1;
+    
+  //---------------Setup Timezone---------------
+    uint8_t Pos = uart_string->Length_u16;
+    
+    while(Pos > 0)
+    {
+        if(uart_string->Data_a8[Pos] == '+') break;
+        else Pos--;
+    }
+    
+    if(uart_string->Data_a8[Pos+1] == '2' && uart_string->Data_a8[Pos+2] == '8')
+    {
+        sData  strCheck = {(uint8_t*) aSimL506Step[_SIM_NET_GET_RTC].at_response, strlen(aSimL506Step[_SIM_NET_GET_RTC].at_response)};
+        //Call Func Get sTime BTS
+        Sim_Common_Get_Stime_BTS (&strCheck, uart_string);
+    }
+    else
+    {
+        Sim_Common_Send_AT_Cmd(&uart_sim, (uint8_t*)"AT+CCLK=\"01/01/01,00:00:00+28\"\r", sizeof("AT+CCLK=\"01/01/01,00:00:00+28\"\r")-1, 1000);
+        HAL_Delay(3000);
+        Sim_Common_Send_AT_Cmd(&uart_sim, (uint8_t*)"AT+RESET\r", sizeof("AT+RESET\r")-1, 1000);
+        HAL_Delay(3000);
+        __disable_irq();
+        //Reset
+        NVIC_SystemReset(); // Reset MCU
+    }
+    
     return 1;
 }
 

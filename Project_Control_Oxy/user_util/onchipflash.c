@@ -16,7 +16,8 @@ HAL_StatusTypeDef	OnchipFlashWriteData (uint32_t andress, uint8_t	*data_address,
 {
 	uint8_t		*temp_data_address;
 	uint16_t	i=0;
-	uint64_t	writeval=0,writetime=0;
+//	uint64_t	writeval=0;
+    uint64_t    writetime=0;
     uint32_t    WriteData = 0;
 	uint32_t	temp_write_address;
 	HAL_StatusTypeDef   status = HAL_ERROR;
@@ -62,7 +63,7 @@ HAL_StatusTypeDef	OnchipFlashWriteData (uint32_t andress, uint8_t	*data_address,
 HAL_StatusTypeDef	OnchipFlashCopy (uint32_t sourceandress, uint32_t destinationandress, uint32_t data_length)
 {
 	uint32_t	i=0,writetime=0;
-	uint64_t	writeval=0;
+//	uint64_t	writeval=0;
     uint32_t    WriteData = 0;
 	uint32_t	temp_sourceandress,temp_destinationandress;
 	HAL_StatusTypeDef status = HAL_ERROR;

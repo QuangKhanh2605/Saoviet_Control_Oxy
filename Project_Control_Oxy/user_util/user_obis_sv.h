@@ -66,6 +66,26 @@
 
 
 
+#define OBIS_ENVI_CONNECT_STATUS    0xD4
+
+/*================ Obis Control Oxy ================*/
+#define OBIS_ENVI_STATE_POWER       0xC0
+#define OBIS_ENVI_STATE_MACHINE     0xC1
+#define OBIS_ENVI_STATE_OXY         0xC2
+#define OBIS_ENVI_CONNECT_SENSOR    0xC3
+#define OBIS_ENVI_OXY_UPPER         0xC4
+#define OBIS_ENVI_OXY_LOWER         0xC5
+#define OBIS_ENVI_OXY_MG_L          0xC6
+#define OBIS_ENVI_OXY_PERCENT       0xC7
+#define OBIS_ENVI_OXY_TEMPERATURE   0xC8
+#define OBIS_ENVI_SALINITY          0xC9
+
+#define OBIS_ENVI_SET_OXY_UPPER     0xD0
+#define OBIS_ENVI_SET_OXY_LOWER     0xD1
+//#define OBIS_ENVI_SET_TIME_DELAY    0xD2
+
+#define OBIS_ENVI_NOTIFY            0xE0
+#define OBIS_ENVI_ID_SERVER         0xE1
 
 
 #endif

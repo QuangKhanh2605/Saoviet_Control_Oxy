@@ -48,7 +48,7 @@ typedef enum
     _MENU_SETTING_MAIN,
     _MENU_SETTING_CYCLE,
     _MENU_SETTING_CALIB,
-    _MENU_SETTING_SATILITY,
+    _MENU_SETTING_PARAMETER,
     _MENU_SETTING_PASSWORD,
     _MENU_CALIB_OXY,
 }eKindScreenMenu;
@@ -78,7 +78,7 @@ typedef enum
 {
     _SETTING_MAIN_CYCLE=0,
     _SETTING_MAIN_CALIB,
-    _SETTING_MAIN_SATILITY,
+    _SETTING_MAIN_PARAMETER,
     _SETTING_MAIN_PASSWORD,
 }eKindScreenSettingMain;
 
@@ -88,19 +88,32 @@ typedef enum
     _SETTING_CYCLE_FREE_CHOOSE,
     _SETTING_CYCLE_RUN_CHANGE,
     _SETTING_CYCLE_FREE_CHANGE,
+    _SETTING_CYCLE_SEND_SLAVE,
 }eKindScreenSettingCycle;
 
 typedef enum
 {
-    _SETTING_CALIB_0_CHOOSE=0,
-    _SETTING_CALIB_100_CHOOSE,
+    _SETTING_CALIB_100_CALIB_CHOOSE=0,
+    _SETTING_CALIB_SALINITY_CHOOSE,
+    _SETTING_CALIB_TEMPERATURE_CHOOSE,
+    _SETTING_CALIB_RESET_CALIB_CHOOSE,
+    _SETTING_CALIB_100_CALIB_ENTER,
+    _SETTING_CALIB_SALINITY_CHANGE,
+    _SETTING_CALIB_TEMPERATURE_CHANGE,
+    _SETTING_CALIB_RESET_CALIB_ENTER,
 }eKindScreenSettingCalib;
 
 typedef enum
 {
-    _SETTING_SATILITY_CHOOSE,
-    _SETTING_SATILITY_CHANGE,
-}eKIndScreenSettingSatility;
+    _SETTING_OXY_UPPER_CHOOSE,
+    _SETTING_OXY_LOWER_CHOOSE,
+    _SETTING_TIMEDELAY_CHOOSE,
+    _SETTING_TIMEWARNING_CHOOSE,
+    _SETTING_OXY_UPPER_CHANGE,
+    _SETTING_OXY_LOWER_CHANGE,
+    _SETTING_TIMEDELAY_CHANGE,
+    _SETTING_TIMEWARNING_CHANGE,
+}eKIndScreenSettingTimeDelay;
 
 typedef enum
 {
@@ -110,31 +123,35 @@ typedef enum
 }eKindStateCalib;
 
 
-
 typedef struct
 {
-    uint8_t ConnectServer;
-    uint8_t Screen;
-    uint8_t Login;
-    uint8_t SettingMain;
-    uint8_t SettingCycle;
-    uint8_t SettingCalib;
-    uint8_t SettingSatility;
-    uint8_t SettingPassword;
-    uint8_t CalibOxy;
+    uint8_t ConnectServer;              //Trang thai ket noi server
+    uint8_t Screen;                     //Menu man hinh chinh
+    uint8_t Login;                      //Menu Login
+    uint8_t SettingMain;                //Menu Man hinh chinh setting
+    uint8_t SettingCycle;               //Menu Setting Cycle
+    uint8_t SettingCalib;               //Menu Setting Calib
+    uint8_t SettingParameter;           //Menu Setting Parameter
+    uint8_t SettingPassword;            //Menu Setting Password
+    uint8_t CalibSensor;                //Menu Screen Calib sensor
 }Struct_Menu_State;
 
 typedef struct
 {
-    uint16_t TimeRunCtrlOxy;
-    uint16_t TimeFreeCtrlOxy;
-    uint16_t Satility;
-    uint8_t  Pass1;
-    uint8_t  Pass2;
-    uint8_t  Pass3;
-    uint8_t  Pass4;
-    uint8_t  Pass5;
-    uint8_t  Pass6;
+    uint16_t TimeRunCtrlOxy;            //Stamp Time Run Slave
+    uint16_t TimeFreeCtrlOxy;           //Stamp Time Free Slave
+    uint16_t Salinity;                  //Stamp Salinity
+    uint16_t Temperature;               //Stamp Temperature
+    uint16_t TimeDelay;                 //Stamp Time Delay
+    uint16_t TimeWarning;               //Stamp Time Warning
+    uint16_t OxyUpper;                  //Stamp Oxy Upper
+    uint16_t OxyLower;                  //Stamp Oxy Lower
+    uint8_t  Pass1;                     //Stamp Pass1
+    uint8_t  Pass2;                     //Stamp Pass2
+    uint8_t  Pass3;                     //Stamp Pass3
+    uint8_t  Pass4;                     //Stamp Pass4
+    uint8_t  Pass5;                     //Stamp Pass5
+    uint8_t  Pass6;                     //Stamp Pass6
 }Struct_Menu_Stamp;
 
 extern sEvent_struct        sEventAppMenu[];
@@ -173,7 +190,7 @@ void        BT_Menu_Login(uint8_t KindButton);
 void        BT_Menu_Setting_Main(uint8_t KindButton);
 void        BT_Menu_Setting_Cycle(uint8_t KindButton);
 void        BT_Menu_Setting_Calib(uint8_t KindButton);
-void        BT_Menu_Setting_Satility(uint8_t KindButton);
+void        BT_Menu_Setting_Parameter(uint8_t KindButton);
 void        BT_Menu_Setting_Password(uint8_t KindButton);
 void        BT_Menu_Calib_Oxy(uint8_t KindButton);
 

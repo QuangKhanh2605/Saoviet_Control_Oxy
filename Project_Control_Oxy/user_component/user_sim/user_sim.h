@@ -18,9 +18,9 @@
 
 
 
-//#define SIM_L506_LIB
+#define SIM_L506_LIB
 //#define SIM_EC200U_LIB  
-#define SIM_L508_LIB  
+//#define SIM_L508_LIB  
 
 
 /*======= Define Type SIM: SIM_L506_LIB =============*/  

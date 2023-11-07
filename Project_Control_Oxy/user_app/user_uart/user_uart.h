@@ -40,7 +40,7 @@ typedef enum
 extern uint8_t UartDebugBuff[1200];
 extern sData sUartDebug;
 
-extern uint8_t Uart485Buff[50];
+extern uint8_t Uart485Buff[100];
 extern sData sUart485;
 
 extern volatile uint8_t IsUart1IDLEInterupt;

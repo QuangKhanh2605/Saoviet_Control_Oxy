@@ -111,26 +111,26 @@
         .SizeRecord_u16     = CAT_SIZE_DATA_LOG,
     };
     
-    //Struct GPS Data
-    sRecordMemoryManager     sRecGPS =    
-    {
-        .AddAStart_u32      = CAT_ADDR_GPS_START,   
-        .AddAStop_u32       = CAT_ADDR_GPS_STOP,
-        
-        .Offset_u32         = 0,
-        
-        .AddBStart_u32      = CAT_ADDR_GPS_START,   
-        .AddBStop_u32       = CAT_ADDR_GPS_STOP,
-            
-        .AddIndexSend_u32   = ADDR_INDEX_GPS_SEND,   
-        .AddIndexSave_u32   = ADDR_INDEX_GPS_SAVE,
-        
-        .SizeRecord_u16     = CAT_SIZE_DATA_GPS,
-        .MaxRecord_u16      = CAT_MAX_MESS_GPS_SAVE,     
-        
-        .IndexSend_u16      = 0,
-        .IndexSave_u16      = 0,
-    };
+//    //Struct GPS Data
+//    sRecordMemoryManager     sRecGPS =    
+//    {
+//        .AddAStart_u32      = CAT_ADDR_GPS_START,   
+//        .AddAStop_u32       = CAT_ADDR_GPS_STOP,
+//        
+//        .Offset_u32         = 0,
+//        
+//        .AddBStart_u32      = CAT_ADDR_GPS_START,   
+//        .AddBStop_u32       = CAT_ADDR_GPS_STOP,
+//            
+//        .AddIndexSend_u32   = ADDR_INDEX_GPS_SEND,   
+//        .AddIndexSave_u32   = ADDR_INDEX_GPS_SAVE,
+//        
+//        .SizeRecord_u16     = CAT_SIZE_DATA_GPS,
+//        .MaxRecord_u16      = CAT_MAX_MESS_GPS_SAVE,     
+//        
+//        .IndexSend_u16      = 0,
+//        .IndexSave_u16      = 0,
+//    };
 #endif
 
 #ifdef EX_MEM_FLASH
@@ -205,25 +205,25 @@
     };
 
     //Struct GPS Data
-    sRecordMemoryManager     sRecGPS =    
-    {
-        .AddAStart_u32      = FLASH_ADDR_GPS_A_START,   
-        .AddAStop_u32       = FLASH_ADDR_GPS_A_STOP,
-        
-        .Offset_u32         = FLASH_ADDR_GPS_OFFSET,
-        
-        .AddBStart_u32      = FLASH_ADDR_GPS_B_START,   
-        .AddBStop_u32       = FLASH_ADDR_GPS_B_STOP,
-            
-        .AddIndexSend_u32   = ADDR_INDEX_GPS_SEND,   
-        .AddIndexSave_u32   = ADDR_INDEX_GPS_SAVE,
-        
-        .SizeRecord_u16     = FLASH_SIZE_DATA_GPS,
-        .MaxRecord_u16      = FLASH_MAX_RECORD_GPS,     
-        
-        .IndexSend_u16      = 0,
-        .IndexSave_u16      = 0,
-    };
+//    sRecordMemoryManager     sRecGPS =    
+//    {
+//        .AddAStart_u32      = FLASH_ADDR_GPS_A_START,   
+//        .AddAStop_u32       = FLASH_ADDR_GPS_A_STOP,
+//        
+//        .Offset_u32         = FLASH_ADDR_GPS_OFFSET,
+//        
+//        .AddBStart_u32      = FLASH_ADDR_GPS_B_START,   
+//        .AddBStop_u32       = FLASH_ADDR_GPS_B_STOP,
+//            
+//        .AddIndexSend_u32   = ADDR_INDEX_GPS_SEND,   
+//        .AddIndexSave_u32   = ADDR_INDEX_GPS_SAVE,
+//        
+//        .SizeRecord_u16     = FLASH_SIZE_DATA_GPS,
+//        .MaxRecord_u16      = FLASH_MAX_RECORD_GPS,     
+//        
+//        .IndexSend_u16      = 0,
+//        .IndexSave_u16      = 0,
+//    };
     
 #endif 
     
@@ -420,18 +420,18 @@ static uint8_t _Cb_mem_Init_Pos_Rec(uint8_t event)
             }
             break;
         case _MEM_DATA_GPS_A:
-            if (eFlash_Check_Pos_PartA(&sRecGPS) == true)
-            {
-                UTIL_Printf_Str( DBLEVEL_M, "u_app_mem: check addr gps a ok!\r\n" );
-                sExFlashInit.StepInit_u8++;
-            }
+//            if (eFlash_Check_Pos_PartA(&sRecGPS) == true)
+//            {
+//                UTIL_Printf_Str( DBLEVEL_M, "u_app_mem: check addr gps a ok!\r\n" );
+//                sExFlashInit.StepInit_u8++;
+//            }
             break;
         case _MEM_DATA_GPS_B:
-            if (eFlash_Check_Pos_PartB(&sRecGPS) == true)
-            {
-                UTIL_Printf_Str( DBLEVEL_M, "u_app_mem: check addr gps b ok!\r\n" );
-                sExFlashInit.StepInit_u8++;
-            }
+//            if (eFlash_Check_Pos_PartB(&sRecGPS) == true)
+//            {
+//                UTIL_Printf_Str( DBLEVEL_M, "u_app_mem: check addr gps b ok!\r\n" );
+//                sExFlashInit.StepInit_u8++;
+//            }
             break;
         default:
             sExFlashInit.StepInit_u8 = 0;
@@ -511,18 +511,18 @@ static uint8_t _Cb_mem_Check_New_Event (uint8_t event)
 
 static uint8_t _Cb_mem_Check_New_Gps (uint8_t event)
 {
-    if ( (AppMem_Status() == true) && (sRecGPS.IndexSend_u16 != sRecGPS.IndexSave_u16))
-    { 
-        if (sAppMem.PendingNewMess_u8 == false)
-        {
-            UTIL_Printf_Str( DBLEVEL_M, "u_app_mem: pending new mess GPS\r\n" );
-            sAppMem.CountPendingNewRec = 0;
-            sAppMem.PendingNewMess_u8 = true;
-            
-            AppSim_Unmark_Mess(DATA_GPS); //Xoa ban tin da danh dau. Doc lai
-            AppMem_Read_Data(_MEM_DATA_GPS_B, _MEM_READ_NEW_MESS, 0, sRecGPS.SizeRecord_u16);
-        } 
-    }
+//    if ( (AppMem_Status() == true) && (sRecGPS.IndexSend_u16 != sRecGPS.IndexSave_u16))
+//    { 
+//        if (sAppMem.PendingNewMess_u8 == false)
+//        {
+//            UTIL_Printf_Str( DBLEVEL_M, "u_app_mem: pending new mess GPS\r\n" );
+//            sAppMem.CountPendingNewRec = 0;
+//            sAppMem.PendingNewMess_u8 = true;
+//            
+//            AppSim_Unmark_Mess(DATA_GPS); //Xoa ban tin da danh dau. Doc lai
+//            AppMem_Read_Data(_MEM_DATA_GPS_B, _MEM_READ_NEW_MESS, 0, sRecGPS.SizeRecord_u16);
+//        } 
+//    }
     
     fevent_enable( sEventAppMem, event);
     
@@ -556,8 +556,8 @@ static uint8_t _Cb_mem_Check_Request_At (uint8_t event)
                     AddrRead    = sRecLog.AddAStart_u32 + sAppMem.sReqATcmd.IndexStart_u16 * sRecLog.SizeRecord_u16;      
                     break; 
                 case _MEM_DATA_GPS_A:
-                    LengthRead  = sRecGPS.SizeRecord_u16;
-                    AddrRead    = sRecGPS.AddAStart_u32 + sAppMem.sReqATcmd.IndexStart_u16 * sRecGPS.SizeRecord_u16;      
+//                    LengthRead  = sRecGPS.SizeRecord_u16;
+//                    AddrRead    = sRecGPS.AddAStart_u32 + sAppMem.sReqATcmd.IndexStart_u16 * sRecGPS.SizeRecord_u16;      
                     break; 
                 default:
                     break;
@@ -738,18 +738,18 @@ void AppMem_Cb_Write_OK (uint8_t TypeData)
             AppMem_Inc_Index_Save(&sRecLog);
             break;
         case _MEM_DATA_GPS_A:
-            UTIL_Printf_Str( DBLEVEL_M, "u_app_mem: increase addr gps a\r\n");
-            if (AppMem_Inc_Index_Save(&sRecGPS) == false)
-                AppMem_Write_Data(_MEM_DATA_GPS_B, (uint8_t *) "Full Data Save!\r\n", 17, sRecGPS.SizeRecord_u16);
-            
-            fevent_enable( sEventAppMem, _EVENT_MEM_CHECK_NEW_GPS);
+//            UTIL_Printf_Str( DBLEVEL_M, "u_app_mem: increase addr gps a\r\n");
+//            if (AppMem_Inc_Index_Save(&sRecGPS) == false)
+//                AppMem_Write_Data(_MEM_DATA_GPS_B, (uint8_t *) "Full Data Save!\r\n", 17, sRecGPS.SizeRecord_u16);
+//            
+//            fevent_enable( sEventAppMem, _EVENT_MEM_CHECK_NEW_GPS);
             break;
         case _MEM_DATA_GPS_B:
-            UTIL_Printf_Str( DBLEVEL_M, "u_app_mem: increase addr gps b\r\n");
-            //Increase AddB_u32 Event: If using sim....
-            AppMem_Inc_Index_Send_1(&sRecGPS, 1);
-            //eable Event check new Mess: to period 5s send next
-            fevent_enable( sEventAppMem, _EVENT_MEM_CHECK_NEW_GPS);
+//            UTIL_Printf_Str( DBLEVEL_M, "u_app_mem: increase addr gps b\r\n");
+//            //Increase AddB_u32 Event: If using sim....
+//            AppMem_Inc_Index_Send_1(&sRecGPS, 1);
+//            //eable Event check new Mess: to period 5s send next
+//            fevent_enable( sEventAppMem, _EVENT_MEM_CHECK_NEW_GPS);
             break;
         default:
             break;
@@ -904,8 +904,8 @@ void AppMem_Cb_Wrtie_ERROR (uint8_t TypeData)
                 AppMem_Inc_Index_Save(&sRecLog);
                 break;
             case _MEM_DATA_GPS_A:
-                UTIL_Printf_Str( DBLEVEL_M, "u_app_mem: w fail -> inc gps a\r\n");
-                AppMem_Inc_Index_Save(&sRecGPS);
+//                UTIL_Printf_Str( DBLEVEL_M, "u_app_mem: w fail -> inc gps a\r\n");
+//                AppMem_Inc_Index_Save(&sRecGPS);
                 break;
             default:
                 break;
@@ -930,8 +930,8 @@ void AppMem_Cb_Erase_Chip_OK(void)
     mSave_u16(sRecLog.AddIndexSend_u32, 0);
     mSave_u16(sRecLog.AddIndexSave_u32, 0);
     
-    mSave_u16(sRecGPS.AddIndexSend_u32, 0);
-    mSave_u16(sRecGPS.AddIndexSave_u32, 0);
+//    mSave_u16(sRecGPS.AddIndexSend_u32, 0);
+//    mSave_u16(sRecGPS.AddIndexSave_u32, 0);
     
     //Reset MCU
     Reset_Chip();
@@ -994,13 +994,13 @@ uint32_t AppMem_Cb_Get_Addr (uint8_t TypeData, uint8_t RW)
             AddrGet_u32 = sRecLog.AddA_u32;
             break; 
         case _MEM_DATA_GPS_A:
-            AddrGet_u32 = sRecGPS.AddA_u32;
+//            AddrGet_u32 = sRecGPS.AddA_u32;
             break; 
         case _MEM_DATA_GPS_B:
-            if (RW == __MEM_READ)
-                AddrGet_u32 = sRecGPS.AddB_u32 - sRecGPS.Offset_u32;
-            else
-                AddrGet_u32 = sRecGPS.AddB_u32;
+//            if (RW == __MEM_READ)
+//                AddrGet_u32 = sRecGPS.AddB_u32 - sRecGPS.Offset_u32;
+//            else
+//                AddrGet_u32 = sRecGPS.AddB_u32;
             break; 
         case _MEM_DATA_OTHER:
             AddrGet_u32 = 0xFFFFFFFF;
@@ -1056,9 +1056,9 @@ uint8_t AppMem_Get_Req_AT (uint8_t TypeData, uint16_t NumRec)
                 MaxIndex = sRecLog.MaxRecord_u16;
                 break;
             case _RQ_RECORD_GPS:
-                IndexSaveTemp = sRecGPS.IndexSave_u16;
-                TypeTemp = _MEM_DATA_GPS_A;
-                MaxIndex = sRecGPS.MaxRecord_u16;
+//                IndexSaveTemp = sRecGPS.IndexSave_u16;
+//                TypeTemp = _MEM_DATA_GPS_A;
+//                MaxIndex = sRecGPS.MaxRecord_u16;
                 break;
             default:
                 break;
@@ -1116,8 +1116,8 @@ void AppMem_Record_Invalid_Handle (uint8_t TypeData)
                 AppMem_Write_Data(_MEM_DATA_TSVH_B, (uint8_t *) "Invalid Data\r\n", 14, sRecEvent.SizeRecord_u16);
             break;
         case _MEM_DATA_GPS_B:
-            if (AppMem_Inc_Index_Send_2(&sRecGPS, 1) == false)
-                AppMem_Write_Data(_MEM_DATA_TSVH_B, (uint8_t *) "Invalid Data\r\n", 14, sRecGPS.SizeRecord_u16);
+//            if (AppMem_Inc_Index_Send_2(&sRecGPS, 1) == false)
+//                AppMem_Write_Data(_MEM_DATA_TSVH_B, (uint8_t *) "Invalid Data\r\n", 14, sRecGPS.SizeRecord_u16);
             break;
         default:
             break;
@@ -1317,9 +1317,9 @@ void AppMem_Check_Record_Format (uint8_t TypeData, uint8_t *pData, uint16_t Leng
                 IsValidData = false;
             break;
         case _MEM_DATA_GPS_B:
-            MessType = DATA_GPS;
-            if (Length >= sRecGPS.SizeRecord_u16)
-                IsValidData = false;
+//            MessType = DATA_GPS;
+//            if (Length >= sRecGPS.SizeRecord_u16)
+//                IsValidData = false;
             break;
         default:
             break;
@@ -1392,8 +1392,8 @@ void AppMem_Init_Index_Record (void)
     sRecLog.IndexSave_u16 = mInit_u16 (sRecLog.AddIndexSave_u32, sRecLog.MaxRecord_u16);
     sRecLog.IndexSend_u16 = mInit_u16 (sRecLog.AddIndexSend_u32, sRecLog.MaxRecord_u16);
     
-    sRecGPS.IndexSave_u16 = mInit_u16 (sRecGPS.AddIndexSave_u32, sRecGPS.MaxRecord_u16);
-    sRecGPS.IndexSend_u16 = mInit_u16 (sRecGPS.AddIndexSend_u32, sRecGPS.MaxRecord_u16);
+//    sRecGPS.IndexSave_u16 = mInit_u16 (sRecGPS.AddIndexSave_u32, sRecGPS.MaxRecord_u16);
+//    sRecGPS.IndexSend_u16 = mInit_u16 (sRecGPS.AddIndexSend_u32, sRecGPS.MaxRecord_u16);
     
     //Tinh lai Adr theo Index
     sRecTSVH.AddA_u32 = sRecTSVH.AddAStart_u32 + sRecTSVH.IndexSave_u16 * sRecTSVH.SizeRecord_u16;
@@ -1405,8 +1405,8 @@ void AppMem_Init_Index_Record (void)
     sRecLog.AddA_u32 = sRecLog.AddAStart_u32 + sRecLog.IndexSave_u16 * sRecLog.SizeRecord_u16;
     sRecLog.AddB_u32 = sRecLog.AddBStart_u32 + sRecLog.IndexSend_u16 * sRecLog.SizeRecord_u16;
     
-    sRecGPS.AddA_u32 = sRecGPS.AddAStart_u32 + sRecGPS.IndexSave_u16 * sRecGPS.SizeRecord_u16;
-    sRecGPS.AddB_u32 = sRecGPS.AddBStart_u32 + sRecGPS.IndexSend_u16 * sRecGPS.SizeRecord_u16;
+//    sRecGPS.AddA_u32 = sRecGPS.AddAStart_u32 + sRecGPS.IndexSave_u16 * sRecGPS.SizeRecord_u16;
+//    sRecGPS.AddB_u32 = sRecGPS.AddBStart_u32 + sRecGPS.IndexSend_u16 * sRecGPS.SizeRecord_u16;
 }
 
     

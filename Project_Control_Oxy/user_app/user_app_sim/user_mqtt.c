@@ -92,6 +92,7 @@ const MARK_TYPE_DCU sMark_DCU_Type[] =
     { _WM_GSM_LORA,		           	    {(uint8_t*)"DCU/WMSV/WMLG/",14}},
     { _TEM_HUMI_GSM,		           	{(uint8_t*)"DCU/THSV/THGS/",14}},
     { _WM_GSM_CONV,		           	    {(uint8_t*)"DCU/WMSV/WMPI/",14}},
+    { _CONTROL_OXY,                     {(uint8_t*)"DCU/WMSV/WMCO/",14}},
 };
 
 struct_MQTT				sMQTT;
@@ -327,8 +328,8 @@ uint8_t _mDATA_INTAN_TSVH(int Kind_Send)
     sMQTT.sPayload.Length_u16 = AppWm_Packet_TSVH (sMQTT.sPayload.Data_a8);
 #endif
    
-#if defined(USING_APP_TEMH) 
-    sMQTT.sPayload.Length_u16 = AppTemH_Packet_TSVH (sMQTT.sPayload.Data_a8);
+#if defined(USING_APP_CTRL_OXY) 
+    sMQTT.sPayload.Length_u16 = AppCtrlOxy_Packet_TSVH (sMQTT.sPayload.Data_a8);
 #endif
     
 #if defined(USING_APP_LORA)  
@@ -812,6 +813,7 @@ __weak void _rREQUEST_SETTING(sData *str_Receiv, int16_t Pos)
     uint8_t   ObisConfig = 0;
     uint8_t   TempU8 = 0, i = 0;
     uint16_t  TempU16 = 0;
+    uint32_t  TempU32 = 0;
     //chay tu tren xuong duoi de check tat ca cac obis cau hinh
     while ((PosFix + 4) <= str_Receiv->Length_u16)   //vi byte cuoi la crc
     {
@@ -871,6 +873,63 @@ __weak void _rREQUEST_SETTING(sData *str_Receiv, int16_t Pos)
                 } else
                     DCU_Respond(_AT_REQUEST_SERVER, (uint8_t *)"FAIL", 4, 0);
                 break;
+                
+            case OBIS_ENVI_SET_OXY_UPPER:
+                TempU16 = 0;
+                TempLeng = *(str_Receiv->Data_a8 + PosFix++);
+                for (i = 0; i < TempLeng; i++)
+                    TempU16 = (TempU16 << 8 ) | *(str_Receiv->Data_a8 + PosFix++);
+                
+                TempU32 = Calculator_Value_Scale(TempU16, *(str_Receiv->Data_a8 + PosFix++), 0xFE);
+                if(TempU32 > sParamCtrlOxy.Oxy_Lower && TempU32 <= OXY_UPPER_MAX)
+                {
+                    Save_OxyUpperLower(TempU32, sParamCtrlOxy.Oxy_Lower);
+                    DCU_Respond (_AT_REQUEST_SERVER, (uint8_t *)"OK", 2, 1);
+                }
+                else
+                    DCU_Respond(_AT_REQUEST_SERVER, (uint8_t *)"FAIL", 4, 0);
+                break;
+                
+            case OBIS_ENVI_SET_OXY_LOWER:
+                TempU16 = 0;
+                TempLeng = *(str_Receiv->Data_a8 + PosFix++);
+                for (i = 0; i < TempLeng; i++)
+                    TempU16 = (TempU16 << 8 ) | *(str_Receiv->Data_a8 + PosFix++);
+                
+                TempU32 = Calculator_Value_Scale(TempU16, *(str_Receiv->Data_a8 + PosFix++), 0xFE);
+                if(TempU32 < sParamCtrlOxy.Oxy_Upper && TempU32 >= OXY_LOWER_MIN)
+                {
+                    Save_OxyUpperLower(sParamCtrlOxy.Oxy_Upper, TempU32);
+                    DCU_Respond (_AT_REQUEST_SERVER, (uint8_t *)"OK", 2, 1);
+                }
+                else
+                    DCU_Respond(_AT_REQUEST_SERVER, (uint8_t *)"FAIL", 4, 0);
+                break;
+                
+//            case OBIS_ENVI_SET_TIME_DELAY:
+//                TempU16 = 0;
+//                TempLeng = *(str_Receiv->Data_a8 + PosFix++);
+//                for (i = 0; i < TempLeng; i++)
+//                    TempU16 = (TempU16 << 8 ) | *(str_Receiv->Data_a8 + PosFix++);
+//                
+//                TempU32 = Calculator_Value_Scale(TempU16, 0x00, 0x00);
+//                if(TempU32 <= TIMEDELAY_MAX && TempU32 >= TIMEDELAY_MIN)
+//                {
+//                    Save_TimeCtrl(TempU32, sParamCtrlOxy.TimeChange);
+//                    DCU_Respond (_AT_REQUEST_SERVER, (uint8_t *)"OK", 2, 1);
+//                }
+//                else
+//                    DCU_Respond(_AT_REQUEST_SERVER, (uint8_t *)"FAIL", 4, 0);
+//                break; 
+                
+            case OBIS_ENVI_ID_SERVER:
+              TempU32 = 0;
+              TempLeng = *(str_Receiv->Data_a8 + PosFix++);
+              for (i = 0; i < TempLeng; i++)
+                  TempU32 = (TempU32 << 8 ) | *(str_Receiv->Data_a8 + PosFix++);
+              DCU_Respond_ID_Server(TempU32);
+              break;
+                
             default:
                 return;
         }

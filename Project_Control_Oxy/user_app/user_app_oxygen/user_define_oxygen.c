@@ -32,6 +32,7 @@ void Oxygen_Init(void)
     Init_AppLcd();
     Init_AppCtrlOxy();
     Init_AppMenuDisplay();
+    Init_AppRs485();
 }
 
 

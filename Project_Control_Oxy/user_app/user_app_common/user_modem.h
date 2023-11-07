@@ -38,6 +38,7 @@ typedef enum
     _WM_GSM_LORA,
     _TEM_HUMI_GSM,
     _WM_GSM_CONV,
+    _CONTROL_OXY,
     
 } Type_Mark_DCU;
 

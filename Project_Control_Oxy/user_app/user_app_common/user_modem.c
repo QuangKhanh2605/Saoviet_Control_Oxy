@@ -11,7 +11,6 @@
 #include "onchipflash.h"
 #include "user_adc.h"
 #include "dma.h"
-
 /*===================Struct, Var=========================*/
 ST_TIME_FORMAT          sRTCSet = {0};
 
@@ -53,6 +52,7 @@ uint8_t Reset_Chip (void)
 {
 //    if (sModem.IsOverFivePulse_u8 == TRUE)
 //    {
+        Save_StateOxy();
     	Modem_Alarm_Emergency((uint8_t *) "Modem: Reset Chip\r\n", 19);
 //		//Get Pulse
 //    	LPTIM_Counter_Get_Pulse();
@@ -92,7 +92,8 @@ uint8_t Reset_Chip (void)
 
 
 void Reset_Chip_Immediately (void)
-{
+{   
+    Save_StateOxy();
 	Modem_Alarm_Emergency((uint8_t *) "Modem: Reset Chip Immediately\r\n", 31);
 //	//Get Pulse
 //	LPTIM_Counter_Get_Pulse();

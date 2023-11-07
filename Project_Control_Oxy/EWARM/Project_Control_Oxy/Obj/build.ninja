@@ -23,11 +23,11 @@ rule browsedata
 build dma.pbi : index dma.xcl
 build gpio.pbi : index gpio.xcl
 build i2c.pbi : index i2c.xcl
+build iwdg.pbi : index iwdg.xcl
 build main.pbi : index main.xcl
 build rtc.pbi : index rtc.xcl
 build stm32l1xx_hal_msp.pbi : index stm32l1xx_hal_msp.xcl
 build stm32l1xx_it.pbi : index stm32l1xx_it.xcl
-build tim.pbi : index tim.xcl
 build usart.pbi : index usart.xcl
 build system_stm32l1xx.pbi : index system_stm32l1xx.xcl
 build stm32l1xx_hal.pbi : index stm32l1xx_hal.xcl
@@ -39,6 +39,7 @@ build stm32l1xx_hal_flash_ex.pbi : index stm32l1xx_hal_flash_ex.xcl
 build stm32l1xx_hal_flash_ramfunc.pbi : index stm32l1xx_hal_flash_ramfunc.xcl
 build stm32l1xx_hal_gpio.pbi : index stm32l1xx_hal_gpio.xcl
 build stm32l1xx_hal_i2c.pbi : index stm32l1xx_hal_i2c.xcl
+build stm32l1xx_hal_iwdg.pbi : index stm32l1xx_hal_iwdg.xcl
 build stm32l1xx_hal_pwr.pbi : index stm32l1xx_hal_pwr.xcl
 build stm32l1xx_hal_pwr_ex.pbi : index stm32l1xx_hal_pwr_ex.xcl
 build stm32l1xx_hal_rcc.pbi : index stm32l1xx_hal_rcc.xcl
@@ -74,11 +75,12 @@ build MQTTSubscribeClient.pbi : index MQTTSubscribeClient.xcl
 build MQTTSubscribeServer.pbi : index MQTTSubscribeServer.xcl
 build MQTTUnsubscribeClient.pbi : index MQTTUnsubscribeClient.xcl
 build MQTTUnsubscribeServer.pbi : index MQTTUnsubscribeServer.xcl
+build user_convert_variable.pbi : index user_convert_variable.xcl
 build GLCD192x64.pbi : index GLCD192x64.xcl
 build cat24mxx.pbi : index cat24mxx.xcl
 build user_external_eeprom.pbi : index user_external_eeprom.xcl
 build user_internal_mem.pbi : index user_internal_mem.xcl
-build user_l508.pbi : index user_l508.xcl
+build user_l506.pbi : index user_l506.xcl
 build user_sim.pbi : index user_sim.xcl
 build user_sim_common.pbi : index user_sim_common.xcl
 build event_driven.pbi : index event_driven.xcl
@@ -92,15 +94,15 @@ build user_obis_sv.pbi : index user_obis_sv.xcl
 build user_string.pbi : index user_string.xcl
 build user_time.pbi : index user_time.xcl
 build user_util.pbi : index user_util.xcl
-build Project_Control_Oxy_part0.pbi : link dma.pbi gpio.pbi i2c.pbi main.pbi rtc.pbi stm32l1xx_hal_msp.pbi stm32l1xx_it.pbi tim.pbi
-build Project_Control_Oxy_part1.pbi : link usart.pbi system_stm32l1xx.pbi stm32l1xx_hal.pbi stm32l1xx_hal_cortex.pbi stm32l1xx_hal_dma.pbi stm32l1xx_hal_exti.pbi stm32l1xx_hal_flash.pbi stm32l1xx_hal_flash_ex.pbi
-build Project_Control_Oxy_part2.pbi : link stm32l1xx_hal_flash_ramfunc.pbi stm32l1xx_hal_gpio.pbi stm32l1xx_hal_i2c.pbi stm32l1xx_hal_pwr.pbi stm32l1xx_hal_pwr_ex.pbi stm32l1xx_hal_rcc.pbi stm32l1xx_hal_rcc_ex.pbi stm32l1xx_hal_rtc.pbi
-build Project_Control_Oxy_part3.pbi : link stm32l1xx_hal_rtc_ex.pbi stm32l1xx_hal_tim.pbi stm32l1xx_hal_tim_ex.pbi stm32l1xx_hal_uart.pbi user_app_comm.pbi user_modem.pbi user_modem_init.pbi user_app_mem.pbi
-build Project_Control_Oxy_part4.pbi : link user_app_button.pbi user_app_ctrl_oxy.pbi user_app_lcd.pbi user_app_menu_display.pbi user_app_relay.pbi user_app_rs485.pbi user_define_oxygen.pbi user_app_sim.pbi
-build Project_Control_Oxy_part5.pbi : link user_mqtt.pbi user_at_serial.pbi user_log.pbi user_uart.pbi MQTTConnectClient.pbi MQTTConnectServer.pbi MQTTDeserializePublish.pbi MQTTFormat.pbi
-build Project_Control_Oxy_part6.pbi : link MQTTPacket.pbi MQTTSerializePublish.pbi MQTTSubscribeClient.pbi MQTTSubscribeServer.pbi MQTTUnsubscribeClient.pbi MQTTUnsubscribeServer.pbi GLCD192x64.pbi cat24mxx.pbi
-build Project_Control_Oxy_part7.pbi : link user_external_eeprom.pbi user_internal_mem.pbi user_l508.pbi user_sim.pbi user_sim_common.pbi event_driven.pbi queue_p.pbi user_rtc.pbi
-build Project_Control_Oxy_part8.pbi : link user_timer.pbi onchipflash.pbi user_lpm.pbi user_modbus_rtu.pbi user_obis_sv.pbi user_string.pbi user_time.pbi user_util.pbi
+build Project_Control_Oxy_part0.pbi : link dma.pbi gpio.pbi i2c.pbi iwdg.pbi main.pbi rtc.pbi stm32l1xx_hal_msp.pbi stm32l1xx_it.pbi usart.pbi
+build Project_Control_Oxy_part1.pbi : link system_stm32l1xx.pbi stm32l1xx_hal.pbi stm32l1xx_hal_cortex.pbi stm32l1xx_hal_dma.pbi stm32l1xx_hal_exti.pbi stm32l1xx_hal_flash.pbi stm32l1xx_hal_flash_ex.pbi stm32l1xx_hal_flash_ramfunc.pbi stm32l1xx_hal_gpio.pbi
+build Project_Control_Oxy_part2.pbi : link stm32l1xx_hal_i2c.pbi stm32l1xx_hal_iwdg.pbi stm32l1xx_hal_pwr.pbi stm32l1xx_hal_pwr_ex.pbi stm32l1xx_hal_rcc.pbi stm32l1xx_hal_rcc_ex.pbi stm32l1xx_hal_rtc.pbi stm32l1xx_hal_rtc_ex.pbi stm32l1xx_hal_tim.pbi
+build Project_Control_Oxy_part3.pbi : link stm32l1xx_hal_tim_ex.pbi stm32l1xx_hal_uart.pbi user_app_comm.pbi user_modem.pbi user_modem_init.pbi user_app_mem.pbi user_app_button.pbi user_app_ctrl_oxy.pbi user_app_lcd.pbi
+build Project_Control_Oxy_part4.pbi : link user_app_menu_display.pbi user_app_relay.pbi user_app_rs485.pbi user_define_oxygen.pbi user_app_sim.pbi user_mqtt.pbi user_at_serial.pbi user_log.pbi user_uart.pbi
+build Project_Control_Oxy_part5.pbi : link MQTTConnectClient.pbi MQTTConnectServer.pbi MQTTDeserializePublish.pbi MQTTFormat.pbi MQTTPacket.pbi MQTTSerializePublish.pbi MQTTSubscribeClient.pbi MQTTSubscribeServer.pbi MQTTUnsubscribeClient.pbi
+build Project_Control_Oxy_part6.pbi : link MQTTUnsubscribeServer.pbi user_convert_variable.pbi GLCD192x64.pbi cat24mxx.pbi user_external_eeprom.pbi user_internal_mem.pbi user_l506.pbi user_sim.pbi user_sim_common.pbi
+build Project_Control_Oxy_part7.pbi : link event_driven.pbi queue_p.pbi user_rtc.pbi user_timer.pbi onchipflash.pbi user_lpm.pbi user_modbus_rtu.pbi user_obis_sv.pbi user_string.pbi
+build Project_Control_Oxy_part8.pbi : link user_time.pbi user_util.pbi
 build Project_Control_Oxy.pbd : link Project_Control_Oxy_part0.pbi Project_Control_Oxy_part1.pbi Project_Control_Oxy_part2.pbi Project_Control_Oxy_part3.pbi Project_Control_Oxy_part4.pbi Project_Control_Oxy_part5.pbi Project_Control_Oxy_part6.pbi Project_Control_Oxy_part7.pbi Project_Control_Oxy_part8.pbi
 build Project_Control_Oxy.pbw : browsedata Project_Control_Oxy.pbd
 

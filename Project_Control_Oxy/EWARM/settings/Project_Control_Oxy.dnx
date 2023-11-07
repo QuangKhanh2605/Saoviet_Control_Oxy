@@ -9,7 +9,7 @@
         <stlinkResetStrategy>2</stlinkResetStrategy>
     </StLinkDriver>
     <DebugChecksum>
-        <Checksum>1939621621</Checksum>
+        <Checksum>4197245428</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -63,7 +63,30 @@
         <Fmt4>ST_TIME_FORMAT-month	3	0</Fmt4>
         <Fmt5>ST_TIME_FORMAT-sec	3	0</Fmt5>
         <Fmt6>ST_TIME_FORMAT-year	3	0</Fmt6>
+        <Fmt7>Struct_Menu_State-SettingCalib	3	0</Fmt7>
+        <Fmt8>Struct_Param_Measure-Oxy_Mg_L	3	0</Fmt8>
+        <Fmt9>Struct_Param_Measure-Oxy_Percent	3	0</Fmt9>
+        <Fmt10>Struct_Param_Measure-Salinity	3	0</Fmt10>
+        <Fmt11>Struct_Param_Measure-Temp	3	0</Fmt11>
+        <Fmt12>Struct_StatusRelay-RL1	3	0</Fmt12>
+        <Fmt13>Struct_StatusRelay-RL10	3	0</Fmt13>
+        <Fmt14>Struct_StatusRelay-RL2	3	0</Fmt14>
+        <Fmt15>Struct_StatusRelay-RL3	3	0</Fmt15>
+        <Fmt16>Struct_StatusRelay-RL4	3	0</Fmt16>
+        <Fmt17>Struct_StatusRelay-RL5	3	0</Fmt17>
+        <Fmt18>Struct_StatusRelay-RL6	3	0</Fmt18>
+        <Fmt19>Struct_StatusRelay-RL7	3	0</Fmt19>
+        <Fmt20>Struct_StatusRelay-RL8	3	0</Fmt20>
+        <Fmt21>Struct_StatusRelay-RL9	3	0</Fmt21>
     </struct_types>
+    <array_types>
+        <Fmt0>uint8_t[5]	3	0</Fmt0>
+    </array_types>
+    <watch_formats>
+        <Fmt0>{W}42:IndexUartError	3	0</Fmt0>
+        <Fmt1>{W}42:LengthF	3	0</Fmt1>
+        <Fmt2>{W}42:LengthR	3	0</Fmt2>
+    </watch_formats>
     <Trace2>
         <Enabled>0</Enabled>
         <ShowSource>0</ShowSource>

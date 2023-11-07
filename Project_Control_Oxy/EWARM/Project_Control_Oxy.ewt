@@ -1208,6 +1208,9 @@
                     <name>$PROJ_DIR$\..\Core\Src\i2c.c</name>
                 </file>
                 <file>
+                    <name>$PROJ_DIR$\..\Core\Src\iwdg.c</name>
+                </file>
+                <file>
                     <name>$PROJ_DIR$\..\Core\Src\main.c</name>
                 </file>
                 <file>
@@ -1218,9 +1221,6 @@
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\Core\Src\stm32l1xx_it.c</name>
-                </file>
-                <file>
-                    <name>$PROJ_DIR$\..\Core\Src\tim.c</name>
                 </file>
                 <file>
                     <name>$PROJ_DIR$\..\Core\Src\usart.c</name>
@@ -1264,6 +1264,9 @@
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_hal_i2c.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_hal_iwdg.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_hal_pwr.c</name>
@@ -1471,6 +1474,15 @@
             </file>
         </group>
         <group>
+            <name>user_convert_variable</name>
+            <file>
+                <name>$PROJ_DIR$\..\user_component\user_convert_variable\user_convert_variable.c</name>
+            </file>
+            <file>
+                <name>$PROJ_DIR$\..\user_component\user_convert_variable\user_convert_variable.h</name>
+            </file>
+        </group>
+        <group>
             <name>user_lcd</name>
             <group>
                 <name>lcd_lcm12864j</name>
@@ -1518,12 +1530,12 @@
         <group>
             <name>user_sim</name>
             <group>
-                <name>user_l508</name>
+                <name>user_l506</name>
                 <file>
-                    <name>$PROJ_DIR$\..\user_component\user_sim\user_l508\user_l508.c</name>
+                    <name>$PROJ_DIR$\..\user_component\user_sim\user_l506\user_l506.c</name>
                 </file>
                 <file>
-                    <name>$PROJ_DIR$\..\user_component\user_sim\user_l508\user_l508.h</name>
+                    <name>$PROJ_DIR$\..\user_component\user_sim\user_l506\user_l506.h</name>
                 </file>
             </group>
             <file>

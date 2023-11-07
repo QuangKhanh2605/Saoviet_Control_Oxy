@@ -78,10 +78,15 @@
     #define ON_FLASH_BASE               0x08000000
     #define ADDR_FLASH_END              0x0803FF00 
     /*========Add Firmware: Main + Update=========== */
-    #define	ADDR_MAIN_PROGRAM			0x08002000	        //47 Page cho chuong trinh chinh
-    #define	ADDR_UPDATE_PROGRAM			0x08019800	        //47 page -> End Program = 0x08031000
+//    #define	ADDR_MAIN_PROGRAM			0x08002000	        //47 Page cho chuong trinh chinh
+//    #define	ADDR_UPDATE_PROGRAM			0x08019800	        //47 page -> End Program = 0x08031000
+//
+//    #define ADDR_FLAG_HAVE_NEW_FW       0x08031800
 
-    #define ADDR_FLAG_HAVE_NEW_FW       0x08031800
+    #define	ADDR_MAIN_PROGRAM			0x08002C00	        //47 Page cho chuong trinh chinh
+    #define	ADDR_UPDATE_PROGRAM			0x0801A500	        //47 page -> End Program = 0x08031000
+
+    #define ADDR_FLAG_HAVE_NEW_FW       0x08031F00
 
     /*========Add Record Mess ================ */
     #define	ADDR_MESS_A_START   		0x08032000	         //8 K
@@ -117,7 +122,10 @@
     //Register Inverter 
     #define ADDR_CTRL_OXY_RUN_FREE      0x0803E000
     #define ADDR_PASSWORD_SETTING       0x0803E100
-    #define ADDR_SATILITY_SETTING       0x0803E200
+    #define ADDR_TIME_CONTROL_SETTING   0x0803E200
+    #define ADDR_OXY_THRESH_SETTING     0x0803E300
+    #define ADDR_INFOR_SLAVE_RS485      0x0803E400
+    #define ADDR_INIT_STATE_MACHINE     0X0803E500
 
     //Setting Emeter
     #define ADDR_PF_SETTING             0x0803F200        

@@ -63,6 +63,8 @@ void Error_Handler(void);
 #define BT_ENTER_GPIO_Port GPIOC
 #define SIM_ON_OFF_Pin GPIO_PIN_2
 #define SIM_ON_OFF_GPIO_Port GPIOC
+#define PW_Detect_Pin GPIO_PIN_3
+#define PW_Detect_GPIO_Port GPIOC
 #define SIM_RESET_Pin GPIO_PIN_0
 #define SIM_RESET_GPIO_Port GPIOA
 #define SIM_PWR_KEY_Pin GPIO_PIN_1
@@ -95,6 +97,10 @@ void Error_Handler(void);
 #define MCU_RL8_GPIO_Port GPIOB
 #define MCU_RL9_Pin GPIO_PIN_12
 #define MCU_RL9_GPIO_Port GPIOB
+#define MCU_SW_AUTO_Pin GPIO_PIN_13
+#define MCU_SW_AUTO_GPIO_Port GPIOB
+#define MCU_SW_MAN_Pin GPIO_PIN_14
+#define MCU_SW_MAN_GPIO_Port GPIOB
 #define BT_EXIT_Pin GPIO_PIN_15
 #define BT_EXIT_GPIO_Port GPIOB
 #define MCU_LCD_RS_Pin GPIO_PIN_6

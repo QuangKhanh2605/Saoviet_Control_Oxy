@@ -56,7 +56,6 @@
 
 /* External variables --------------------------------------------------------*/
 extern RTC_HandleTypeDef hrtc;
-extern TIM_HandleTypeDef htim11;
 extern DMA_HandleTypeDef hdma_usart1_rx;
 extern DMA_HandleTypeDef hdma_usart2_rx;
 extern DMA_HandleTypeDef hdma_usart3_rx;
@@ -245,20 +244,6 @@ void DMA1_Channel6_IRQHandler(void)
   /* USER CODE BEGIN DMA1_Channel6_IRQn 1 */
 
   /* USER CODE END DMA1_Channel6_IRQn 1 */
-}
-
-/**
-  * @brief This function handles TIM11 global interrupt.
-  */
-void TIM11_IRQHandler(void)
-{
-  /* USER CODE BEGIN TIM11_IRQn 0 */
-
-  /* USER CODE END TIM11_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim11);
-  /* USER CODE BEGIN TIM11_IRQn 1 */
-
-  /* USER CODE END TIM11_IRQn 1 */
 }
 
 /**

@@ -84,6 +84,29 @@ typedef enum
     _SET_POWER_ON_TEMH,
     _SET_POWER_OFF_TEMH,
     
+    _GET_PASSWORD_OXY,
+    _SET_PASSWORD_OXY,
+    
+    _GET_TIMECHANGE_OXY,
+    _SET_TIMECHANGE_OXY,
+    
+    _GET_TIMEDELAY_OXY,
+    _SET_TIMEDELAY_OXY,
+    
+    _GET_TIMEWARNING_OXY,
+    _SET_TIMEWARNING_OXY,
+    
+    _GET_ID_SLAVE_485,
+    _SET_ID_SLAVE_485,
+    
+    _GET_OXY_UPPER,
+    _SET_OXY_UPPER,
+    
+    _GET_OXY_LOWER,
+    _SET_OXY_LOWER,
+    
+    _GET_OXY_MEASURE,
+    
     _END_AT_CMD,
 }Type_Command_AT_PC;
 
@@ -180,5 +203,27 @@ void        _fQUERY_EX_BAT_THRESH (sData *str_Receiv, uint16_t Pos);
 void        _fSET_POWER_ON_TEMH (sData *str_Receiv, uint16_t Pos);
 void        _fSET_POWER_OFF_TEMH (sData *str_Receiv, uint16_t Pos);
 
+void        fGET_PASSWORD_OXY (sData *str_Receiv, uint16_t Pos);
+void        fSET_PASSWORD_OXY (sData *str_Receiv, uint16_t Pos);
+
+void        fGET_TIMECHANGE_OXY (sData *str_Receiv, uint16_t Pos);
+void        fSET_TIMECHANGE_OXY (sData *str_Receiv, uint16_t Pos);
+
+void        fGET_TIMEDELAY_OXY (sData *str_Receiv, uint16_t Pos);
+void        fSET_TIMEDELAY_OXY (sData *str_Receiv, uint16_t Pos);
+
+void        fGET_TIMEWARNING_OXY (sData *str_Receiv, uint16_t Pos);
+void        fSET_TIMEWARNING_OXY (sData *str_Receiv, uint16_t Pos);
+
+void        fGET_ID_SLAVE_485 (sData *str_Receiv, uint16_t Pos);
+void        fSET_ID_SLAVE_485 (sData *str_Receiv, uint16_t Pos);
+
+void        fGET_OXY_UPPER (sData *str_Receiv, uint16_t Pos);
+void        fSET_OXY_UPPER (sData *str_Receiv, uint16_t Pos);
+
+void        fGET_OXY_LOWER (sData *str_Receiv, uint16_t Pos);
+void        fSET_OXY_LOWER (sData *str_Receiv, uint16_t Pos);
+
+void        fGET_OXY_MEASURE (sData *str_Receiv, uint16_t Pos);
 
 #endif

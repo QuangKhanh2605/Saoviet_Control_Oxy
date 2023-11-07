@@ -17,7 +17,7 @@ uint8_t	    aAPN_USERNAME[BUFF_LENGTH_SETUP] = "xyz";
 uint8_t	    aAPN_PASSWORD[BUFF_LENGTH_SETUP] = "1111";
 
 /*=== Server Infor Buffer*/
-uint8_t     aIP_SERVER_MAIN[MAX_IP_LENGTH]  = "117.6.163.177";  //124.158.5.154 port 1883
+uint8_t     aIP_SERVER_MAIN[MAX_IP_LENGTH]  = "124.158.5.154";  //124.158.5.154 port 1883 //117.6.163.177 port 1883
 uint8_t     aPORT_SERVER_MAIN[MAX_PORT_LENGTH] = "1883";
 uint8_t     aUSER_MQTT_MAIN[MAX_USER_PASS_LENGTH] = "syswmsv";
 uint8_t     aPASS_MQTT_MAIN[MAX_USER_PASS_LENGTH] = "sv@wmsv568";

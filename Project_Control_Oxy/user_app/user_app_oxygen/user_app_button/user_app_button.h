@@ -40,7 +40,7 @@
 #define BUTTON_ON                   GPIO_PIN_RESET
 #define BUTTON_OFF                  GPIO_PIN_SET
 
-#define TIME_HOLD_BUTTON_ENTER      5000
+#define TIME_HOLD_BUTTON_ENTER      3000
 #define TIME_HOLD_BUTTON_EXIT       2000
 #define TIME_HOLD_BUTTON_UP         1000
 #define TIME_HOLD_BUTTON_DOWN       1000

@@ -15,7 +15,6 @@
 #include "gpio.h"
 #include "i2c.h"
 //#include "adc.h"
-#include "user_define_oxygen.h"
 /*==========Static func====================*/
 static uint8_t _Cb_Timer_IRQ(uint8_t event);
 static uint8_t _Cb_Uart_Rx_Debug(uint8_t event);
@@ -64,7 +63,7 @@ char aSaoVietCom[15][71] =
 };
 
 
-sData   sFirmVersion = {(uint8_t *) "SVTH_GPS_GSM_V2_1_0", 19};
+sData   sFirmVersion = {(uint8_t *) "SVTH_SVM_OXY_V1_1_0", 19};
 
 static UTIL_TIMER_Object_t TimerTx;
 
@@ -198,7 +197,7 @@ static uint8_t _Cb_HandLer_IDLE(uint8_t event)
     if ( (sRTC.hour == 14) && (IsAllowResetMcu == true) && (MarkResetDaily == 1) )
     {
         //Reset thiet bi
-        Reset_Chip();
+//        Reset_Chip();
     }  
 #endif
 
@@ -224,6 +223,10 @@ static uint8_t _Cb_Tx_Timer(uint8_t event)
     sTempHumi.IRQMainPowerDetect_u8 = pending;             //avoid sleep
     fevent_active(sEventAppTempH, _EVENT_CHECK_AC_POWER);
 #endif
+    
+#ifdef USING_APP_CTRL_OXY
+    fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_LOG_TSVH);
+#endif 
  
     if (sModem.ModeSimPower_u8 == _POWER_MODE_SAVE)
     {
@@ -267,8 +270,6 @@ static uint8_t _Cb_Save_Box (uint8_t event)
     
    return 1;
 }
-
-
 
 
 /*=========================== Func App Main ========================*/
@@ -404,9 +405,9 @@ void Main_Task (void)
         Temp_Humid_Task();
     #endif
       
-//    #ifdef USING_APP_LORA
-//        TaskStatus_u8 |= AppLora_Process();
-//    #endif
+    #ifdef USING_APP_LORA
+        TaskStatus_u8 |= AppLora_Process();
+    #endif
 //
 //        if ((TaskStatus_u8 == 0) && \
 //            (sModem.ModeSimPower_u8 == _POWER_MODE_SAVE) && \
@@ -438,7 +439,7 @@ void AppComm_Init (void)
     //Init information in Memory
 	Init_Memory_Infor();
     //Loai DCU
-    sModem.TypeModem_u8 = _TEM_HUMI_GSM;   
+    sModem.TypeModem_u8 = _CONTROL_OXY;   
     //Set Con tro mode Power: Save_Mode. OnlineMode
     sModem.ModeSimPower_u8 =  _POWER_MODE_ONLINE; // _POWER_MODE_SAVE; // _POWER_MODE_ONLINE;
     //Func Pointer Lib Timer
