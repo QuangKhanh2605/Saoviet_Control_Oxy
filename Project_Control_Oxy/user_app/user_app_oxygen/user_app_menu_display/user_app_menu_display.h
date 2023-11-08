@@ -122,6 +122,21 @@ typedef enum
     _CALIB_ERROR,
 }eKindStateCalib;
 
+typedef struct
+{
+    uint8_t Obj1;
+    uint8_t Obj2;
+    uint8_t Obj3;
+    uint8_t Obj4;
+    uint8_t Obj5;
+    uint8_t Obj6;
+    uint8_t Pass1;
+    uint8_t Pass2;
+    uint8_t Pass3;
+    uint8_t Pass4;
+    uint8_t Pass5;
+    uint8_t Pass6;
+}Struct_Password;
 
 typedef struct
 {
@@ -157,6 +172,7 @@ typedef struct
 extern sEvent_struct        sEventAppMenu[];
 extern Struct_Menu_State               sMenuState;
 extern Struct_Menu_Stamp               sMenuStamp;
+extern Struct_Password                 sPassword;
 /*================= Function Handle ================*/
 uint8_t     AppMenu_Task(void);
 void        Init_AppMenuDisplay(void);

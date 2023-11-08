@@ -34,11 +34,12 @@
 /* USER CODE BEGIN PTD */
 #include "user_sim.h"
 #include "user_internal_mem.h"
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#include "cat24mxx.h"
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -70,7 +71,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-//  SCB -> VTOR = ADDR_MAIN_PROGRAM;
+  SCB -> VTOR = ADDR_MAIN_PROGRAM;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -99,7 +100,6 @@ int main(void)
   MX_USART3_UART_Init();
   MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
-  
   Main_Task();
   /* USER CODE END 2 */
 
@@ -139,7 +139,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL3;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL4;
   RCC_OscInitStruct.PLL.PLLDIV = RCC_PLL_DIV2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {

@@ -118,6 +118,9 @@ static uint8_t _Cb_Event_Sim_Send_Mess (uint8_t event)
     uint8_t isFinishHandleSim = true;
     
 #ifdef USING_APP_MEM
+    if ((sSimVar.ModeConnectNow_u8 != MODE_CONNECT_DATA_MAIN) && (sSimVar.ModeConnectNow_u8 != MODE_CONNECT_DATA_BACKUP))
+      return 1;
+    
     //Neu con ban tin moi: Enable lai check new rec
     if ( (sSimCommon.PowerStatus_u8 != _POWER_POWER_OFF) && (AppMem_Check_New_Record() == true) )
     {

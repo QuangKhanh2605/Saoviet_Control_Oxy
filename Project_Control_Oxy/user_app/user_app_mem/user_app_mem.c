@@ -4,7 +4,6 @@
 #include "user_define.h"
 
 
-
 #ifdef MEMORY_ON_FLASH
     sRecordMemoryManager     sRecTSVH = 
     {

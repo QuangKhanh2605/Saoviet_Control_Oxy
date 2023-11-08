@@ -1650,16 +1650,19 @@ void        fSET_PASSWORD_OXY (sData *str_Receiv, uint16_t Pos)
 
 void        fGET_TIMECHANGE_OXY (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint8_t aTemp[20] = "TimeChange:";   //13 ki tu dau tien
     sData StrResp = {&aTemp[0], 11}; 
 
     Convert_Uint64_To_StringDec (&StrResp, (uint64_t) (sParamCtrlOxy.TimeChange), 0);
 
 	DCU_Respond(PortConfig, StrResp.Data_a8, StrResp.Length_u16, 0);
+#endif
 }
 
 void        fSET_TIMECHANGE_OXY (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint32_t TempU32 = 0;
     if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
     {
@@ -1677,20 +1680,24 @@ void        fSET_TIMECHANGE_OXY (sData *str_Receiv, uint16_t Pos)
     {
         DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
     }
+#endif
 }
 
 void        fGET_TIMEDELAY_OXY (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint8_t aTemp[20] = "TimeDelay:";   //13 ki tu dau tien
     sData StrResp = {&aTemp[0], 10}; 
 
     Convert_Uint64_To_StringDec (&StrResp, (uint64_t) (sParamCtrlOxy.TimeDelay), 0);
 
 	DCU_Respond(PortConfig, StrResp.Data_a8, StrResp.Length_u16, 0);
+#endif
 }
 
 void        fSET_TIMEDELAY_OXY (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint32_t TempU32 = 0;
     if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
     {
@@ -1715,20 +1722,24 @@ void        fSET_TIMEDELAY_OXY (sData *str_Receiv, uint16_t Pos)
     {
         DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
     }
+#endif
 }
 
 void        fGET_TIMEWARNING_OXY (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint8_t aTemp[20] = "TimeWarning:";   //13 ki tu dau tien
     sData StrResp = {&aTemp[0], 12}; 
 
     Convert_Uint64_To_StringDec (&StrResp, (uint64_t) (sParamCtrlOxy.TimeWarning), 0);
 
 	DCU_Respond(PortConfig, StrResp.Data_a8, StrResp.Length_u16, 0);
+#endif
 }
 
 void        fSET_TIMEWARNING_OXY (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint32_t TempU32 = 0;
     if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
     {
@@ -1753,20 +1764,24 @@ void        fSET_TIMEWARNING_OXY (sData *str_Receiv, uint16_t Pos)
     {
         DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
     }
+#endif
 }
 
 void        fGET_ID_SLAVE_485 (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint8_t aTemp[20] = "Slave_Id:";   //13 ki tu dau tien
     sData StrResp = {&aTemp[0], 9}; 
 
     Convert_Uint64_To_StringDec (&StrResp, (uint64_t) (ID_Slave), 0);
 
 	DCU_Respond(PortConfig, StrResp.Data_a8, StrResp.Length_u16, 0);
+#endif
 }
 
 void        fSET_ID_SLAVE_485 (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint32_t TempU32 = 0;
     if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
     {
@@ -1791,20 +1806,24 @@ void        fSET_ID_SLAVE_485 (sData *str_Receiv, uint16_t Pos)
     {
         DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
     }
+#endif
 }
 
 void        fGET_OXY_UPPER (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint8_t aTemp[20] = "Oxy_Upper:";   //11 ki tu dau tien
     uint16_t length = 10;
 
     Convert_Point_Int_To_String_Scale (aTemp, &length, (int)(sParamCtrlOxy.Oxy_Upper), 0xFE);
 
 	DCU_Respond(PortConfig, aTemp, length, 0);
+#endif
 }
 
 void        fSET_OXY_UPPER (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint32_t TempU32 = 0;
     if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
     {
@@ -1827,20 +1846,24 @@ void        fSET_OXY_UPPER (sData *str_Receiv, uint16_t Pos)
     {
         DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
     }
+#endif
 }
 
 void        fGET_OXY_LOWER (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint8_t aTemp[20] = "Oxy_Lower:";   //11 ki tu dau tien
     uint16_t length = 10;
 
     Convert_Point_Int_To_String_Scale (aTemp, &length, (int)(sParamCtrlOxy.Oxy_Lower), 0xFE);
 
 	DCU_Respond(PortConfig, aTemp, length, 0);
+#endif
 }
 
 void        fSET_OXY_LOWER (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint32_t TempU32 = 0;
     if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
     {
@@ -1863,10 +1886,12 @@ void        fSET_OXY_LOWER (sData *str_Receiv, uint16_t Pos)
     {
         DCU_Respond(PortConfig, (uint8_t*)"ERROR", 5, 0);
     }
+#endif
 }
 
 void        fGET_OXY_MEASURE (sData *str_Receiv, uint16_t Pos)
 {
+#ifdef USING_APP_OXYGEN
     uint8_t aTemp[60] = "Oxy_Measure:Temp=";   //11 ki tu dau tien
     uint16_t length = 17;
 
@@ -1883,6 +1908,7 @@ void        fGET_OXY_MEASURE (sData *str_Receiv, uint16_t Pos)
     Insert_String_To_String(aTemp, &length, (uint8_t*)"ppt",0 , 3);
 
 	DCU_Respond(PortConfig, aTemp, length, 0);
+#endif
 }
 
 

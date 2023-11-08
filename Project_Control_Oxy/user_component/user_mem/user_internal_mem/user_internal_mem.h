@@ -84,55 +84,57 @@
 //    #define ADDR_FLAG_HAVE_NEW_FW       0x08031800
 
     #define	ADDR_MAIN_PROGRAM			0x08002C00	        //47 Page cho chuong trinh chinh
-    #define	ADDR_UPDATE_PROGRAM			0x0801A500	        //47 page -> End Program = 0x08031000
+    #define	ADDR_UPDATE_PROGRAM			0x0801D800	        //47 page -> End Program = 0x08031000
 
-    #define ADDR_FLAG_HAVE_NEW_FW       0x08031F00
+    #define ADDR_FLAG_HAVE_NEW_FW       0x08038600
 
     /*========Add Record Mess ================ */
-    #define	ADDR_MESS_A_START   		0x08032000	         //8 K
-    #define	ADDR_MESS_A_STOP			0x08034100
+    #define	ADDR_MESS_A_START   		0x08038700	         //8 K
+    #define	ADDR_MESS_A_STOP			0x0803A700
 
-    #define	ADDR_EVENT_START   		    0x08035000	         //8 K
-    #define	ADDR_EVENT_STOP			    0x08037100
+    #define	ADDR_EVENT_START   		    0x0803A800	         //8 K
+    #define	ADDR_EVENT_STOP			    0x0803C800
 
-    #define	ADDR_LOG_START   		    0x08038000	         //8 K
-    #define	ADDR_LOG_STOP			    0x0803A100           //64*128 = 8192 = 8k .
+    #define	ADDR_LOG_START   		    0x0803C900	         //8 K
+    #define	ADDR_LOG_STOP			    0x0803E900           //64*128 = 8192 = 8k .
 
     /*=======Add Index Mess================ */
-    #define	ADDR_INDEX_LOG_SEND 		0x0803CA00      
-    #define	ADDR_INDEX_LOG_SAVE 	    0x0803CB00
+    #define	ADDR_INDEX_LOG_SEND 		0x0803EA00      
+    #define	ADDR_INDEX_LOG_SAVE 	    0x0803EB00
 
-    #define	ADDR_INDEX_EVENT_SEND 		0x0803CC00      
-    #define	ADDR_INDEX_EVENT_SAVE 	    0x0803CD00
+    #define	ADDR_INDEX_EVENT_SEND 		0x0803EC00      
+    #define	ADDR_INDEX_EVENT_SAVE 	    0x0803ED00
 
-    #define	ADDR_INDEX_TSVH_SEND 		0x0803CE00      
-    #define	ADDR_INDEX_TSVH_SAVE 		0x0803CF00  
+    #define	ADDR_INDEX_TSVH_SEND 		0x0803EE00      
+    #define	ADDR_INDEX_TSVH_SAVE 		0x0803EF00  
     
-    #define	ADDR_INDEX_GPS_SEND 		0x0803D000      
-    #define	ADDR_INDEX_GPS_SAVE 		0x0803D100    
+//    #define	ADDR_INDEX_GPS_SEND 		0x0803D000      
+//    #define	ADDR_INDEX_GPS_SAVE 		0x0803D100    
 
     /* ============= Addr Meter config======== */
     //Setting Wm
-    #define	ADDR_METER_NUMBER			0x0803DB00
+//    #define	ADDR_METER_NUMBER			0x0803DB00
+//
+//    #define	ADDR_LEVEL_CALIB			0x0803DC00	        
+//    #define	ADDR_THRESH_MEAS			0x0803DE00
+//    #define ADDR_SLAVE_ID               0x0803DF00
 
-    #define	ADDR_LEVEL_CALIB			0x0803DC00	        
-    #define	ADDR_THRESH_MEAS			0x0803DE00
-    #define ADDR_SLAVE_ID               0x0803DF00
 
-    //Register Inverter 
-    #define ADDR_CTRL_OXY_RUN_FREE      0x0803E000
-    #define ADDR_PASSWORD_SETTING       0x0803E100
-    #define ADDR_TIME_CONTROL_SETTING   0x0803E200
-    #define ADDR_OXY_THRESH_SETTING     0x0803E300
-    #define ADDR_INFOR_SLAVE_RS485      0x0803E400
-    #define ADDR_INIT_STATE_MACHINE     0X0803E500
 
     //Setting Emeter
-    #define ADDR_PF_SETTING             0x0803F200        
-    #define ADDR_VOL_SETTING         	0x0803F300        
-    #define ADDR_CT_SETTING             0x0803F400        
-    #define ADDR_TIME_SETTING           0x0803F500        
-    #define ADDR_RELAY_SETTING          0x0803F600    
+//    #define ADDR_PF_SETTING             0x0803F200        
+//    #define ADDR_VOL_SETTING         	0x0803F300        
+//    #define ADDR_CT_SETTING             0x0803F400        
+//    #define ADDR_TIME_SETTING           0x0803F500        
+//    #define ADDR_RELAY_SETTING          0x0803F600    
+
+    //Register Inverter 
+    #define ADDR_CTRL_OXY_RUN_FREE      0x0803F400
+    #define ADDR_PASSWORD_SETTING       0x0803F500
+    #define ADDR_TIME_CONTROL_SETTING   0x0803F600
+    #define ADDR_OXY_THRESH_SETTING     0x0803F700
+    #define ADDR_INFOR_SLAVE_RS485      0x0803F800
+    #define ADDR_INIT_STATE_MACHINE     0X0803F900
 
     /* ============= Add Modem config ======== */
     #define	ADDR_SERVER_INFOR			0x0803FA00
@@ -145,7 +147,7 @@
     #define	FLASH_MAX_MESS_EVENT_SAVE   30
     #define FLASH_MAX_MESS_LOG_SAVE     128
 
-    #define MAX_SIZE_FIRMWARE           94     //Kb
+    #define MAX_SIZE_FIRMWARE           106     //Kb
     #define FIRMWARE_SIZE_PAGE	        MAX_SIZE_FIRMWARE*1024/FLASH_PAGE_SIZE
 
     #define SIZE_DATA_TSVH	            128        

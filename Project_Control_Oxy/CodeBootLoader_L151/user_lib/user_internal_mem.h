@@ -80,10 +80,10 @@
 //
 //    #define ADDR_FLAG_HAVE_NEW_FW       0x08031800
       
-    #define	ADDR_MAIN_PROGRAM			0x08002C00	        
-    #define	ADDR_UPDATE_PROGRAM			0x0801A500	        
+    #define	ADDR_MAIN_PROGRAM			0x08002C00	        //47 Page cho chuong trinh chinh
+    #define	ADDR_UPDATE_PROGRAM			0x0801D800	        //47 page -> End Program = 0x08031000
 
-    #define ADDR_FLAG_HAVE_NEW_FW       0x08031F00
+    #define ADDR_FLAG_HAVE_NEW_FW       0x08038600
 
     /*========Add Record Mess ================ */
     #define	ADDR_MESS_A_START   		0x08032000	         //8 K
@@ -134,7 +134,7 @@
     #define	FLASH_MAX_MESS_EVENT_SAVE   30
     #define FLASH_MAX_MESS_LOG_SAVE     128
 
-    #define MAX_SIZE_FIRMWARE           94     //Kb
+    #define MAX_SIZE_FIRMWARE           106     //Kb
     #define FIRMWARE_SIZE_PAGE	        MAX_SIZE_FIRMWARE*1024/FLASH_PAGE_SIZE
 
     #define SIZE_DATA_TSVH	            128        

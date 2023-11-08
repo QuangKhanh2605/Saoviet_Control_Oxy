@@ -285,7 +285,7 @@ uint8_t Sim_Common_Http_Read_Data (sData *uart_string)
     int             Pos = 0;
     sData           strHeader      = {(uint8_t*)"$HTTPREAD:", 10};
     sData           strStartHttp   = {(uint8_t*)"\r\n", 2};
-    sData           strHeaderFw;
+//    sData           strHeaderFw;
     
     sData           strFix;
     uint16_t        i = 0, j = 0;
@@ -345,24 +345,24 @@ uint8_t Sim_Common_Http_Read_Data (sData *uart_string)
             //Neu la Pack dau tien, Check 32 byte header xem co chu: ModemFirmware:SV1.1,0x0800C000
             if (sSimFwUpdate.CountPacket_u8 == 0)
             {
-                strHeaderFw.Data_a8 = sSimCommFuncCallBack->pSim_Common_Get_Fw_Version()->Data_a8;
-                strHeaderFw.Length_u16 = LENGTH_HEADER_FW;
-        
-                Pos = Find_String_V2((sData*)&strHeaderFw, &strFix);  
-                if (Pos >= 0)
-                    sSimFwUpdate.IsFirmSaoViet_u8 = 1;
-                //Lay byte cuoi cung ra: byte 32 cua Packdau tien. Sau header 31 byte
-                sSimFwUpdate.LastCrcFile_u8 = *(strFix.Data_a8 + 31);  
-                //Check Get Fw Sao Viet
-                if (sSimFwUpdate.IsFirmSaoViet_u8 == 0)    //neu khong co header SV code thi return luon
-                {
-                    sSimFwUpdate.UpdateFailStatus_u8 = SEND_UPDATE_FIRMWARE_FAIL_FLASH;
-                    sSimCommFuncCallBack->pSim_Common_Handler_AT ( _SIM_COMM_EVENT_HTTP_UPDATE_FAIL ); 
-                    return 0;
-                }
-                //Fix string data
-                strFix.Data_a8 += 32;
-                strFix.Length_u16 -= 32;
+//                strHeaderFw.Data_a8 = sSimCommFuncCallBack->pSim_Common_Get_Fw_Version()->Data_a8;
+//                strHeaderFw.Length_u16 = LENGTH_HEADER_FW;
+//        
+//                Pos = Find_String_V2((sData*)&strHeaderFw, &strFix);  
+//                if (Pos >= 0)
+//                    sSimFwUpdate.IsFirmSaoViet_u8 = 1;
+//                //Lay byte cuoi cung ra: byte 32 cua Packdau tien. Sau header 31 byte
+//                sSimFwUpdate.LastCrcFile_u8 = *(strFix.Data_a8 + 31);  
+//                //Check Get Fw Sao Viet
+//                if (sSimFwUpdate.IsFirmSaoViet_u8 == 0)    //neu khong co header SV code thi return luon
+//                {
+//                    sSimFwUpdate.UpdateFailStatus_u8 = SEND_UPDATE_FIRMWARE_FAIL_FLASH;
+//                    sSimCommFuncCallBack->pSim_Common_Handler_AT ( _SIM_COMM_EVENT_HTTP_UPDATE_FAIL ); 
+//                    return 0;
+//                }
+//                //Fix string data
+//                strFix.Data_a8 += 32;
+//                strFix.Length_u16 -= 32;
             }
         
             //Cacal Crc
@@ -394,18 +394,18 @@ uint8_t Sim_Common_Http_Read_Data (sData *uart_string)
             //kiem tra xem nhan du byte chua de bao ok
             if (sSimFwUpdate.CountByteTotal_u32 >= sSimFwUpdate.FirmLength_u32)  //Binh thuong la dau == //Test de >=           
             {
-                if (sSimFwUpdate.LastCrcFile_u8 == sSimFwUpdate.LasCrcCal_u8)
-                {
+//                if (sSimFwUpdate.LastCrcFile_u8 == sSimFwUpdate.LasCrcCal_u8)
+//                {
                     sSimFwUpdate.CountByteTotal_u32 += (FLASH_BYTE_WRTIE - sSimFwUpdate.CountByteTotal_u32 % FLASH_BYTE_WRTIE);
                     
                     sSimCommFuncCallBack->pSim_Common_Handler_AT ( _SIM_COMM_EVENT_HTTP_UPDATE_OK );
                     return 1;
-                } else
-                {
-                    sSimFwUpdate.UpdateFailStatus_u8 = SEND_UPDATE_FIRMWARE_FAIL_LENGTH;
-                    sSimCommFuncCallBack->pSim_Common_Handler_AT ( _SIM_COMM_EVENT_HTTP_UPDATE_FAIL ); 
-                    return 0;
-                }
+//                } else
+//                {
+//                    sSimFwUpdate.UpdateFailStatus_u8 = SEND_UPDATE_FIRMWARE_FAIL_LENGTH;
+//                    sSimCommFuncCallBack->pSim_Common_Handler_AT ( _SIM_COMM_EVENT_HTTP_UPDATE_FAIL ); 
+//                    return 0;
+//                }
             }
             
             //Continue

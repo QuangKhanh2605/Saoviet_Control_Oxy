@@ -23,28 +23,27 @@ static uint8_t fevent_ctrl_oxy_warning(uint8_t event);
 /*========================Struct========================*/
 sEvent_struct               sEventAppCtrlOxy[]=
 {
-  {_EVENT_CTRL_OXY_ENTRY,       1, 5, 10000,        fevent_ctrl_oxy_entry},
-  {_EVENT_CTRL_OXY_GETTICK,     0, 5, 0,            fevent_ctrl_oxy_gettick},
-  {_EVENT_CTRL_OXY_IWDG,        1, 5, 2000,         fevent_ctrl_oxy_iwdg},
+  {_EVENT_CTRL_OXY_ENTRY,           1, 5, 10000,        fevent_ctrl_oxy_entry},
+  {_EVENT_CTRL_OXY_GETTICK,         0, 5, 0,            fevent_ctrl_oxy_gettick},
+  {_EVENT_CTRL_OXY_IWDG,            1, 5, 500,          fevent_ctrl_oxy_iwdg},
   
-  {_EVENT_SEND_SLAVE_CYCLE,     0, 5, 1000,         fevent_send_slave_cycle},
+  {_EVENT_SEND_SLAVE_CYCLE,         0, 5, 1000,         fevent_send_slave_cycle},
   
-  {_EVENT_CTRL_OXY_WAIT_CALIB,  0, 5, 500,          fevent_ctrl_oxy_wait_calib},
+  {_EVENT_CTRL_OXY_WAIT_CALIB,      0, 5, 500,          fevent_ctrl_oxy_wait_calib},
   
-  {_EVENT_CTRL_OXY_SW_MAN_AUTO, 1, 5, 500,          fevent_ctrl_oxy_sw_man_auto},
+  {_EVENT_CTRL_OXY_SW_MAN_AUTO,     1, 5, 500,          fevent_ctrl_oxy_sw_man_auto},
   
-  {_EVENT_CTRL_OXY_LOG_TSVH,    0, 5, 10000,        fevent_ctrl_oxy_log_tsvh},
+  {_EVENT_CTRL_OXY_LOG_TSVH,        0, 5, 10000,        fevent_ctrl_oxy_log_tsvh},
   
-  {_EVENT_CTRL_OXY_PW_DETECT,   1, 5, 500,          fevent_ctrl_oxy_pw_detect},
+  {_EVENT_CTRL_OXY_PW_DETECT,       1, 5, 500,          fevent_ctrl_oxy_pw_detect},
   
-  {_EVENT_CTRL_OXY_STATE_SLAVE, 0, 5, 500,          fevent_ctrl_oxy_state_slave},
+  {_EVENT_CTRL_OXY_STATE_SLAVE,     0, 5, 500,          fevent_ctrl_oxy_state_slave},
   
-  {_EVENT_CTRL_OXY_WARNING,     0, 5, 5,            fevent_ctrl_oxy_warning},
+  {_EVENT_CTRL_OXY_WARNING,         0, 5, 5,            fevent_ctrl_oxy_warning},
 };
 uint8_t     aStateOxy[5]={0};
 
 Struct_Param_Measure            sParamMeasure= {0};
-Struct_Password                 sPassword    = {0};
 
 Struct_Time_Ctrl_Oxy            sTimeCtrlOxy = {0};
 Struct_State_Ctrl_Oxy           sStateCtrlOxy= 
@@ -217,11 +216,9 @@ static uint8_t fevent_ctrl_oxy_pw_detect(uint8_t event)
 static uint8_t fevent_ctrl_oxy_state_slave(uint8_t event)
 {
     static uint8_t StateSlaveBefore   = _OXY_CONNECT;
-    static uint8_t StatePowerPresent= 0;
-    StatePowerPresent = HAL_GPIO_ReadPin(PW_Detect_GPIO_Port, PW_Detect_Pin);
     if(sStateCtrlOxy.StateSensor != StateSlaveBefore)
     {
-        if(StatePowerPresent == _POWER_ON)
+        if(sStateCtrlOxy.StatePower == _POWER_ON)
         {
             if(sStateCtrlOxy.StateSensor == _OXY_DISCONNECT)  
                 DCU_Notify_Server(_RESPOND_NOTIFY_SLAVE_DISCONNECT);
@@ -244,9 +241,12 @@ static uint8_t fevent_ctrl_oxy_warning(uint8_t event)
     {
       if(HAL_GetTick() - Gettick_Warning > sParamCtrlOxy.TimeWarning * 60000)
       {
+        if(sStateCtrlOxy.StateSensor == _OXY_CONNECT && sStateCtrlOxy.StatePower == _POWER_ON)
+        {
+            DCU_Notify_Server(_RESPOND_NOTIFY_OXY_LOW);
+            AppCtrlOxy_Log_Data_TSVH();
+        }
         OnOff_Warning(ON_RELAY);
-        DCU_Notify_Server(_RESPOND_NOTIFY_OXY_LOW);
-        AppCtrlOxy_Log_Data_TSVH();
         Gettick_Warning = HAL_GetTick();
       }
     }
@@ -479,13 +479,12 @@ void        Init_TimeDelay(void)
         sParamCtrlOxy.TimeWarning  = *(__IO uint8_t*)(ADDR_TIME_CONTROL_SETTING+6) ;
         sParamCtrlOxy.TimeWarning  = sParamCtrlOxy.TimeWarning << 8;
         sParamCtrlOxy.TimeWarning |= *(__IO uint8_t*)(ADDR_TIME_CONTROL_SETTING+7);
-
-        if(sParamCtrlOxy.TimeDelay < TIMEDELAY_MIN || sParamCtrlOxy.TimeDelay > TIMEDELAY_MAX)
-          sParamCtrlOxy.TimeDelay = TIMEDELAY_DEFAULT;
-        
-        if(sParamCtrlOxy.TimeChange == 0) sParamCtrlOxy.TimeChange = TIMECHANGE_DEFAULT;
-        if(sParamCtrlOxy.TimeWarning == 0) sParamCtrlOxy.TimeWarning = TIMEWARNING_DEFAULT;
     }
+    if(sParamCtrlOxy.TimeDelay < TIMEDELAY_MIN || sParamCtrlOxy.TimeDelay > TIMEDELAY_MAX)
+      sParamCtrlOxy.TimeDelay = TIMEDELAY_DEFAULT;
+    
+    if(sParamCtrlOxy.TimeChange == 0) sParamCtrlOxy.TimeChange = TIMECHANGE_DEFAULT;
+    if(sParamCtrlOxy.TimeWarning == 0) sParamCtrlOxy.TimeWarning = TIMEWARNING_DEFAULT;
     Stamp_Menu_Exit();
 }
 

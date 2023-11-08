@@ -151,26 +151,9 @@ typedef struct
     uint16_t Oxy_Percent;           //Oxy % Sensor
 }Struct_Param_Measure;
 
-typedef struct
-{
-    uint8_t Obj1;
-    uint8_t Obj2;
-    uint8_t Obj3;
-    uint8_t Obj4;
-    uint8_t Obj5;
-    uint8_t Obj6;
-    uint8_t Pass1;
-    uint8_t Pass2;
-    uint8_t Pass3;
-    uint8_t Pass4;
-    uint8_t Pass5;
-    uint8_t Pass6;
-}Struct_Password;
-
 extern sEvent_struct       sEventAppCtrlOxy[];
 extern Struct_Time_Ctrl_Oxy            sTimeCtrlOxy;
 extern Struct_Param_Measure            sParamMeasure;
-extern Struct_Password                 sPassword;
 extern Struct_State_Ctrl_Oxy           sStateCtrlOxy;
 extern Struct_Param_Ctrl_Oxy           sParamCtrlOxy;
 /*================= Function Handle ================*/

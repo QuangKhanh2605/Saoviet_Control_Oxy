@@ -60,4 +60,5 @@ main.pbi: \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_component\user_sim\user_l506\user_l506.h \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_component\user_sim\user_sim_common.h \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_component\user_mem\user_internal_mem\user_internal_mem.h \
-  D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_component\user_mem\user_mem_comm.h
+  D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_component\user_mem\user_mem_comm.h \
+  D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_component\user_mem\user_external_eeprom\user_cat24\cat24mxx.h

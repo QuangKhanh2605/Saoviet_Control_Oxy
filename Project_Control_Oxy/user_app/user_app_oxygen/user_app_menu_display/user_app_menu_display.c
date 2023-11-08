@@ -21,6 +21,7 @@ sEvent_struct       sEventAppMenu[]=
 
 Struct_Menu_State               sMenuState={0};
 Struct_Menu_Stamp               sMenuStamp={0};
+Struct_Password                 sPassword    = {0};
 /*================== Function Handle ===================*/
 static uint8_t fevent_menu_entry(uint8_t event)
 {
@@ -1596,7 +1597,7 @@ void Init_StartMenu(void)
 {
     GLCD_ClearScreen();
     GLCD_WriteString((char*)"MACHINE CONTROL OXY",0,7,1);
-    GLCD_WriteString((char*)"SAO VIET",3,42,1);
+    GLCD_WriteString((char*)"SAO VIET",4,42,1);
 //    GLCD_WriteString((char*)"Loading",5,45,1);
     GLCD_WriteString((char*)"Please wait...",7,25,1);
 }

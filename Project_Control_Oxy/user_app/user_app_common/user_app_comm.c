@@ -333,7 +333,8 @@ void SysApp_Setting (void)
         + Comment fun init in rtc
 
 */
-
+//uint8_t read_e[4];
+//uint8_t write_e[4];
 /*
     Func: Init Queue trong main
 */
@@ -362,8 +363,20 @@ void Main_Task (void)
     Temp_Humid_Init();
 #endif
     
-    HAL_Delay(3000);
-       
+    HAL_Delay(2000);
+//    uint32_t test = 0;
+//    while(1)
+//    {
+//        test++;
+//        write_e[0] = test >> 24;
+//        write_e[1] = test >> 16;
+//        write_e[2] = test >> 8;
+//        write_e[3] = test ;
+//        CAT24Mxx_Write_Array(0, write_e, 4);
+//        HAL_Delay(1000);
+//        CAT24Mxx_Read_Array(0, read_e, 4);
+//        HAL_Delay(1000);
+//    }
 	for (;;)
 	{
     #ifdef USING_APP_OXYGEN

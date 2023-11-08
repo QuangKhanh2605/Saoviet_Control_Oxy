@@ -125,7 +125,7 @@ int main(void)
 		
 		//Clear new firmware flag
         UTIL_Printf_Str (_VLEVEL_DEBUG, "u_main: erase mark new image\r\n");
-        HAL_GPIO_WritePin(LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_SET);  
+//        HAL_GPIO_WritePin(LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_SET);  
 		OnchipFlashPageErase(ADDR_FLAG_HAVE_NEW_FW);
 	}
 		

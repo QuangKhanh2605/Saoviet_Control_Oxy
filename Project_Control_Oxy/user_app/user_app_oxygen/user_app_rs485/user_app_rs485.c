@@ -186,6 +186,7 @@ static uint8_t fevent_rs485_receive_complete(uint8_t event)
     else
     {
         CountDisconnect++;
+        Init_RX_Mode_Uart_485();
     }
     
     if(CountDisconnect == 3)
