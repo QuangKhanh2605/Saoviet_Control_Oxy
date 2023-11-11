@@ -8,26 +8,31 @@ static uint8_t fevent_rs485_entry(uint8_t event);
 static uint8_t fevent_rs485_transmit(uint8_t event);
 static uint8_t fevent_rs485_receive_handle(uint8_t event);
 static uint8_t fevent_rs485_receive_complete(uint8_t event);
-static uint8_t fevent_rs485_init_uart(uint8_t event);
 /*==============================Struct=============================*/
 sEvent_struct               sEventAppRs485[]=
 {
   {_EVENT_RS485_ENTRY,              1, 5, 5,                fevent_rs485_entry},
-  {_EVENT_RS485_TRANSMIT,           1, 0, 2000,             fevent_rs485_transmit},
+  {_EVENT_RS485_TRANSMIT,           1, 0, 1000,             fevent_rs485_transmit},
   {_EVENT_RS485_RECEIVE_HANDLE,     0, 5, 5,                fevent_rs485_receive_handle},
   {_EVENT_RS485_RECEIVE_COMPLETE,   0, 5, 500,              fevent_rs485_receive_complete},
-  
-  {_EVENT_RS485_INIT_UART,          1, 5, TIME_INIT_UART,   fevent_rs485_init_uart},
 };
 
-uint8_t         ID_Slave        = ID_DEFAULT;
-uint8_t         KindTrans485    = _TRANSMIT_OPERA;
+Struct_IdSlave  sIdSlave485=
+{
+    .Oxy = ID_DEFAULT_OXY,
+    .pH  = ID_DEFAULT_PH,
+};
+
+Struct_KindMode485  sKindMode485=
+{
+    .Trans = _RS485_OPERA_OXY,
+};
+
 uint8_t         CycleReset      = 0;
 /*========================Function Handle========================*/
 
 static uint8_t fevent_rs485_entry(uint8_t event)
 {
-    fevent_enable(sEventAppRs485, event);
     return 1;
 }
 
@@ -35,53 +40,57 @@ static uint8_t fevent_rs485_transmit(uint8_t event)
 {
 /*--------------------Hoi du lieu tu Slave-------------------*/
 
-  uint8_t Frame[20]={0};
+    uint8_t Frame[20]={0};
     uint8_t aData[4]={0};
     sData sFrame = {&Frame[0], 0};
-    if(KindTrans485 != _TRANSMIT_RESET_CALIB) CycleReset = 0;
-    switch(KindTrans485)
+    if(sKindMode485.Trans != _RS485_RESET_CALIB) CycleReset = 0;
+    switch(sKindMode485.Trans)
     {
-        case _TRANSMIT_OPERA:
-            ModRTU_Master_Read_Frame(&sFrame, ID_Slave, 0x03, 0x0003, 24);
+        case _RS485_OPERA_PH:
+            ModRTU_Master_Read_Frame(&sFrame, sIdSlave485.pH, 0x03, 0x0001, 1);
+            break;
+      
+        case _RS485_OPERA_OXY:
+            ModRTU_Master_Read_Frame(&sFrame, sIdSlave485.Oxy, 0x03, 0x0003, 24);
             break;
           
-        case _TRANSMIT_CALIB_OXY_100_CALIB:
+        case _RS485_CALIB_OXY_100_CALIB:
             aData[0] = 0x00;
             aData[1] = 0x01;
-            ModRTU_Master_Write_Frame(&sFrame, ID_Slave, 0x10, 0x0220 , 1, aData);
+            ModRTU_Master_Write_Frame(&sFrame, sIdSlave485.Oxy, 0x10, 0x0220 , 1, aData);
             break;
             
-        case _TRANSMIT_CALIB_SALINITY:
+        case _RS485_CALIB_SALINITY:
             aData[0] = sMenuStamp.Salinity >> 8;
             aData[1] = sMenuStamp.Salinity;
-            ModRTU_Master_Write_Frame(&sFrame, ID_Slave, 0x10, 0x0008, 1, aData);
+            ModRTU_Master_Write_Frame(&sFrame, sIdSlave485.Oxy, 0x10, 0x0008, 1, aData);
             break;
             
-        case _TRANSMIT_CALIB_TEMP:
+        case _RS485_CALIB_TEMP:
             aData[0] = sMenuStamp.Temperature >> 8;
             aData[1] = sMenuStamp.Temperature;
-            ModRTU_Master_Write_Frame(&sFrame, ID_Slave, 0x10, 0x000A , 1, aData);
+            ModRTU_Master_Write_Frame(&sFrame, sIdSlave485.Oxy, 0x10, 0x000A , 1, aData);
             break;
             
-        case _TRANSMIT_RESET_CALIB:
+        case _RS485_RESET_CALIB:
             switch(CycleReset)
             {
-                case _TRANSMIT_RESET_0:
+                case _RS485_RESET_0:
                     aData[0] = 0x00;
                     aData[1] = 0x10;
-                    ModRTU_Master_Write_Frame(&sFrame, ID_Slave, 0x10, 0x0220 , 1, aData);
+                    ModRTU_Master_Write_Frame(&sFrame, sIdSlave485.Oxy, 0x10, 0x0220 , 1, aData);
                     break;
                     
-                case _TRANSMIT_RESET_100:
+                case _RS485_RESET_100:
                     aData[0] = 0x00;
                     aData[1] = 0x08;
-                    ModRTU_Master_Write_Frame(&sFrame, ID_Slave, 0x10, 0x0220 , 1, aData);
+                    ModRTU_Master_Write_Frame(&sFrame, sIdSlave485.Oxy, 0x10, 0x0220 , 1, aData);
                     break;
                     
-                case _TRANSMIT_RESET_TEMPERATURE:
+                case _RS485_RESET_TEMPERATURE:
                     aData[0] = 0x00;
                     aData[1] = 0x20;
-                    ModRTU_Master_Write_Frame(&sFrame, ID_Slave, 0x10, 0x0220 , 1, aData);
+                    ModRTU_Master_Write_Frame(&sFrame, sIdSlave485.Oxy, 0x10, 0x0220 , 1, aData);
                     break;
                   
                 default:
@@ -103,6 +112,14 @@ static uint8_t fevent_rs485_transmit(uint8_t event)
     
     fevent_active(sEventAppRs485, _EVENT_RS485_RECEIVE_HANDLE);
     fevent_enable(sEventAppRs485, _EVENT_RS485_RECEIVE_COMPLETE);
+    
+    
+    sKindMode485.Recv = sKindMode485.Trans;
+    
+    if(sKindMode485.Trans == _RS485_OPERA_OXY)
+        sKindMode485.Trans = _RS485_OPERA_PH;
+    else if(sKindMode485.Trans == _RS485_OPERA_PH)
+        sKindMode485.Trans = _RS485_OPERA_OXY;
     
     fevent_enable(sEventAppRs485, event);
     return 1;
@@ -134,8 +151,9 @@ static uint8_t fevent_rs485_receive_handle(uint8_t event)
 static uint8_t fevent_rs485_receive_complete(uint8_t event)
 {
 /*------------------Xu ly chuoi nhan duoc----------------*/
-    static uint8_t CountDisconnect = 0;
-  
+    static uint8_t CountDisconnectOxy = 0;
+    static uint8_t CountDisconnectPH  = 0;
+    
     uint16_t Crc_Check = 0;
     uint16_t Crc_Recv  = 0;
 
@@ -144,81 +162,105 @@ static uint8_t fevent_rs485_receive_complete(uint8_t event)
     Crc_Check = ModRTU_CRC(sUart485.Data_a8, sUart485.Length_u16 - 2);
     if(Crc_Check == Crc_Recv)
     {
-        CountDisconnect = 0;
-        sStateCtrlOxy.StateSensor = _OXY_CONNECT;
-        fevent_enable(sEventAppRs485, _EVENT_RS485_INIT_UART);
-        
-        if(KindTrans485 == _TRANSMIT_OPERA)
+        if(sKindMode485.Recv == _RS485_OPERA_PH)
         {
-          //Doc Oxy Calib 2 diem
-//            sParamMeasure.Oxy_Mg_L = sUart485.Data_a8[45]<<8 | sUart485.Data_a8[46];
-//            sParamMeasure.Oxy_Percent = sUart485.Data_a8[47]<<8 | sUart485.Data_a8[48];
-            
-          //Doc Oxy Calib 1 diem bao hoa 100%
-            sParamMeasure.Oxy_Mg_L = sUart485.Data_a8[3]<<8 | sUart485.Data_a8[4];
-            sParamMeasure.Oxy_Percent = sUart485.Data_a8[9]<<8 | sUart485.Data_a8[10];
-            
-            sParamMeasure.Salinity = sUart485.Data_a8[13]<<8 | sUart485.Data_a8[14];
-            sParamMeasure.Temp = sUart485.Data_a8[17]<<8 | sUart485.Data_a8[18];
-            
-            Compensation_Salinity(&sParamMeasure.Oxy_Mg_L, sParamMeasure.Salinity, sParamMeasure.Temp);
+            CountDisconnectPH = 0;
+            sStateCtrlOxy.StateSensorPH = _OXY_CONNECT;
         }
         else
         {
-            if(KindTrans485 == _TRANSMIT_RESET_CALIB) 
-            {
+            CountDisconnectOxy = 0;
+            sStateCtrlOxy.StateSensorOxy = _OXY_CONNECT;
+        }
+        
+        switch(sKindMode485.Recv)
+        {
+            case _RS485_OPERA_PH:
+              sParamMeasure.pH_Water = sUart485.Data_a8[3]<<8 | sUart485.Data_a8[4];
+              break;
+          
+            case _RS485_OPERA_OXY:
+              //Doc Oxy Calib 2 diem
+    //            sParamMeasure.Oxy_Mg_L = sUart485.Data_a8[45]<<8 | sUart485.Data_a8[46];
+    //            sParamMeasure.Oxy_Percent = sUart485.Data_a8[47]<<8 | sUart485.Data_a8[48];
+                
+              //Doc Oxy Calib 1 diem bao hoa 100%
+                sParamMeasure.Oxy_Mg_L = sUart485.Data_a8[3]<<8 | sUart485.Data_a8[4];
+                sParamMeasure.Oxy_Percent = sUart485.Data_a8[9]<<8 | sUart485.Data_a8[10];
+                
+                sParamMeasure.Salinity = sUart485.Data_a8[13]<<8 | sUart485.Data_a8[14];
+                sParamMeasure.Temp = sUart485.Data_a8[17]<<8 | sUart485.Data_a8[18];
+                
+                Compensation_Salinity(&sParamMeasure.Oxy_Mg_L, sParamMeasure.Salinity, sParamMeasure.Temp);
+                break;
+            
+            case _RS485_RESET_CALIB:
                 CycleReset++;
-                if(CycleReset == _TRANSMIT_RESET_END) 
+                if(CycleReset == _RS485_RESET_END) 
                 {
                     CycleReset = 0;
                     sMenuState.CalibSensor = _CALIB_COMPLETE;
-                    KindTrans485 = _TRANSMIT_OPERA;
+                    sKindMode485.Trans = _RS485_OPERA_OXY;
                 }
                 fevent_active(sEventAppRs485, _EVENT_RS485_TRANSMIT);
-            }
-            else
-            {
+                break;
+                
+            case _RS485_CALIB_OXY_100_CALIB:
+            case _RS485_CALIB_SALINITY:
+            case _RS485_CALIB_TEMP:
                 sMenuState.CalibSensor = _CALIB_COMPLETE;
-                KindTrans485 = _TRANSMIT_OPERA;
-            }
+                sKindMode485.Trans = _RS485_OPERA_OXY;
+                break;
+          
+            default:
+              break;
         }
     }
     else
     {
-        CountDisconnect++;
-        Init_RX_Mode_Uart_485();
+        if(sKindMode485.Recv == _RS485_OPERA_PH)
+        {
+            CountDisconnectPH++;
+        }
+        else
+        {
+            CountDisconnectOxy++;
+        }
     }
     
-    if(CountDisconnect == 3)
+    if(CountDisconnectOxy == 3)
     {
-        sStateCtrlOxy.StateSensor = _OXY_DISCONNECT;
+        CountDisconnectOxy--;
+        sStateCtrlOxy.StateSensorOxy = _OXY_DISCONNECT;
         sParamMeasure.Oxy_Mg_L = 0;
         sParamMeasure.Oxy_Percent = 0;
         sParamMeasure.Salinity = 0;
         sParamMeasure.Temp = 0;
+        MX_USART1_UART_Init();
+        Init_RX_Mode_Uart_485();
+        sKindMode485.Trans = _RS485_OPERA_OXY;
+    }
+    
+    if(CountDisconnectPH == 3)
+    {
+        CountDisconnectPH--;
+        sStateCtrlOxy.StateSensorPH = _OXY_DISCONNECT;
+        sParamMeasure.pH_Water = 0;
     }
 
     fevent_disable(sEventAppRs485, _EVENT_RS485_RECEIVE_HANDLE);
     return 1;
 }
-
-static uint8_t fevent_rs485_init_uart(uint8_t event)
-{
-    MX_USART1_UART_Init();
-    Init_RX_Mode_Uart_485();
-    fevent_enable(sEventAppRs485, event);
-    return 1;
-}
-
-
 /*==========================Handle==========================*/
-void        Save_IdSlave(uint8_t ID)
+void        Save_IdSlave(uint8_t ID_Oxy, uint8_t ID_pH)
 {
     uint8_t aData[2] = {0};
     uint8_t length = 0;
     
-    ID_Slave = ID;
-    aData[length++] = ID_Slave ;
+    sIdSlave485.Oxy = ID_Oxy;
+    sIdSlave485.pH  = ID_pH;
+    aData[length++] = sIdSlave485.Oxy ;
+    aData[length++] = sIdSlave485.pH;
 
     Save_Array(ADDR_INFOR_SLAVE_RS485, aData, length);
 }
@@ -227,7 +269,8 @@ void        Init_IdSlave(void)
 {
     if(*(__IO uint8_t*)(ADDR_INFOR_SLAVE_RS485) == BYTE_TEMP_FIRST)
     {
-        ID_Slave = *(__IO uint8_t*)(ADDR_INFOR_SLAVE_RS485+2);
+        sIdSlave485.Oxy = *(__IO uint8_t*)(ADDR_INFOR_SLAVE_RS485+2);
+        sIdSlave485.pH  = *(__IO uint8_t*)(ADDR_INFOR_SLAVE_RS485+3);
     }
 }
 

@@ -3,7 +3,7 @@
 /*
     Chuyen Scale sang Uint
 */
-uint32_t Scale_To_Int(uint8_t Scale)
+uint32_t Calculator_Scale(uint8_t Scale)
 {
     /*
     Scale
@@ -23,6 +23,25 @@ uint32_t Scale_To_Int(uint8_t Scale)
     else if(Scale == 0xFB) return 100000;
     
     return 1;
+}
+
+/*
+    @brief  Tinh tan so theo Scale
+    @retval Tan so nap vao bien tan
+*/
+uint32_t Calculator_Value_Scale(uint32_t Value, uint8_t Scale, uint8_t Scale_Default)
+{
+      /*
+    Scale
+    00->1 
+    FF->0.1 
+    FE->0.01 
+    FD->0.001  
+    FC->0.0001  
+    FB->0.00001 
+    */
+  uint64_t Stamp_Scale = Value * Calculator_Scale(Scale_Default);
+  return Stamp_Scale/Calculator_Scale(Scale);
 }
 
 /*=============== Convert Int To String ==============*/
@@ -75,7 +94,7 @@ uint8_t Convert_Int_To_String_Scale(uint8_t cData[], int var, uint8_t Scale)
     length = Convert_Int_To_String(cData, var);
     if(stamp != 0)
     {
-        division = Scale_To_Int(Scale);
+        division = Calculator_Scale(Scale);
         while(stamp < division)
         {
             stamp *=10;
@@ -165,7 +184,7 @@ uint8_t Convert_Point_Int_To_String_Scale(uint8_t cData[], uint16_t *Pos, int va
     length = *Pos;
     if(stamp != 0)
     {
-        division = Scale_To_Int(Scale);
+        division = Calculator_Scale(Scale);
         while(stamp < division)
         {
             stamp *=10;

@@ -91,26 +91,26 @@ const struct_CheckList_AT CheckList_AT_CONFIG[] =
         {_SET_POWER_ON_TEMH,	_fSET_POWER_ON_TEMH,	    {(uint8_t*)"at+ontemh?",10}},
         {_SET_POWER_OFF_TEMH,	_fSET_POWER_OFF_TEMH,	    {(uint8_t*)"at+offtemh?",11}},
         
-        {_GET_PASSWORD_OXY,     fGET_PASSWORD_OXY,          {(uint8_t*)"at+password?",12}},
-        {_SET_PASSWORD_OXY,     fSET_PASSWORD_OXY,          {(uint8_t*)"at+password=",12}},
+        {_GET_PASSWORD_OXY,     fGET_PASSWORD_OXY,          {(uint8_t*)"at+password?",12}}, 
+        {_SET_PASSWORD_OXY,     fSET_PASSWORD_OXY,          {(uint8_t*)"at+password=",12}},     //Ex: at+password=000000
         
         {_GET_TIMECHANGE_OXY,   fGET_TIMECHANGE_OXY,        {(uint8_t*)"at+timechange?",14}},
-        {_SET_TIMECHANGE_OXY,   fSET_TIMECHANGE_OXY,        {(uint8_t*)"at+timechange=",14}},
+        {_SET_TIMECHANGE_OXY,   fSET_TIMECHANGE_OXY,        {(uint8_t*)"at+timechange=",14}},   //Ex: at+timechange=180
         
         {_GET_TIMEDELAY_OXY,    fGET_TIMEDELAY_OXY,         {(uint8_t*)"at+timedelay?",13}},
-        {_SET_TIMEDELAY_OXY,    fSET_TIMEDELAY_OXY,         {(uint8_t*)"at+timedelay=",13}},
+        {_SET_TIMEDELAY_OXY,    fSET_TIMEDELAY_OXY,         {(uint8_t*)"at+timedelay=",13}},    //Ex: at+timedelay=5
         
         {_GET_TIMEWARNING_OXY,  fGET_TIMEWARNING_OXY,       {(uint8_t*)"at+timewarning?",15}},
-        {_SET_TIMEWARNING_OXY,  fSET_TIMEWARNING_OXY,       {(uint8_t*)"at+timewarning=",15}},
+        {_SET_TIMEWARNING_OXY,  fSET_TIMEWARNING_OXY,       {(uint8_t*)"at+timewarning=",15}},  //Ex: at+timewarning=10
         
         {_GET_ID_SLAVE_485,     fGET_ID_SLAVE_485,          {(uint8_t*)"at+slaveid?",11}},
-        {_SET_ID_SLAVE_485,     fSET_ID_SLAVE_485,          {(uint8_t*)"at+slaveid=",11}},
+        {_SET_ID_SLAVE_485,     fSET_ID_SLAVE_485,          {(uint8_t*)"at+slaveid=",11}},      //Ex: at+slaveid=1 26 (id_oxy   id_pH)
         
         {_GET_OXY_UPPER,        fGET_OXY_UPPER,             {(uint8_t*)"at+oxyupper?",12}},
-        {_SET_OXY_UPPER,        fSET_OXY_UPPER,             {(uint8_t*)"at+oxyupper=",12}},
+        {_SET_OXY_UPPER,        fSET_OXY_UPPER,             {(uint8_t*)"at+oxyupper=",12}},     //Ex: at+oxyupper=800
         
         {_GET_OXY_LOWER,        fGET_OXY_LOWER,             {(uint8_t*)"at+oxylower?",12}},
-        {_SET_OXY_LOWER,        fSET_OXY_LOWER,             {(uint8_t*)"at+oxylower=",12}},
+        {_SET_OXY_LOWER,        fSET_OXY_LOWER,             {(uint8_t*)"at+oxylower=",12}},     //Ex: at+oxylower=500
       
         {_GET_OXY_MEASURE,      fGET_OXY_MEASURE,           {(uint8_t*)"at+oxymeasure?",14}},
         
@@ -1627,15 +1627,15 @@ void        fGET_PASSWORD_OXY (sData *str_Receiv, uint16_t Pos)
 void        fSET_PASSWORD_OXY (sData *str_Receiv, uint16_t Pos)
 {
 #ifdef USING_APP_OXYGEN
-    sMenuStamp.Pass1 = str_Receiv->Data_a8[Pos++] - 0x30;
-    sMenuStamp.Pass2 = str_Receiv->Data_a8[Pos++] - 0x30;
-    sMenuStamp.Pass3 = str_Receiv->Data_a8[Pos++] - 0x30;
-    sMenuStamp.Pass4 = str_Receiv->Data_a8[Pos++] - 0x30;
-    sMenuStamp.Pass5 = str_Receiv->Data_a8[Pos++] - 0x30;
-    sMenuStamp.Pass6 = str_Receiv->Data_a8[Pos++] - 0x30;
-    if(sMenuStamp.Pass1 <= 0x09 && sMenuStamp.Pass2 <= 0x09 && 
-       sMenuStamp.Pass3 <= 0x09 && sMenuStamp.Pass4 <= 0x09 && 
-       sMenuStamp.Pass5 <= 0x09 && sMenuStamp.Pass6 <= 0x09 )
+    sMenuStamp.sPassWord.Pass1 = str_Receiv->Data_a8[Pos++] - 0x30;
+    sMenuStamp.sPassWord.Pass2 = str_Receiv->Data_a8[Pos++] - 0x30;
+    sMenuStamp.sPassWord.Pass3 = str_Receiv->Data_a8[Pos++] - 0x30;
+    sMenuStamp.sPassWord.Pass4 = str_Receiv->Data_a8[Pos++] - 0x30;
+    sMenuStamp.sPassWord.Pass5 = str_Receiv->Data_a8[Pos++] - 0x30;
+    sMenuStamp.sPassWord.Pass6 = str_Receiv->Data_a8[Pos++] - 0x30;
+    if(sMenuStamp.sPassWord.Pass1 <= 0x09 && sMenuStamp.sPassWord.Pass2 <= 0x09 && 
+       sMenuStamp.sPassWord.Pass3 <= 0x09 && sMenuStamp.sPassWord.Pass4 <= 0x09 && 
+       sMenuStamp.sPassWord.Pass5 <= 0x09 && sMenuStamp.sPassWord.Pass6 <= 0x09 )
     {
         Save_Password();
         DCU_Respond(PortConfig, (uint8_t *)"OK", 2, 0);
@@ -1673,7 +1673,7 @@ void        fSET_TIMECHANGE_OXY (sData *str_Receiv, uint16_t Pos)
             else length++;
         }
         TempU32 = Convert_String_To_Dec(str_Receiv->Data_a8 , length);
-        Save_TimeCtrl(sParamCtrlOxy.TimeDelay, TempU32, sParamCtrlOxy.TimeWarning);
+        Save_TimeCtrlOxy(sParamCtrlOxy.TimeDelay, TempU32, sParamCtrlOxy.TimeWarning);
         DCU_Respond(PortConfig, (uint8_t*)"OK", 2, 0);
     }
     else
@@ -1710,7 +1710,7 @@ void        fSET_TIMEDELAY_OXY (sData *str_Receiv, uint16_t Pos)
         TempU32 = Convert_String_To_Dec(str_Receiv->Data_a8 , length);
         if(TempU32 <=TIMEDELAY_MAX && TempU32 >=TIMEDELAY_MIN)
         {
-            Save_TimeCtrl(TempU32, sParamCtrlOxy.TimeChange, sParamCtrlOxy.TimeWarning);
+            Save_TimeCtrlOxy(TempU32, sParamCtrlOxy.TimeChange, sParamCtrlOxy.TimeWarning);
             DCU_Respond(PortConfig, (uint8_t*)"OK", 2, 0);
         }
         else
@@ -1752,7 +1752,7 @@ void        fSET_TIMEWARNING_OXY (sData *str_Receiv, uint16_t Pos)
         TempU32 = Convert_String_To_Dec(str_Receiv->Data_a8 , length);
         if(TempU32 <=TIMEDELAY_MAX && TempU32 >=TIMEDELAY_MIN)
         {
-            Save_TimeCtrl(sParamCtrlOxy.TimeDelay, sParamCtrlOxy.TimeChange, TempU32);
+            Save_TimeCtrlOxy(sParamCtrlOxy.TimeDelay, sParamCtrlOxy.TimeChange, TempU32);
             DCU_Respond(PortConfig, (uint8_t*)"OK", 2, 0);
         }
         else
@@ -1773,8 +1773,10 @@ void        fGET_ID_SLAVE_485 (sData *str_Receiv, uint16_t Pos)
     uint8_t aTemp[20] = "Slave_Id:";   //13 ki tu dau tien
     sData StrResp = {&aTemp[0], 9}; 
 
-    Convert_Uint64_To_StringDec (&StrResp, (uint64_t) (ID_Slave), 0);
-
+    Convert_Uint64_To_StringDec (&StrResp, (uint64_t) (sIdSlave485.Oxy), 0);
+    aTemp[StrResp.Length_u16++] = ' ';
+    Convert_Uint64_To_StringDec (&StrResp, (uint64_t) (sIdSlave485.pH), 0);
+    
 	DCU_Respond(PortConfig, StrResp.Data_a8, StrResp.Length_u16, 0);
 #endif
 }
@@ -1783,18 +1785,34 @@ void        fSET_ID_SLAVE_485 (sData *str_Receiv, uint16_t Pos)
 {
 #ifdef USING_APP_OXYGEN
     uint32_t TempU32 = 0;
+    uint32_t TempU32_2 = 0;
     if( str_Receiv->Data_a8[0] >= '0' && str_Receiv->Data_a8[0] <= '9')
     {
         uint8_t length = 0;
+        uint8_t length2 = 0;
         for(uint8_t i = 0; i < str_Receiv->Length_u16; i++)
         {
             if( str_Receiv->Data_a8[i] < '0' || str_Receiv->Data_a8[i]>'9') break;
             else length++;
         }
         TempU32 = Convert_String_To_Dec(str_Receiv->Data_a8 , length);
-        if(TempU32 < 256)
+        length++;
+        while(length<str_Receiv->Length_u16)
         {
-            Save_IdSlave(TempU32);
+            if( str_Receiv->Data_a8[length] < '0' || str_Receiv->Data_a8[length] > '9') length++;
+            else break;
+        }
+        
+        for(uint8_t i = length; i < str_Receiv->Length_u16; i++)
+        {
+            if( str_Receiv->Data_a8[i] < '0' || str_Receiv->Data_a8[i]>'9') break;
+            else length2++;
+        }
+        TempU32_2 = Convert_String_To_Dec(str_Receiv->Data_a8+length, length2);
+        
+        if(TempU32 < 256 && TempU32_2 < 256)
+        {
+            Save_IdSlave(TempU32, TempU32_2);
             DCU_Respond(PortConfig, (uint8_t*)"OK", 2, 0);
         }
         else

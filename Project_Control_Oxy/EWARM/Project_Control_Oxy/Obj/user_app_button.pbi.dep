@@ -46,4 +46,5 @@ user_app_button.pbi: \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Core/Inc\usart.h \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM/../Core/Inc/main.h \
   D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_eventdriven\event_driven.h \
-  D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_app\user_app_oxygen\user_app_menu_display\user_app_menu_display.h
+  D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_app\user_app_oxygen\user_app_menu_display\user_app_menu_display.h \
+  D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\EWARM\..\user_app\user_app_oxygen\user_app_ctrl_oxy\user_app_ctrl_oxy.h

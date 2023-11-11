@@ -19,12 +19,12 @@
 #define TIME_MIN            2
 
 
-#define TIMECHANGE_DEFAULT  180
+#define TIMECHANGE_DEFAULT  120
 #define TIMEWARNING_DEFAULT 10
 #define TIMEWARNING_MAX     1000
 #define TIMEWARNING_MIN     1
 
-#define TIMEDELAY_DEFAULT   5
+#define TIMEDELAY_DEFAULT   1
 #define TIMEDELAY_MAX       1000
 #define TIMEDELAY_MIN       1
 
@@ -37,10 +37,11 @@
 #define RUN_OXY_DEFAULT     66
 #define FREE_OXY_DEFAULT    6
 
+#define FREQ_SEND_NOTIFY    1
+
 typedef enum
 {
     _EVENT_CTRL_OXY_ENTRY,
-    _EVENT_CTRL_OXY_GETTICK,
     _EVENT_CTRL_OXY_IWDG,
     _EVENT_SEND_SLAVE_CYCLE,
     _EVENT_CTRL_OXY_WAIT_CALIB,
@@ -50,6 +51,7 @@ typedef enum
     _EVENT_CTRL_OXY_PW_DETECT,
     _EVENT_CTRL_OXY_STATE_SLAVE,
     _EVENT_CTRL_OXY_WARNING,
+    _EVENT_CTRL_OXY_FREQ_NOTIFY,
     
     _EVENT_CTRL_OXY_END,
 }eKindEventCtrlOxy;
@@ -101,6 +103,12 @@ typedef enum
 
 typedef enum
 {
+    _OXY_BALANCE,
+    _OXY_LOW,
+}eKindStateOxyLow;
+
+typedef enum
+{
     _CALIB_100,
     _CALIB_SALINITY,
     _CALIB_TEMPERATURE,
@@ -108,31 +116,29 @@ typedef enum
 
 typedef enum
 {
-    _RESPOND_NOTIFY_OXY_LOW,
-    _RESPOND_NOTIFY_POWER_OFF,
-    _RESPOND_NOTIFY_POWER_ON,
-    _RESPOND_NOTIFY_SLAVE_DISCONNECT,
-    _RESPOND_NOTIFY_SLAVE_CONNECT,
-    _RESPOND_NOTIFY_CALIB_OXY,
-    _RESPOND_NOTIFY_CALIB_TEMPERATURE,
-    _RESPOND_NOTIFY_CALIB_SALINITY,
-    _RESPOND_NOTIFY_RESET_CALIB,
-    _RESPOND_NOTIFY_CHANGE_PASSWORD,
+    _RESPOND_NOTIFY_OXY_LOW = 1,            //Thong bao luong oxy thap
+    _RESPOND_NOTIFY_POWER_OFF,              //Thong bao mat dien 
+    _RESPOND_NOTIFY_POWER_ON,               //Thong bao co dien
+    _RESPOND_NOTIFY_SLAVE_DISCONNECT,       //Thong bao mat ket noi slave
+    _RESPOND_NOTIFY_SLAVE_CONNECT,          //Thong bao co ket noi slave
 }eKindRespondNotify;
 
 typedef struct
 {
     uint16_t RunCtrl;               //Thoi gian chay Oxy nap vao Slave
     uint16_t FreeCtrl;              //Thoi gian nghi Oxy nap vao Slave   
-}Struct_Time_Ctrl_Oxy;
+}Struct_TimeSlave;
 
 typedef struct
 {
+    uint8_t StateDCU;               //Trang thai DCU
     uint8_t StateMachine;           //Trang thai Auto hoac Manual
-    uint8_t StateSensor;            //Trang thai ket noi vs Sensor
+    uint8_t StateSensorOxy;         //Trang thai ket noi vs Sensor OXY
+    uint8_t StateSensorPH;          //Trang thai ket noi vs Sensor PH
     uint8_t StatePower;             //Trang thai nguon cap
-    uint8_t *aStateOxy;              //Trang thai 
-}Struct_State_Ctrl_Oxy;
+    uint8_t StateOxyLower;          //Trang thai canh bao Oxy thap
+    uint8_t *aStateOxy;             //Trang thai 
+}Struct_StateCtrlOxy;
 
 typedef struct
 {
@@ -141,7 +147,7 @@ typedef struct
     uint16_t TimeDelay;             //Thoi gian wait giua cac Oxy
     uint16_t TimeChange;            //Thoi gian thay doi Oxy
     uint16_t TimeWarning;           //Thoi gian bat den canh bao
-}Struct_Param_Ctrl_Oxy;
+}Struct_ParamCtrlOxy;
 
 typedef struct
 {
@@ -149,18 +155,19 @@ typedef struct
     uint16_t Salinity;              //Do man Sensor
     uint16_t Oxy_Mg_L;              //Oxy Mg L Sensor
     uint16_t Oxy_Percent;           //Oxy % Sensor
-}Struct_Param_Measure;
+    uint16_t pH_Water;
+}Struct_ParamMeasure;
 
-extern sEvent_struct       sEventAppCtrlOxy[];
-extern Struct_Time_Ctrl_Oxy            sTimeCtrlOxy;
-extern Struct_Param_Measure            sParamMeasure;
-extern Struct_State_Ctrl_Oxy           sStateCtrlOxy;
-extern Struct_Param_Ctrl_Oxy           sParamCtrlOxy;
+extern sEvent_struct                    sEventAppCtrlOxy[];
+extern Struct_TimeSlave                 sTimeSlave;
+extern Struct_ParamMeasure              sParamMeasure;
+extern Struct_StateCtrlOxy              sStateCtrlOxy;
+extern Struct_ParamCtrlOxy              sParamCtrlOxy;
 /*================= Function Handle ================*/
 uint8_t     AppCtrlOxy_Task(void);
 void        Init_AppCtrlOxy(void);
-void        Save_TimeCtrl(uint16_t TimeDelay, uint16_t TimeChange, uint16_t TimeWarning);
-void        Init_TimeDelay(void);
+void        Save_TimeCtrlOxy(uint16_t TimeDelay, uint16_t TimeChange, uint16_t TimeWarning);
+void        Init_TimeCtrlOxy(void);
 void        Save_StateOxy(void);
 void        Init_StateOxy(void);
 
@@ -172,8 +179,8 @@ void        QueueRun_To_QueueFree(void);
 void        QueueFree_To_QueueRun(void);
 void        QueueRun_Change_QueueFree(void);
 
-void        Save_Time_Ctrl_Flash(uint16_t RunCtrl, uint16_t FreeCtrl);
-void        Init_Time_Ctrl_Oxy(void);
+void        Save_TimeSlave(uint16_t RunCtrl, uint16_t FreeCtrl);
+void        Init_TimeSlave(void);
 
 void        Save_OxyUpperLower(uint16_t Upper, uint16_t Lower);
 void        Init_OxyUpperLower(void);

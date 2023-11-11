@@ -11,7 +11,6 @@
 #include "iwdg.h"
 /*====================Function Static===================*/
 static uint8_t fevent_ctrl_oxy_entry(uint8_t event);
-static uint8_t fevent_ctrl_oxy_gettick(uint8_t event);
 static uint8_t fevent_ctrl_oxy_iwdg(uint8_t event);
 static uint8_t fevent_send_slave_cycle(uint8_t event);
 static uint8_t fevent_ctrl_oxy_wait_calib(uint8_t event);
@@ -20,11 +19,11 @@ static uint8_t fevent_ctrl_oxy_log_tsvh(uint8_t event);
 static uint8_t fevent_ctrl_oxy_pw_detect(uint8_t event);
 static uint8_t fevent_ctrl_oxy_state_slave(uint8_t event);
 static uint8_t fevent_ctrl_oxy_warning(uint8_t event);
+static uint8_t fevent_ctrl_oxy_freq_notify(uint8_t event);
 /*========================Struct========================*/
 sEvent_struct               sEventAppCtrlOxy[]=
 {
   {_EVENT_CTRL_OXY_ENTRY,           1, 5, 10000,        fevent_ctrl_oxy_entry},
-  {_EVENT_CTRL_OXY_GETTICK,         0, 5, 0,            fevent_ctrl_oxy_gettick},
   {_EVENT_CTRL_OXY_IWDG,            1, 5, 500,          fevent_ctrl_oxy_iwdg},
   
   {_EVENT_SEND_SLAVE_CYCLE,         0, 5, 1000,         fevent_send_slave_cycle},
@@ -40,47 +39,32 @@ sEvent_struct               sEventAppCtrlOxy[]=
   {_EVENT_CTRL_OXY_STATE_SLAVE,     0, 5, 500,          fevent_ctrl_oxy_state_slave},
   
   {_EVENT_CTRL_OXY_WARNING,         0, 5, 5,            fevent_ctrl_oxy_warning},
+  
+  {_EVENT_CTRL_OXY_FREQ_NOTIFY,     0, 5, 5,            fevent_ctrl_oxy_freq_notify},
 };
 uint8_t     aStateOxy[5]={0};
-
-Struct_Param_Measure            sParamMeasure= {0};
-
-Struct_Time_Ctrl_Oxy            sTimeCtrlOxy = {0};
-Struct_State_Ctrl_Oxy           sStateCtrlOxy= 
+Struct_StateCtrlOxy             sStateCtrlOxy= 
 {
-  .StatePower = _POWER_ON,
   .aStateOxy = aStateOxy,
 };
 
-Struct_Param_Ctrl_Oxy           sParamCtrlOxy= {OXY_UPPER_DEFAULT, OXY_LOWER_DEFAULT, TIMEDELAY_DEFAULT, TIMECHANGE_DEFAULT};
+Struct_ParamMeasure             sParamMeasure= {0};
+Struct_TimeSlave                sTimeSlave = {0};
+Struct_ParamCtrlOxy             sParamCtrlOxy= {0};
+
 Struct_Queue_Type               qCtrlOxyRun;
 Struct_Queue_Type               qCtrlOxyFree;
+
 uint8_t                         qReadRun[10];
 uint8_t                         qReadFree[10];
-/*================= Function Callback Gettick =================*/
-__weak void Irq_Second_Callback(void)
-{
-  
-}
 
 /*=======================Function Hanlde=================*/
 static uint8_t fevent_ctrl_oxy_entry(uint8_t event)
 {
+    sStateCtrlOxy.StateDCU = 1;
     fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_STATE_SLAVE);
     fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WARNING);
-    return 1;
-}
-
-static uint8_t fevent_ctrl_oxy_gettick(uint8_t event)
-{
-    static uint32_t Check_Gettick = 0;
-    if(HAL_GetTick() / 100 != Check_Gettick)
-    {
-        Check_Gettick = HAL_GetTick()/100;
-        Irq_Second_Callback();
-    }
-
-    fevent_enable(sEventAppCtrlOxy, event);
+    fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_FREQ_NOTIFY);
     return 1;
 }
 
@@ -105,7 +89,7 @@ static uint8_t fevent_send_slave_cycle(uint8_t event)
         aData[Length++] = 'u';
         aData[Length++] = 'n';
         aData[Length++] = '=';
-        Convert_Var_Packet_Integer(aData, &Length, sTimeCtrlOxy.RunCtrl);
+        Convert_Var_Packet_Integer(aData, &Length, sTimeSlave.RunCtrl);
         stateSend = 1;
         fevent_enable(sEventAppCtrlOxy, event);
     }
@@ -119,7 +103,7 @@ static uint8_t fevent_send_slave_cycle(uint8_t event)
         aData[Length++] = 'e';
         aData[Length++] = 'e';
         aData[Length++] = '=';
-        Convert_Var_Packet_Integer(aData, &Length, sTimeCtrlOxy.FreeCtrl);
+        Convert_Var_Packet_Integer(aData, &Length, sTimeSlave.FreeCtrl);
         stateSend = 0;
     }
     HAL_GPIO_WritePin(RS485_TXDE_GPIO_Port, RS485_TXDE_Pin, GPIO_PIN_SET);
@@ -138,7 +122,7 @@ static uint8_t fevent_ctrl_oxy_wait_calib(uint8_t event)
     {
         sMenuState.CalibSensor = _CALIB_ERROR;
         countstate = 0;
-        KindTrans485 = _TRANSMIT_OPERA;
+        sKindMode485.Trans = _RS485_OPERA_OXY;
         return 1;
     }
     else
@@ -146,7 +130,7 @@ static uint8_t fevent_ctrl_oxy_wait_calib(uint8_t event)
         if(sMenuState.CalibSensor == _CALIB_COMPLETE)   
         {
           countstate = 0;
-          KindTrans485 = _TRANSMIT_OPERA;
+          sKindMode485.Trans = _RS485_OPERA_OXY;
           return 1;
         }
         else    fevent_enable(sEventAppCtrlOxy, event);
@@ -198,14 +182,7 @@ static uint8_t fevent_ctrl_oxy_pw_detect(uint8_t event)
     {
         sStateCtrlOxy.StatePower = StatePowerPresent;
         if(StatePowerPresent == _POWER_ON)  
-        {
           DCU_Notify_Server(_RESPOND_NOTIFY_POWER_ON);
-        }
-        else                                
-        {
-          DCU_Notify_Server(_RESPOND_NOTIFY_POWER_OFF);
-        }
-        AppCtrlOxy_Log_Data_TSVH();
     }
     
     StatePowerBefore = StatePowerPresent;
@@ -216,19 +193,16 @@ static uint8_t fevent_ctrl_oxy_pw_detect(uint8_t event)
 static uint8_t fevent_ctrl_oxy_state_slave(uint8_t event)
 {
     static uint8_t StateSlaveBefore   = _OXY_CONNECT;
-    if(sStateCtrlOxy.StateSensor != StateSlaveBefore)
+    if(sStateCtrlOxy.StateSensorOxy != StateSlaveBefore)
     {
         if(sStateCtrlOxy.StatePower == _POWER_ON)
         {
-            if(sStateCtrlOxy.StateSensor == _OXY_DISCONNECT)  
-                DCU_Notify_Server(_RESPOND_NOTIFY_SLAVE_DISCONNECT);
-            else                                
+            if(sStateCtrlOxy.StateSensorOxy == _OXY_CONNECT)                            
                 DCU_Notify_Server(_RESPOND_NOTIFY_SLAVE_CONNECT);
-            AppCtrlOxy_Log_Data_TSVH();
         }
     }
     
-    StateSlaveBefore = sStateCtrlOxy.StateSensor;
+    StateSlaveBefore = sStateCtrlOxy.StateSensorOxy;
     fevent_enable(sEventAppCtrlOxy, event);
     return 1;
 }
@@ -241,10 +215,9 @@ static uint8_t fevent_ctrl_oxy_warning(uint8_t event)
     {
       if(HAL_GetTick() - Gettick_Warning > sParamCtrlOxy.TimeWarning * 60000)
       {
-        if(sStateCtrlOxy.StateSensor == _OXY_CONNECT && sStateCtrlOxy.StatePower == _POWER_ON)
+        if(sStateCtrlOxy.StateSensorOxy == _OXY_CONNECT && sStateCtrlOxy.StatePower == _POWER_ON)
         {
-            DCU_Notify_Server(_RESPOND_NOTIFY_OXY_LOW);
-            AppCtrlOxy_Log_Data_TSVH();
+            sStateCtrlOxy.StateOxyLower = _OXY_LOW;
         }
         OnOff_Warning(ON_RELAY);
         Gettick_Warning = HAL_GetTick();
@@ -252,6 +225,7 @@ static uint8_t fevent_ctrl_oxy_warning(uint8_t event)
     }
     else
     {
+        sStateCtrlOxy.StateOxyLower = _OXY_BALANCE;
         Gettick_Warning = HAL_GetTick();
         OnOff_Warning(OFF_RELAY);
     }
@@ -260,7 +234,82 @@ static uint8_t fevent_ctrl_oxy_warning(uint8_t event)
     return 1;
 }
 
-/*========================Function Handle====================*/
+static uint8_t fevent_ctrl_oxy_freq_notify(uint8_t event)
+{
+    static uint32_t Gettick_Notify = 0;
+    static uint8_t Send_Power = 0;
+    static uint8_t Send_Sensor = 0;
+    static uint8_t Send_OxyLow = 0;
+    
+    if(sStateCtrlOxy.StatePower == _POWER_OFF)  
+    {
+        if(Send_Power == 0)
+        {
+            DCU_Notify_Server(_RESPOND_NOTIFY_POWER_OFF);
+            Send_Power = 1;
+            Gettick_Notify = HAL_GetTick();
+        }
+        else
+        {
+            if(HAL_GetTick() - Gettick_Notify > FREQ_SEND_NOTIFY * 60000)
+            {
+                DCU_Notify_Server(_RESPOND_NOTIFY_POWER_OFF);
+                Gettick_Notify = HAL_GetTick();
+            }
+        }
+        Send_Sensor = 0;
+        Send_OxyLow = 0;
+    }
+    else if(sStateCtrlOxy.StateSensorOxy == _OXY_DISCONNECT)
+    {
+        if(Send_Sensor == 0)
+        {
+            DCU_Notify_Server(_RESPOND_NOTIFY_SLAVE_DISCONNECT);
+            Send_Sensor = 1;
+            Gettick_Notify = HAL_GetTick();
+        }
+        else
+        {
+            if(HAL_GetTick() - Gettick_Notify > FREQ_SEND_NOTIFY * 60000)
+            {
+                DCU_Notify_Server(_RESPOND_NOTIFY_SLAVE_DISCONNECT);
+                Gettick_Notify = HAL_GetTick();
+            }
+        }
+        Send_Power = 0;
+        Send_OxyLow = 0;
+    }
+    else if(sStateCtrlOxy.StateOxyLower == _OXY_LOW)
+    {
+        if(Send_OxyLow == 0)
+        {
+            DCU_Notify_Server(_RESPOND_NOTIFY_OXY_LOW);
+            Send_OxyLow = 1;
+            Gettick_Notify = HAL_GetTick();
+        }
+        else
+        {
+            if(HAL_GetTick() - Gettick_Notify > FREQ_SEND_NOTIFY * 60000)
+            {
+                DCU_Notify_Server(_RESPOND_NOTIFY_OXY_LOW);
+                Gettick_Notify = HAL_GetTick();
+            }
+        }
+        Send_Power = 0;
+        Send_Sensor = 0;
+    }
+    else
+    {
+        Send_Power = 0;
+        Send_Sensor = 0;
+        Send_OxyLow = 0;
+    }
+    
+    fevent_enable(sEventAppCtrlOxy, event);
+    return 1;
+}
+
+/*========================Function Handle Control Oxy====================*/
 void Handle_Machine_Auto(void)
 {
     static uint32_t Gettick_Delay = 0;
@@ -363,6 +412,11 @@ void Control_Oxy(uint8_t KindOxy, uint8_t State)
     }
 }
 
+void OnOff_Warning(uint8_t State)
+{
+    if(sStatusRelay.RL5 != State)
+    ControlRelay(RELAY_5, State, _RL_DEBUG);
+}
 /*===================================================================*/
 
 //void Ctrl_Oxy1(void)
@@ -409,7 +463,7 @@ void Control_Oxy(uint8_t KindOxy, uint8_t State)
 //    }
 //}
 
-/*========================== Function Save Init Param =========================*/
+/*================== Save and Init oxy upper and lower =================*/
 
 void        Save_OxyUpperLower(uint16_t Upper, uint16_t Lower)
 {
@@ -431,7 +485,7 @@ void        Init_OxyUpperLower(void)
 {
     if(*(__IO uint8_t*)(ADDR_OXY_THRESH_SETTING) == BYTE_TEMP_FIRST)
     {
-        sParamCtrlOxy.Oxy_Lower  = *(__IO uint8_t*)(ADDR_OXY_THRESH_SETTING+4) ;
+        sParamCtrlOxy.Oxy_Lower  = *(__IO uint8_t*)(ADDR_OXY_THRESH_SETTING+4);
         sParamCtrlOxy.Oxy_Lower  = sParamCtrlOxy.Oxy_Lower << 8;
         sParamCtrlOxy.Oxy_Lower |= *(__IO uint8_t*)(ADDR_OXY_THRESH_SETTING+5);
         
@@ -439,10 +493,16 @@ void        Init_OxyUpperLower(void)
         sParamCtrlOxy.Oxy_Upper = sParamCtrlOxy.Oxy_Upper << 8;
         sParamCtrlOxy.Oxy_Upper |= *(__IO uint8_t*)(ADDR_OXY_THRESH_SETTING+3);
     }
+    else
+    {
+        sParamCtrlOxy.Oxy_Lower = OXY_LOWER_DEFAULT;
+        sParamCtrlOxy.Oxy_Upper = OXY_UPPER_DEFAULT;
+    }
     Stamp_Menu_Exit();
 }
 
-void        Save_TimeCtrl(uint16_t TimeDelay, uint16_t TimeChange, uint16_t TimeWarning)
+/*======================Save and Init time control oxy==================*/
+void        Save_TimeCtrlOxy(uint16_t TimeDelay, uint16_t TimeChange, uint16_t TimeWarning)
 {
     uint8_t aData[8] = {0};
     uint8_t length = 0;
@@ -464,7 +524,7 @@ void        Save_TimeCtrl(uint16_t TimeDelay, uint16_t TimeChange, uint16_t Time
     Stamp_Menu_Exit();
 }
 
-void        Init_TimeDelay(void)
+void        Init_TimeCtrlOxy(void)
 {
     if(*(__IO uint8_t*)(ADDR_TIME_CONTROL_SETTING) == BYTE_TEMP_FIRST)
     {
@@ -480,57 +540,59 @@ void        Init_TimeDelay(void)
         sParamCtrlOxy.TimeWarning  = sParamCtrlOxy.TimeWarning << 8;
         sParamCtrlOxy.TimeWarning |= *(__IO uint8_t*)(ADDR_TIME_CONTROL_SETTING+7);
     }
-    if(sParamCtrlOxy.TimeDelay < TIMEDELAY_MIN || sParamCtrlOxy.TimeDelay > TIMEDELAY_MAX)
-      sParamCtrlOxy.TimeDelay = TIMEDELAY_DEFAULT;
-    
-    if(sParamCtrlOxy.TimeChange == 0) sParamCtrlOxy.TimeChange = TIMECHANGE_DEFAULT;
-    if(sParamCtrlOxy.TimeWarning == 0) sParamCtrlOxy.TimeWarning = TIMEWARNING_DEFAULT;
+    else
+    {
+        sParamCtrlOxy.TimeDelay = TIMEDELAY_DEFAULT;
+        sParamCtrlOxy.TimeChange = TIMECHANGE_DEFAULT;
+        sParamCtrlOxy.TimeWarning = TIMEWARNING_DEFAULT;
+    }
     Stamp_Menu_Exit();
 }
 
-void Save_Time_Ctrl_Flash(uint16_t RunCtrl, uint16_t FreeCtrl)
+/*=====================Save and Init time slave=================*/
+void Save_TimeSlave(uint16_t RunCtrl, uint16_t FreeCtrl)
 {
-    uint8_t aData[8] = {0};
+    uint8_t aData[4] = {0};
     uint8_t length = 0;
     
-    sTimeCtrlOxy.RunCtrl = RunCtrl;
-    sTimeCtrlOxy.FreeCtrl = FreeCtrl;
-    aData[length++] = sTimeCtrlOxy.RunCtrl >> 8;
-    aData[length++] = sTimeCtrlOxy.RunCtrl;
+    sTimeSlave.RunCtrl = RunCtrl;
+    sTimeSlave.FreeCtrl = FreeCtrl;
+    aData[length++] = sTimeSlave.RunCtrl >> 8;
+    aData[length++] = sTimeSlave.RunCtrl;
     
-    aData[length++] = sTimeCtrlOxy.FreeCtrl >> 8;
-    aData[length++] = sTimeCtrlOxy.FreeCtrl;
+    aData[length++] = sTimeSlave.FreeCtrl >> 8;
+    aData[length++] = sTimeSlave.FreeCtrl;
     Save_Array(ADDR_CTRL_OXY_RUN_FREE, aData, length);
     Stamp_Menu_Exit();
 }
 
-void Init_Time_Ctrl_Oxy(void)
+void Init_TimeSlave(void)
 {
     if(*(__IO uint8_t*)(ADDR_CTRL_OXY_RUN_FREE) == BYTE_TEMP_FIRST)
     {
-        sTimeCtrlOxy.FreeCtrl  = *(__IO uint8_t*)(ADDR_CTRL_OXY_RUN_FREE+4) ;
-        sTimeCtrlOxy.FreeCtrl  = sTimeCtrlOxy.FreeCtrl << 8;
-        sTimeCtrlOxy.FreeCtrl |= *(__IO uint8_t*)(ADDR_CTRL_OXY_RUN_FREE+5);
+        sTimeSlave.FreeCtrl  = *(__IO uint8_t*)(ADDR_CTRL_OXY_RUN_FREE+4) ;
+        sTimeSlave.FreeCtrl  = sTimeSlave.FreeCtrl << 8;
+        sTimeSlave.FreeCtrl |= *(__IO uint8_t*)(ADDR_CTRL_OXY_RUN_FREE+5);
         
-        sTimeCtrlOxy.RunCtrl = *(__IO uint8_t*)(ADDR_CTRL_OXY_RUN_FREE+2);
-        sTimeCtrlOxy.RunCtrl = sTimeCtrlOxy.RunCtrl << 8;
-        sTimeCtrlOxy.RunCtrl = *(__IO uint8_t*)(ADDR_CTRL_OXY_RUN_FREE+3);
+        sTimeSlave.RunCtrl = *(__IO uint8_t*)(ADDR_CTRL_OXY_RUN_FREE+2);
+        sTimeSlave.RunCtrl = sTimeSlave.RunCtrl << 8;
+        sTimeSlave.RunCtrl = *(__IO uint8_t*)(ADDR_CTRL_OXY_RUN_FREE+3);
         
-        if(sTimeCtrlOxy.FreeCtrl < TIME_MIN)
-           sTimeCtrlOxy.FreeCtrl = FREE_OXY_DEFAULT;
+        if(sTimeSlave.FreeCtrl < TIME_MIN)
+           sTimeSlave.FreeCtrl = FREE_OXY_DEFAULT;
         
-        if(sTimeCtrlOxy.RunCtrl > TIME_MAX)
-           sTimeCtrlOxy.RunCtrl = RUN_OXY_DEFAULT;
+        if(sTimeSlave.RunCtrl > TIME_MAX)
+           sTimeSlave.RunCtrl = RUN_OXY_DEFAULT;
     }
     else
     {
-        sTimeCtrlOxy.FreeCtrl = FREE_OXY_DEFAULT;
-        sTimeCtrlOxy.RunCtrl = RUN_OXY_DEFAULT;
+        sTimeSlave.FreeCtrl = FREE_OXY_DEFAULT;
+        sTimeSlave.RunCtrl = RUN_OXY_DEFAULT;
     }
     Stamp_Menu_Exit();
 }
 
-/*=========================== Function Handle ======================*/
+/*===========================User queue control oxy ======================*/
 void QueueRun_Change_QueueFree(void)
 {
     uint8_t LengthFree = 0;
@@ -577,12 +639,22 @@ void Init_QueueCtrlOxy(void)
     Init_StateOxy();
 }
 
-void OnOff_Warning(uint8_t State)
+/*========================Save and Init State oxy=====================*/
+void Save_StateOxy(void)
 {
-    if(sStatusRelay.RL5 != State)
-    ControlRelay(RELAY_5, State, _RL_DEBUG);
-}
+    if(sStateCtrlOxy.StateMachine == _MACHINE_AUTO)
+    {
+        uint8_t aData[8] = {0};
+        uint8_t length = 0;
+        
+        for(uint8_t i = 0; i < _OXY_END; i++)
+        {
+            aData[length++] = aStateOxy[i];
+        }
 
+        Save_Array(ADDR_INIT_STATE_MACHINE, aData, length);  
+    }
+}
 void Init_StateOxy(void)
 {
     if(*(__IO uint8_t*)(ADDR_INIT_STATE_MACHINE) == BYTE_TEMP_FIRST)
@@ -606,28 +678,14 @@ void Init_StateOxy(void)
             Control_Oxy(i, _ON_OXY);
         }
     }
+    sStateCtrlOxy.StatePower = HAL_GPIO_ReadPin(PW_Detect_GPIO_Port, PW_Detect_Pin);
 }
-
-void Save_StateOxy(void)
-{
-    if(sStateCtrlOxy.StateMachine == _MACHINE_AUTO)
-    {
-        uint8_t aData[8] = {0};
-        uint8_t length = 0;
-        
-        for(uint8_t i = 0; i < _OXY_END; i++)
-        {
-            aData[length++] = aStateOxy[i];
-        }
-
-        Save_Array(ADDR_INIT_STATE_MACHINE, aData, length);  
-    }
-}
-
 
 /*======================== Function Handle ========================*/
 
-
+/*
+    @brief  Log Data TSVH
+*/
 void AppCtrlOxy_Log_Data_TSVH (void)
 {
     uint8_t     aMessData[256] = {0};
@@ -642,6 +700,9 @@ void AppCtrlOxy_Log_Data_TSVH (void)
 #endif
 }
 
+/*
+    @brief  Packet TSVH
+*/
 uint8_t AppCtrlOxy_Packet_TSVH (uint8_t *pData)
 {
     uint16_t    length = 0;
@@ -651,37 +712,41 @@ uint8_t AppCtrlOxy_Packet_TSVH (uint8_t *pData)
     //----------sTime--------------------
     AppComm_SV_Protocol_Packet_Data(pData, &length, OBIS_TIME_DEVICE, &sRTC, 6, 0xAA);
     
-    //---------- State Power ------------
+    if(sStateCtrlOxy.StateDCU == 1)
+    {
+        //---------- State Power ------------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_STATE_POWER, &sStateCtrlOxy.StatePower, 1, 0xAA);
+
+        //-------- State Connect Sensor Oxy----
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_STATE_SENSOR_OXY, &sStateCtrlOxy.StateSensorOxy, 1, 0xAA);
     
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_STATE_POWER, &sStateCtrlOxy.StatePower, 1, 0xAA);
-    
-    //---------- State Machine-----------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_STATE_MACHINE, &sStateCtrlOxy.StateMachine, 1, 0xAA);
-    
-    //---------- State Oxy --------------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_STATE_OXY, &(*sStateCtrlOxy.aStateOxy), 4, 0xAA);
-    
-    //---------- State Connect Sensor----
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_CONNECT_SENSOR, &sStateCtrlOxy.StateSensor, 1, 0xAA);
-    
-    //----------  Oxy Upper --------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_UPPER, &sParamCtrlOxy.Oxy_Upper, 2, 0xFE);
-    
-    //----------  Oxy Lower --------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_LOWER, &sParamCtrlOxy.Oxy_Lower, 2, 0xFE);
-    
-    //----------  Oxy mg/L ---------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_MG_L, &sParamMeasure.Oxy_Mg_L, 2, 0xFE);
-    
-    //----------  Oxy Percent ------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_PERCENT, &sParamMeasure.Oxy_Percent, 2, 0xFE);
-    
-    //----------  Temperature ------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_TEMPERATURE, &sParamMeasure.Temp, 2, 0xFE);
-    
-    //----------  Salinity ------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_SALINITY, &sParamMeasure.Salinity, 2, 0x00);
-    
+        //-------- State Connect Sensor pH----
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_STATE_SENSOR_PH, &sStateCtrlOxy.StateSensorPH, 1, 0xAA);
+        
+        //---------- State Machine-----------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_STATE_MACHINE, &sStateCtrlOxy.StateMachine, 1, 0xAA);
+        
+        //----------  Oxy Upper --------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_UPPER, &sParamCtrlOxy.Oxy_Upper, 2, 0xFE);
+        
+        //----------  Oxy Lower --------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_LOWER, &sParamCtrlOxy.Oxy_Lower, 2, 0xFE);
+        
+        //----------  Oxy mg/L ---------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_MG_L, &sParamMeasure.Oxy_Mg_L, 2, 0xFE);
+        
+        //----------  Oxy Percent ------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_PERCENT, &sParamMeasure.Oxy_Percent, 2, 0xFE);
+        
+        //----------  Temperature ------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_TEMPERATURE, &sParamMeasure.Temp, 2, 0xFE);
+        
+        //----------  Salinity ------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_SALINITY, &sParamMeasure.Salinity, 2, 0xFE);
+        
+        //----------  pH_Water ------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_PH_WATER, &sParamMeasure.pH_Water, 2, 0xFE);
+    }
     //----------Tan suat--------------------
     AppComm_SV_Protocol_Packet_Data(pData, &length, OBIS_FREQ_SEND, &sFreqInfor.FreqSendUnitMin_u32, 2, 0x00);
     // caculator crc
@@ -694,11 +759,15 @@ uint8_t AppCtrlOxy_Packet_TSVH (uint8_t *pData)
     return length;
 }
 
+/*
+    @brief  Packet Data
+*/
 void AppCtrlOxy_Packet_Data (uint8_t *pTarget, uint16_t *LenTarget, uint8_t Obis, 
                              void *pData, uint8_t LenData, uint8_t Scale)
 {
-    uint16_t Pos = *LenTarget, i= 0;
-    uint8_t *TempU8;
+    uint16_t Pos = *LenTarget;
+//    uint16_t i= 0;
+//    uint8_t *TempU8;
     
     if (LenData == 0)
         return;
@@ -709,8 +778,9 @@ void AppCtrlOxy_Packet_Data (uint8_t *pTarget, uint16_t *LenTarget, uint8_t Obis
     switch (Obis)
     {
         case OBIS_ENVI_STATE_POWER:
+        case OBIS_ENVI_STATE_SENSOR_OXY:
+        case OBIS_ENVI_STATE_SENSOR_PH:
         case OBIS_ENVI_STATE_MACHINE:
-        case OBIS_ENVI_CONNECT_SENSOR:
         case OBIS_ENVI_OXY_UPPER:
         case OBIS_ENVI_OXY_LOWER:
         case OBIS_ENVI_OXY_MG_L:
@@ -719,17 +789,18 @@ void AppCtrlOxy_Packet_Data (uint8_t *pTarget, uint16_t *LenTarget, uint8_t Obis
         case OBIS_ENVI_SALINITY:
         case OBIS_ENVI_NOTIFY:
         case OBIS_ENVI_ID_SERVER:
+        case OBIS_ENVI_PH_WATER:
             AppComm_Sub_Packet_Integer(pTarget, &Pos, pData, LenData);
             //
             if (Scale != 0xAA)
                 pTarget[Pos++] = Scale;
             break;
             
-        case OBIS_ENVI_STATE_OXY:
-            TempU8 = (uint8_t *) pData;
-            for (i = 0; i < LenData; i++)
-                pTarget[Pos++] = *(TempU8 + i);
-            break; 
+//        case OBIS_ENVI_STATE_OXY:
+//            TempU8 = (uint8_t *) pData;
+//            for (i = 0; i < LenData; i++)
+//                pTarget[Pos++] = *(TempU8 + i);
+//            break; 
             
         default:
             break;
@@ -738,6 +809,9 @@ void AppCtrlOxy_Packet_Data (uint8_t *pTarget, uint16_t *LenTarget, uint8_t Obis
     *LenTarget = Pos ;
 }
 
+/*
+    @brief  Compensation Salinity
+*/
 void Compensation_Salinity(uint16_t *Oxy_Concentration, uint16_t Sal_x100, uint16_t Temp_x100)
 {
 	// Calcutate the oxygen concentration in 4500- OXYGEN(DISSOLVED), pape 4/8
@@ -751,6 +825,9 @@ void Compensation_Salinity(uint16_t *Oxy_Concentration, uint16_t Sal_x100, uint1
 		*Oxy_Concentration = (uint16_t)(*Oxy_Concentration * (Factor));
 }
 
+/*
+    @brief  Respond Notify Server
+*/
 void DCU_Notify_Server(uint8_t KindNotify)
 {
     uint8_t     aData[50]={0};
@@ -773,6 +850,9 @@ void DCU_Notify_Server(uint8_t KindNotify)
     DCU_Respond (_AT_REQUEST_SERVER, aData, length, 1);
 }
 
+/*
+    @brief  Respond ID Server
+*/
 void DCU_Respond_ID_Server(uint32_t ID_Server)
 {
     uint8_t     aData[50]={0};
@@ -794,55 +874,13 @@ void DCU_Respond_ID_Server(uint32_t ID_Server)
     
     DCU_Respond (_AT_REQUEST_SERVER, aData, length, 1);
 }
-/*======================= Function Handle ====================*/
-/*
-    Chuyen Scale sang Uint
-*/
-uint32_t Calculator_Scale(uint8_t Scale)
-{
-    /*
-    Scale
-    00->1 
-    FF->0.1 
-    FE->0.01 
-    FD->0.001  
-    FC->0.0001  
-    FB->0.00001 
-    */
-  
-    if(Scale == 0x00) return 1;
-    else if(Scale == 0xFF) return 10;
-    else if(Scale == 0xFE) return 100;
-    else if(Scale == 0xFD) return 1000;
-    else if(Scale == 0xFC) return 10000;
-    else if(Scale == 0xFB) return 100000;
-    
-    return 1;
-}
 
-/*
-    @brief  Tinh tan so theo Scale
-    @retval Tan so nap vao bien tan
-*/
-uint32_t Calculator_Value_Scale(uint32_t Value, uint8_t Scale, uint8_t Scale_Default)
-{
-      /*
-    Scale
-    00->1 
-    FF->0.1 
-    FE->0.01 
-    FD->0.001  
-    FC->0.0001  
-    FB->0.00001 
-    */
-  uint64_t Stamp_Scale = Value * Calculator_Scale(Scale_Default);
-  return Stamp_Scale/Calculator_Scale(Scale);
-}
+/*======================= Function Handle ====================*/
 
 void Init_AppCtrlOxy(void)
 {
-    Init_Time_Ctrl_Oxy();
-    Init_TimeDelay();
+    Init_TimeSlave();
+    Init_TimeCtrlOxy();
     Init_OxyUpperLower();
     Init_QueueCtrlOxy();
 }

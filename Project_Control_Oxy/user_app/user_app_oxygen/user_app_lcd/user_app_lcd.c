@@ -22,25 +22,25 @@ LCD_Char_Display                    oLCD_C_Main_1[]=
 {
   {_LCD_C_MAIN_1_ID,                0,2,8,          (char*)"ID  :"},
   {_LCD_C_MAIN_1_ID_VALUE,          0,2,40,         (char*)aDCU_ID},
-  {_LCD_C_MAIN_1_TEMP,              0,3,8,          (char*)"Temp:        C"},
-  {_LCD_C_MAIN_1_OXY_1,             0,4,8,          (char*)"Oxy :       mg/L"},
-  {_LCD_C_MAIN_1_OXY_2,             0,5,80,         (char*)"%"},
-  {_LCD_C_MAIN_1_STATE,             0,6,8,          (char*)" Oxy1|Oxy2|Oxy3|Oxy4"},
-  {_LCD_C_MAIN_1_STATE_OXY_1_ON,    0,7,14,         (char*)"  ON|"},
-  {_LCD_C_MAIN_1_STATE_OXY_1_OFF,   0,7,14,         (char*)" OFF|"},
-  {_LCD_C_MAIN_1_STATE_OXY_2_ON,    0,7,44,         (char*)"  ON|"},
-  {_LCD_C_MAIN_1_STATE_OXY_2_OFF,   0,7,44,         (char*)" OFF|"},
-  {_LCD_C_MAIN_1_STATE_OXY_3_ON,    0,7,74,         (char*)"  ON|"},
-  {_LCD_C_MAIN_1_STATE_OXY_3_OFF,   0,7,74,         (char*)" OFF|"},
-  {_LCD_C_MAIN_1_STATE_OXY_4_ON,    0,7,104,        (char*)"  ON"},
-  {_LCD_C_MAIN_1_STATE_OXY_4_OFF,   0,7,104,        (char*)" OFF"},
+  {_LCD_C_MAIN_1_PH_WATER,          0,3,8,          (char*)"PoH :        pH"},
+  {_LCD_C_MAIN_1_TEMP,              0,4,8,          (char*)"Temp:         C"},
+  {_LCD_C_MAIN_1_OXY_1,             0,5,8,          (char*)"Oxy :        mg/L"},
+  {_LCD_C_MAIN_1_OXY_2,             0,6,86,         (char*)"%"},
+  {_LCD_C_MAIN_1_STATE_OXY_1_ON,    0,7,7,          (char*)"ON "},
+  {_LCD_C_MAIN_1_STATE_OXY_1_OFF,   0,7,7,          (char*)"OFF"},
+  {_LCD_C_MAIN_1_STATE_OXY_2_ON,    0,7,40,         (char*)"ON "},
+  {_LCD_C_MAIN_1_STATE_OXY_2_OFF,   0,7,40,         (char*)"OFF"},
+  {_LCD_C_MAIN_1_STATE_OXY_3_ON,    0,7,75,         (char*)"ON "},
+  {_LCD_C_MAIN_1_STATE_OXY_3_OFF,   0,7,75,         (char*)"OFF"},
+  {_LCD_C_MAIN_1_STATE_OXY_4_ON,    0,7,109,        (char*)"ON "},
+  {_LCD_C_MAIN_1_STATE_OXY_4_OFF,   0,7,109,        (char*)"OFF"},
 };
-
 LCD_Uint_Display                    oLCD_U_Main_1[]=
 {
-  {_LCD_U_MAIN_1_TEMP,              0,3,42,          &sParamMeasure.Temp},
-  {_LCD_U_MAIN_1_OXY_MG_L,          0,4,42,          &sParamMeasure.Oxy_Mg_L},
-  {_LCD_U_MAIN_1_OXY_PERCENT,       0,5,42,          &sParamMeasure.Oxy_Percent},
+  {_LCD_U_MAIN_1_PH_WATER,          0,3,48,          &sParamMeasure.pH_Water},
+  {_LCD_U_MAIN_1_TEMP,              0,4,48,          &sParamMeasure.Temp},
+  {_LCD_U_MAIN_1_OXY_MG_L,          0,5,48,          &sParamMeasure.Oxy_Mg_L},
+  {_LCD_U_MAIN_1_OXY_PERCENT,       0,6,48,          &sParamMeasure.Oxy_Percent},
 };
 
 /*===== Object LCD =============== MAIN_Screen 2 =================*/
@@ -50,16 +50,18 @@ LCD_Char_Display                    oLCD_C_Main_2[]=
   {_LCD_C_MAIN_2_ID_VALUE,          0,2,40,         (char*)aDCU_ID},
   {_LCD_C_MAIN_2_OXY_UPPER,         0,3,8,          (char*)"Oxy Up  :      mg/L"},
   {_LCD_C_MAIN_2_OXY_LOWER,         0,4,8,          (char*)"Oxy Low :      mg/L"},
-  {_LCD_C_MAIN_2_SALINITY,          0,5,8,          (char*)"Salinity:      Ppt"},
-  {_LCD_C_MAIN_2_STATE,             0,6,8,          (char*)" Oxy1|Oxy2|Oxy3|Oxy4"},
-  {_LCD_C_MAIN_2_STATE_OXY_1_ON,    0,7,14,         (char*)"  ON|"},
-  {_LCD_C_MAIN_2_STATE_OXY_1_OFF,   0,7,14,         (char*)" OFF|"},
-  {_LCD_C_MAIN_2_STATE_OXY_2_ON,    0,7,44,         (char*)"  ON|"},
-  {_LCD_C_MAIN_2_STATE_OXY_2_OFF,   0,7,44,         (char*)" OFF|"},
-  {_LCD_C_MAIN_2_STATE_OXY_3_ON,    0,7,74,         (char*)"  ON|"},
-  {_LCD_C_MAIN_2_STATE_OXY_3_OFF,   0,7,74,         (char*)" OFF|"},
-  {_LCD_C_MAIN_2_STATE_OXY_4_ON,    0,7,104,        (char*)"  ON"},
-  {_LCD_C_MAIN_2_STATE_OXY_4_OFF,   0,7,104,        (char*)" OFF"},
+  {_LCD_C_MAIN_2_SALINITY,          0,5,8,          (char*)"Salinity:      ppt"},
+  {_LCD_C_MAIN_2_TIME_DELAY,        0,6,8,          (char*)"Delay   :      Min"},
+  {_LCD_C_MAIN_2_TIME_WARNING,      0,7,8,          (char*)"Led_W   :      Min"},
+//  {_LCD_C_MAIN_2_STATE,             0,6,8,          (char*)" Oxy1|Oxy2|Oxy3|Oxy4"},
+//  {_LCD_C_MAIN_2_STATE_OXY_1_ON,    0,7,14,         (char*)"  ON|"},
+//  {_LCD_C_MAIN_2_STATE_OXY_1_OFF,   0,7,14,         (char*)" OFF|"},
+//  {_LCD_C_MAIN_2_STATE_OXY_2_ON,    0,7,44,         (char*)"  ON|"},
+//  {_LCD_C_MAIN_2_STATE_OXY_2_OFF,   0,7,44,         (char*)" OFF|"},
+//  {_LCD_C_MAIN_2_STATE_OXY_3_ON,    0,7,74,         (char*)"  ON|"},
+//  {_LCD_C_MAIN_2_STATE_OXY_3_OFF,   0,7,74,         (char*)" OFF|"},
+//  {_LCD_C_MAIN_2_STATE_OXY_4_ON,    0,7,104,        (char*)"  ON"},
+//  {_LCD_C_MAIN_2_STATE_OXY_4_OFF,   0,7,104,        (char*)" OFF"},
 };
 
 LCD_Uint_Display                    oLCD_U_Main_2[]=
@@ -67,6 +69,8 @@ LCD_Uint_Display                    oLCD_U_Main_2[]=
   {_LCD_U_MAIN_2_OXY_UPPER,         0,3,63,          &sParamCtrlOxy.Oxy_Upper},
   {_LCD_U_MAIN_2_OXY_LOWER,         0,4,63,          &sParamCtrlOxy.Oxy_Lower},
   {_LCD_U_MAIN_2_SALINITY,          0,5,63,          &sParamMeasure.Salinity},
+  {_LCD_U_MAIN_2_TIME_DELAY,        0,6,63,          &sParamCtrlOxy.TimeDelay},
+  {_LCD_U_MAIN_2_TIME_WARNING,      0,7,63,          &sParamCtrlOxy.TimeWarning},
 };
 
 /*===== Object LCD =============== Screen Login =================*/
@@ -89,12 +93,12 @@ LCD_Char_Display                    oLCD_C_Login[]=
 
 LCD_Uint_Display                    oLCD_U_Login[]=
 {
-  {_LCD_U_LOGIN_PASSWORD_1,        0,4,68,         (uint16_t*)&sPassword.Obj1},
-  {_LCD_U_LOGIN_PASSWORD_2,        0,4,78,         (uint16_t*)&sPassword.Obj2},
-  {_LCD_U_LOGIN_PASSWORD_3,        0,4,88,         (uint16_t*)&sPassword.Obj3},
-  {_LCD_U_LOGIN_PASSWORD_4,        0,4,98,         (uint16_t*)&sPassword.Obj4},
-  {_LCD_U_LOGIN_PASSWORD_5,        0,4,108,        (uint16_t*)&sPassword.Obj5},
-  {_LCD_U_LOGIN_PASSWORD_6,        0,4,118,        (uint16_t*)&sPassword.Obj6},
+  {_LCD_U_LOGIN_PASSWORD_1,        0,4,68,         (uint16_t*)&sMenuStamp.sPassLogin.Pass1},
+  {_LCD_U_LOGIN_PASSWORD_2,        0,4,78,         (uint16_t*)&sMenuStamp.sPassLogin.Pass2},
+  {_LCD_U_LOGIN_PASSWORD_3,        0,4,88,         (uint16_t*)&sMenuStamp.sPassLogin.Pass3},
+  {_LCD_U_LOGIN_PASSWORD_4,        0,4,98,         (uint16_t*)&sMenuStamp.sPassLogin.Pass4},
+  {_LCD_U_LOGIN_PASSWORD_5,        0,4,108,        (uint16_t*)&sMenuStamp.sPassLogin.Pass5},
+  {_LCD_U_LOGIN_PASSWORD_6,        0,4,118,        (uint16_t*)&sMenuStamp.sPassLogin.Pass6},
 };
 
 /*===== Object LCD ===============  Setting Main =================*/
@@ -105,7 +109,7 @@ LCD_Char_Display                    oLCD_C_Setting_Main[]=
   {_LCD_C_SETTING_MAIN_CALIB,          0,4,8,           (char*)"[2] Calib Sensor "},
   {_LCD_C_SETTING_MAIN_PARAMETER,      0,5,8,           (char*)"[3] Param Control"},
   {_LCD_C_SETTING_MAIN_PASSWORD,       0,6,8,           (char*)"[4] Change Password"},
-  {_LCD_C_SETTING_MAIN_PLEASE,         0,7,22,          (char*)"Please Choose!"}
+  {_LCD_C_SETTING_MAIN_PLEASE,         0,7,24,          (char*)"Please Choose!"}
 };
 
 /*===== Object LCD ================ Setting Calib ================*/
@@ -113,13 +117,13 @@ LCD_Char_Display                    oLCD_C_Setting_Calib[]=
 {
   {_LCD_C_SETTING_CALIB_TITLE,          0,2,12,          (char*)"SETTING CALIB OXY"},
   {_LCD_C_SETTING_CALIB_100_CALIB,      0,3,8,           (char*)"[1] Calib Oxy 100%"},
-  {_LCD_C_SETTING_CALIB_SALINITY,       0,4,8,           (char*)"[2] Sali:       Ppt"},
+  {_LCD_C_SETTING_CALIB_SALINITY,       0,4,8,           (char*)"[2] Sali:       ppt"},
   {_LCD_C_SETTING_CALIB_TEMPERATURE,    0,5,8,           (char*)"[3] Temp:        C"},
   {_LCD_C_SETTING_CALIB_RESET_CALIB,    0,6,8,           (char*)"[4] Reset Calib"},
-  {_LCD_C_SETTING_CALIB_PLEASE,         0,7,22,          (char*)"Please Choose!"},
-  {_LCD_C_SETTING_CALIB_SELECT,         0,7,22,          (char*)"Select Up/Down"},
-  {_LCD_C_SETTING_CALIB_ENTER_CALIB,    0,7,22,          (char*)"Enter to Calib"},
-  {_LCD_C_SETTING_CALIB_CONFIRM_RESET,  0,7,22,          (char*)"Enter to Reset"},
+  {_LCD_C_SETTING_CALIB_PLEASE,         0,7,24,          (char*)"Please Choose!"},
+  {_LCD_C_SETTING_CALIB_SELECT,         0,7,24,          (char*)"Select Up/Down"},
+  {_LCD_C_SETTING_CALIB_ENTER_CALIB,    0,7,24,          (char*)"Enter to Calib"},
+  {_LCD_C_SETTING_CALIB_CONFIRM_RESET,  0,7,24,          (char*)"Enter to Reset"},
 };
 
 LCD_Uint_Display                    oLCD_U_Setting_Calib[]=
@@ -134,27 +138,27 @@ LCD_Char_Display                    oLCD_C_Setting_Cycle[]=
   {_LCD_C_SETTING_CYCLE_RUN,            0,3,8,           (char*)"[1] Cycle:      s"},
   {_LCD_C_SETTING_CYCLE_FREE,           0,4,8,           (char*)"[2] Free :      s"},
   {_LCD_C_SETTING_CYCLE_SLAVE,          0,5,8,           (char*)"[3] Send Slave   "},
-  {_LCD_C_SETTING_CALIB_PLEASE,         0,7,22,          (char*)"Please Choose!"},
-  {_LCD_C_SETTING_CYCLE_CLICK,          0,7,22,          (char*)"Select Up/Down"},
-  {_LCD_C_SETTING_CYCLE_SUCCESS,        0,7,22,          (char*)" Send Success "},
+  {_LCD_C_SETTING_CYCLE_PLEASE,         0,7,24,          (char*)"Please Choose!"},
+  {_LCD_C_SETTING_CYCLE_CLICK,          0,7,24,          (char*)"Select Up/Down"},
+  {_LCD_C_SETTING_CYCLE_SUCCESS,        0,7,24,          (char*)" Send Success "},
 };
 
 LCD_Uint_Display                    oLCD_U_Setting_Cycle[]=
 {
-  {_LCD_U_SETTING_CYCLE_RUN,            0,3,70,         &sMenuStamp.TimeRunCtrlOxy},
-  {_LCD_U_SETTING_CYCLE_FREE,           0,4,70,         &sMenuStamp.TimeFreeCtrlOxy},
+  {_LCD_U_SETTING_CYCLE_RUN,            0,3,70,         &sMenuStamp.sTimeSlave.RunCtrl},
+  {_LCD_U_SETTING_CYCLE_FREE,           0,4,70,         &sMenuStamp.sTimeSlave.FreeCtrl},
 };
 
 /*===== Object LCD ================ Setting Salinity =================*/
 LCD_Char_Display                    oLCD_C_Setting_Parameter[]=
 {
-  {_LCD_C_SETTING_PARAMETER,             0,2,10,             (char*)"SETTING PARAMETER"},
-  {_LCD_C_SETTING_PARAMETER_OXY_UPPER,   0,3,8,              (char*)"[1] O_Up :     mg/L"},
-  {_LCD_C_SETTING_PARAMETER_OXY_LOWER,   0,4,8,              (char*)"[2] O_Low:     mg/L"},
-  {_LCD_C_SETTING_PARAMETER_TIME_DELAY,  0,5,8,              (char*)"[3] Delay:     Min"},
-  {_LCD_C_SETTING_PARAMETER_WARNING,     0,6,8,              (char*)"[4] Led_W:     Min"},
-  {_LCD_C_SETTING_PARAMETER_PLEASE,      0,7,22,             (char*)"Please Choose!"},
-  {_LCD_C_SETTING_PARAMETER_CLICK,       0,7,22,             (char*)"Select Up/Down"},
+  {_LCD_C_SETTING_PARAMETER,             0,2,10,            (char*)"SETTING PARAMETER"},
+  {_LCD_C_SETTING_PARAMETER_OXY_UPPER,   0,3,8,             (char*)"[1] O_Up :     mg/L"},
+  {_LCD_C_SETTING_PARAMETER_OXY_LOWER,   0,4,8,             (char*)"[2] O_Low:     mg/L"},
+  {_LCD_C_SETTING_PARAMETER_TIME_DELAY,  0,5,8,             (char*)"[3] Delay:     Min"},
+  {_LCD_C_SETTING_PARAMETER_WARNING,     0,6,8,             (char*)"[4] Led_W:     Min"},
+  {_LCD_C_SETTING_PARAMETER_PLEASE,      0,7,24,            (char*)"Please Choose!"},
+  {_LCD_C_SETTING_PARAMETER_CLICK,       0,7,24,            (char*)"Select Up/Down"},
 };
 
 LCD_Uint_Display                    oLCD_U_Setting_Parameter[]=
@@ -176,19 +180,19 @@ LCD_Char_Display                    oLCD_C_Setting_Password[]=
   {_LCD_C_SETTING_PASSWORD_5,           0,5,36,         (char*)"            *   "},
   {_LCD_C_SETTING_PASSWORD_6,           0,5,28,         (char*)"               *"},
   {_LCD_C_SETTING_PASSWORD_SUCCESS,     0,5,57,         (char*)"   Success  "},
-  {_LCD_C_SETTING_PASSWORD_SAVE,        0,7,8,          (char*)"   Enter to Save  "},
-  {_LCD_C_SETTING_PASSWORD_ENTER,       0,7,8,          (char*)"Enter new Password"},
-  {_LCD_C_SETTING_PASSWORD_CLICK,       0,7,8,          (char*)" Click Enter/Exit "},
+  {_LCD_C_SETTING_PASSWORD_SAVE,        0,7,10,         (char*)"   Enter to Save  "},
+  {_LCD_C_SETTING_PASSWORD_ENTER,       0,7,10,         (char*)"Enter new Password"},
+  {_LCD_C_SETTING_PASSWORD_CLICK,       0,7,10,         (char*)" Click Enter/Exit "},
 };
 
 LCD_Uint_Display                    oLCD_U_Setting_Password[]=
 {
-  {_LCD_U_SETTING_PASSWORD_1,        0,4,68,         (uint16_t*)&sMenuStamp.Pass1},
-  {_LCD_U_SETTING_PASSWORD_2,        0,4,78,         (uint16_t*)&sMenuStamp.Pass2},
-  {_LCD_U_SETTING_PASSWORD_3,        0,4,88,         (uint16_t*)&sMenuStamp.Pass3},
-  {_LCD_U_SETTING_PASSWORD_4,        0,4,98,         (uint16_t*)&sMenuStamp.Pass4},
-  {_LCD_U_SETTING_PASSWORD_5,        0,4,108,        (uint16_t*)&sMenuStamp.Pass5},
-  {_LCD_U_SETTING_PASSWORD_6,        0,4,118,        (uint16_t*)&sMenuStamp.Pass6},
+  {_LCD_U_SETTING_PASSWORD_1,        0,4,68,         (uint16_t*)&sMenuStamp.sPassWord.Pass1},
+  {_LCD_U_SETTING_PASSWORD_2,        0,4,78,         (uint16_t*)&sMenuStamp.sPassWord.Pass2},
+  {_LCD_U_SETTING_PASSWORD_3,        0,4,88,         (uint16_t*)&sMenuStamp.sPassWord.Pass3},
+  {_LCD_U_SETTING_PASSWORD_4,        0,4,98,         (uint16_t*)&sMenuStamp.sPassWord.Pass4},
+  {_LCD_U_SETTING_PASSWORD_5,        0,4,108,        (uint16_t*)&sMenuStamp.sPassWord.Pass5},
+  {_LCD_U_SETTING_PASSWORD_6,        0,4,118,        (uint16_t*)&sMenuStamp.sPassWord.Pass6},
 };
 /*===== Object LCD ================ Screen Calib Oxy ================*/
 LCD_Char_Display                    oLCD_C_Calib_Oxy[]=
@@ -404,41 +408,43 @@ void DLCD_Login_Alter(void)
 
 void DLCD_Main_2_Alter(void)
 {
-    static uint8_t stampStateOxy1 = 0;
-    static uint8_t stampStateOxy2 = 0;
-    static uint8_t stampStateOxy3 = 0;
-    static uint8_t stampStateOxy4 = 0;
+//    static uint8_t stampStateOxy1 = 0;
+//    static uint8_t stampStateOxy2 = 0;
+//    static uint8_t stampStateOxy3 = 0;
+//    static uint8_t stampStateOxy4 = 0;
     static uint8_t stampSalinity = 0;
     static uint8_t stampOxyUpper = 0;
     static uint8_t stampOxyLower = 0;
+    static uint8_t stampTimeDelay = 0;
+    static uint8_t stampTimeWarning = 0;
     
-    if(stampStateOxy1 != sStateCtrlOxy.aStateOxy[_OXY_1])
-    {
-        if(sStateCtrlOxy.aStateOxy[_OXY_1] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_1_OFF].Status = 1;
-        else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_1_ON].Status = 1;
-        stampStateOxy1 = sStateCtrlOxy.aStateOxy[_OXY_1];
-    }
-    
-    if(stampStateOxy2 != sStateCtrlOxy.aStateOxy[_OXY_2])
-    {
-        if(sStateCtrlOxy.aStateOxy[_OXY_2] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_2_OFF].Status = 1;
-        else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_2_ON].Status = 1;
-        stampStateOxy2 = sStateCtrlOxy.aStateOxy[_OXY_2];
-    }
-    
-    if(stampStateOxy3 != sStateCtrlOxy.aStateOxy[_OXY_3])
-    {
-        if(sStateCtrlOxy.aStateOxy[_OXY_3] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_3_OFF].Status = 1;
-        else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_3_ON].Status = 1;
-        stampStateOxy3 = sStateCtrlOxy.aStateOxy[_OXY_3];
-    }
-    
-    if(stampStateOxy4 != sStateCtrlOxy.aStateOxy[_OXY_4])
-    {
-        if(sStateCtrlOxy.aStateOxy[_OXY_4] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_4_OFF].Status = 1;
-        else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_4_ON].Status = 1;
-        stampStateOxy4 = sStateCtrlOxy.aStateOxy[_OXY_4];
-    }
+//    if(stampStateOxy1 != sStateCtrlOxy.aStateOxy[_OXY_1])
+//    {
+//        if(sStateCtrlOxy.aStateOxy[_OXY_1] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_1_OFF].Status = 1;
+//        else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_1_ON].Status = 1;
+//        stampStateOxy1 = sStateCtrlOxy.aStateOxy[_OXY_1];
+//    }
+//    
+//    if(stampStateOxy2 != sStateCtrlOxy.aStateOxy[_OXY_2])
+//    {
+//        if(sStateCtrlOxy.aStateOxy[_OXY_2] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_2_OFF].Status = 1;
+//        else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_2_ON].Status = 1;
+//        stampStateOxy2 = sStateCtrlOxy.aStateOxy[_OXY_2];
+//    }
+//    
+//    if(stampStateOxy3 != sStateCtrlOxy.aStateOxy[_OXY_3])
+//    {
+//        if(sStateCtrlOxy.aStateOxy[_OXY_3] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_3_OFF].Status = 1;
+//        else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_3_ON].Status = 1;
+//        stampStateOxy3 = sStateCtrlOxy.aStateOxy[_OXY_3];
+//    }
+//    
+//    if(stampStateOxy4 != sStateCtrlOxy.aStateOxy[_OXY_4])
+//    {
+//        if(sStateCtrlOxy.aStateOxy[_OXY_4] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_4_OFF].Status = 1;
+//        else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_4_ON].Status = 1;
+//        stampStateOxy4 = sStateCtrlOxy.aStateOxy[_OXY_4];
+//    }
     
     if(stampSalinity != sParamMeasure.Salinity)
     {
@@ -458,6 +464,18 @@ void DLCD_Main_2_Alter(void)
         stampOxyLower = sParamCtrlOxy.Oxy_Lower;
     }
     
+    if(stampTimeDelay != sParamCtrlOxy.TimeDelay)
+    {
+        oLCD_U_Main_2[_LCD_U_MAIN_2_TIME_DELAY].Status = 1;
+        stampTimeDelay = sParamCtrlOxy.TimeDelay;
+    }
+
+    if(stampTimeWarning != sParamCtrlOxy.TimeWarning)
+    {
+        oLCD_U_Main_2[_LCD_U_MAIN_2_TIME_WARNING].Status = 1;
+        stampTimeWarning = sParamCtrlOxy.TimeWarning;
+    }
+    
     DLCD_Main_2();
 }
 
@@ -467,6 +485,7 @@ void DLCD_Main_1_Alter(void)
     static uint16_t stampTemp = 0;
     static uint16_t stampOxyMgL = 0;
     static uint16_t stampOxyPercent = 0;
+    static uint16_t stamppHWater = 0;
     static uint8_t stampStateOxy1 = 0;
     static uint8_t stampStateOxy2 = 0;
     static uint8_t stampStateOxy3 = 0;
@@ -490,32 +509,50 @@ void DLCD_Main_1_Alter(void)
         oLCD_U_Main_1[_LCD_U_MAIN_1_OXY_PERCENT].Status = 1;
     }
     
+    if(*oLCD_U_Main_1[_LCD_U_MAIN_1_PH_WATER].Object != stamppHWater)
+    {
+        stamppHWater = *oLCD_U_Main_1[_LCD_U_MAIN_1_PH_WATER].Object;
+        oLCD_U_Main_1[_LCD_U_MAIN_1_PH_WATER].Status = 1;
+    }
+    
     if(stampStateOxy1 != sStateCtrlOxy.aStateOxy[_OXY_1])
     {
-        if(sStateCtrlOxy.aStateOxy[_OXY_1] == _OFF_OXY) oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_1_OFF].Status = 1;
-        else oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_1_ON].Status = 1;
         stampStateOxy1 = sStateCtrlOxy.aStateOxy[_OXY_1];
+        
+        if(sStateCtrlOxy.aStateOxy[_OXY_1] == _OFF_OXY) 
+          oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_1_OFF].Status = 1;
+        else 
+          oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_1_ON].Status = 1;
     }
     
     if(stampStateOxy2 != sStateCtrlOxy.aStateOxy[_OXY_2])
     {
-        if(sStateCtrlOxy.aStateOxy[_OXY_2] == _OFF_OXY) oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_2_OFF].Status = 1;
-        else oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_2_ON].Status = 1;
         stampStateOxy2 = sStateCtrlOxy.aStateOxy[_OXY_2];
+        
+        if(sStateCtrlOxy.aStateOxy[_OXY_2] == _OFF_OXY) 
+          oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_2_OFF].Status = 1;
+        else 
+          oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_2_ON].Status = 1;
     }
     
     if(stampStateOxy3 != sStateCtrlOxy.aStateOxy[_OXY_3])
     {
-        if(sStateCtrlOxy.aStateOxy[_OXY_3] == _OFF_OXY) oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_3_OFF].Status = 1;
-        else oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_3_ON].Status = 1;
         stampStateOxy3 = sStateCtrlOxy.aStateOxy[_OXY_3];
+        
+        if(sStateCtrlOxy.aStateOxy[_OXY_3] == _OFF_OXY) 
+          oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_3_OFF].Status = 1;
+        else 
+          oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_3_ON].Status = 1;
     }
     
     if(stampStateOxy4 != sStateCtrlOxy.aStateOxy[_OXY_4])
     {
-        if(sStateCtrlOxy.aStateOxy[_OXY_4] == _OFF_OXY) oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_4_OFF].Status = 1;
-        else oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_4_ON].Status = 1;
         stampStateOxy4 = sStateCtrlOxy.aStateOxy[_OXY_4];
+        
+        if(sStateCtrlOxy.aStateOxy[_OXY_4] == _OFF_OXY) 
+          oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_4_OFF].Status = 1;
+        else 
+          oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_4_ON].Status = 1;
     }
     
     DLCD_Main_1();
@@ -571,7 +608,7 @@ void DLCD_Setting_Cycle_Entry(void)
     oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_RUN].Status = 1;
     oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_FREE].Status = 1;
     oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_SLAVE].Status = 1;
-    oLCD_C_Setting_Cycle[_LCD_C_SETTING_CALIB_PLEASE].Status = 1;
+    oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_PLEASE].Status = 1;
     
     oLCD_U_Setting_Cycle[_LCD_U_SETTING_CYCLE_RUN].Status = 1;
     oLCD_U_Setting_Cycle[_LCD_U_SETTING_CYCLE_FREE].Status = 1;
@@ -636,22 +673,25 @@ void DLCD_Main_2_Entry(void)
     oLCD_C_Main_2[_LCD_C_MAIN_2_OXY_UPPER].Status = 1;
     oLCD_C_Main_2[_LCD_C_MAIN_2_OXY_LOWER].Status = 1;
     oLCD_C_Main_2[_LCD_C_MAIN_2_SALINITY].Status = 1;
-    oLCD_C_Main_2[_LCD_C_MAIN_2_STATE].Status = 1;
-    if(sStateCtrlOxy.aStateOxy[_OXY_1] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_1_OFF].Status = 1;
-    else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_1_ON].Status = 1;
-    
-    if(sStateCtrlOxy.aStateOxy[_OXY_2] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_2_OFF].Status = 1;
-    else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_2_ON].Status = 1;
-
-    if(sStateCtrlOxy.aStateOxy[_OXY_3] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_3_OFF].Status = 1;
-    else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_3_ON].Status = 1;
-    
-    if(sStateCtrlOxy.aStateOxy[_OXY_4] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_4_OFF].Status = 1;
-    else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_4_ON].Status = 1;
+    oLCD_C_Main_2[_LCD_C_MAIN_2_TIME_DELAY].Status = 1;
+    oLCD_C_Main_2[_LCD_C_MAIN_2_TIME_WARNING].Status = 1;
+//    if(sStateCtrlOxy.aStateOxy[_OXY_1] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_1_OFF].Status = 1;
+//    else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_1_ON].Status = 1;
+//    
+//    if(sStateCtrlOxy.aStateOxy[_OXY_2] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_2_OFF].Status = 1;
+//    else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_2_ON].Status = 1;
+//
+//    if(sStateCtrlOxy.aStateOxy[_OXY_3] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_3_OFF].Status = 1;
+//    else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_3_ON].Status = 1;
+//    
+//    if(sStateCtrlOxy.aStateOxy[_OXY_4] == _OFF_OXY) oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_4_OFF].Status = 1;
+//    else oLCD_C_Main_2[_LCD_C_MAIN_2_STATE_OXY_4_ON].Status = 1;
     
     oLCD_U_Main_2[_LCD_U_MAIN_2_OXY_UPPER].Status = 1;
     oLCD_U_Main_2[_LCD_U_MAIN_2_OXY_LOWER].Status = 1;
     oLCD_U_Main_2[_LCD_U_MAIN_2_SALINITY].Status = 1;
+    oLCD_U_Main_2[_LCD_U_MAIN_2_TIME_DELAY].Status = 1;
+    oLCD_U_Main_2[_LCD_U_MAIN_2_TIME_WARNING].Status = 1;
     
     DLCD_Main_2();
 }
@@ -660,27 +700,46 @@ void DLCD_Main_1_Entry(void)
 {
     oLCD_C_Main_1[_LCD_C_MAIN_1_ID].Status = 1;
     oLCD_C_Main_1[_LCD_C_MAIN_1_ID_VALUE].Status = 1;
+    oLCD_C_Main_1[_LCD_C_MAIN_1_PH_WATER].Status = 1;
     oLCD_C_Main_1[_LCD_C_MAIN_1_TEMP].Status = 1;
     oLCD_C_Main_1[_LCD_C_MAIN_1_OXY_1].Status = 1;
     oLCD_C_Main_1[_LCD_C_MAIN_1_OXY_2].Status = 1;
-    oLCD_C_Main_1[_LCD_C_MAIN_1_STATE].Status = 1;
-    if(sStateCtrlOxy.aStateOxy[_OXY_1] == _OFF_OXY) oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_1_OFF].Status = 1;
-    else oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_1_ON].Status = 1;
     
-    if(sStateCtrlOxy.aStateOxy[_OXY_2] == _OFF_OXY) oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_2_OFF].Status = 1;
-    else oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_2_ON].Status = 1;
+    if(sStateCtrlOxy.aStateOxy[_OXY_1] == _OFF_OXY) 
+      oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_1_OFF].Status = 1;
+    else 
+      oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_1_ON].Status = 1;
+    
+    if(sStateCtrlOxy.aStateOxy[_OXY_2] == _OFF_OXY) 
+      oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_2_OFF].Status = 1;
+    else 
+      oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_2_ON].Status = 1;
 
-    if(sStateCtrlOxy.aStateOxy[_OXY_3] == _OFF_OXY) oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_3_OFF].Status = 1;
-    else oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_3_ON].Status = 1;
+    if(sStateCtrlOxy.aStateOxy[_OXY_3] == _OFF_OXY) 
+      oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_3_OFF].Status = 1;
+    else 
+      oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_3_ON].Status = 1;
     
-    if(sStateCtrlOxy.aStateOxy[_OXY_4] == _OFF_OXY) oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_4_OFF].Status = 1;
-    else oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_4_ON].Status = 1;
+    if(sStateCtrlOxy.aStateOxy[_OXY_4] == _OFF_OXY) 
+      oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_4_OFF].Status = 1;
+    else 
+      oLCD_C_Main_1[_LCD_C_MAIN_1_STATE_OXY_4_ON].Status = 1;
     
     oLCD_U_Main_1[_LCD_U_MAIN_1_TEMP].Status = 1;
     oLCD_U_Main_1[_LCD_U_MAIN_1_OXY_MG_L].Status = 1;
     oLCD_U_Main_1[_LCD_U_MAIN_1_OXY_PERCENT].Status = 1;
-    
+    oLCD_U_Main_1[_LCD_U_MAIN_1_PH_WATER].Status = 1;
+
     DLCD_Main_1();
+    
+    GLCD_GoTo(7, 0);
+    GLCD_WriteCharacter(0x92, FONT5x7);
+    GLCD_GoTo(7, 33);
+    GLCD_WriteCharacter(0x93, FONT5x7);
+    GLCD_GoTo(7, 68);
+    GLCD_WriteCharacter(0x94, FONT5x7);
+    GLCD_GoTo(7, 102);
+    GLCD_WriteCharacter(0x95, FONT5x7);
 }
 
 /*============== Function Handle ==============*/
@@ -843,7 +902,10 @@ void        DLCD_Main_2(void)
     {
         if(oLCD_U_Main_2[i].Status == 1)
         {
-           GLCD_Write_Float_Not_Zero(*oLCD_U_Main_2[i].Object,2 ,  oLCD_U_Main_2[i].Rol,oLCD_U_Main_2[i].Col);
+           if(i == _LCD_U_MAIN_2_TIME_DELAY || i == _LCD_U_MAIN_2_TIME_WARNING)
+                GLCD_Write_Float_Not_Zero(*oLCD_U_Main_2[i].Object,0 ,  oLCD_U_Main_2[i].Rol,oLCD_U_Main_2[i].Col);
+           else
+                GLCD_Write_Float_Not_Zero(*oLCD_U_Main_2[i].Object,2 ,  oLCD_U_Main_2[i].Rol,oLCD_U_Main_2[i].Col);
            oLCD_U_Main_2[i].Status = 0;
         }
     }
@@ -859,7 +921,7 @@ void        DLCD_Main_1(void)
             oLCD_C_Main_1[i].Status = 0;
             if(i==_LCD_C_MAIN_1_TEMP)
             {
-                GLCD_GoTo(oLCD_C_Main_1[_LCD_C_MAIN_1_TEMP].Rol, 13*5 + 13 + 1);
+                GLCD_GoTo(oLCD_C_Main_1[_LCD_C_MAIN_1_TEMP].Rol, 14*5 + 14 + 1);
                 GLCD_WriteCharacter(0x8C, FONT5x7);
             }
         }
@@ -962,9 +1024,9 @@ void Display_Time(void)
         StateBeforeMachine = sStateCtrlOxy.StateMachine;
     }
     
-    if(StateBeforeSensor != sStateCtrlOxy.StateSensor)
+    if(StateBeforeSensor != sStateCtrlOxy.StateSensorOxy)
     {
-        if(sStateCtrlOxy.StateSensor == _OXY_CONNECT)
+        if(sStateCtrlOxy.StateSensorOxy == _OXY_CONNECT)
         {
             GLCD_GoTo(0, 18*5 + 18);
             GLCD_WriteCharacter(0x90, FONT5x7);
@@ -975,7 +1037,7 @@ void Display_Time(void)
             GLCD_WriteCharacter(0x91, FONT5x7);
         }
         
-        StateBeforeSensor = sStateCtrlOxy.StateSensor;
+        StateBeforeSensor = sStateCtrlOxy.StateSensorOxy;
     }
 }
 void Time_To_Char(char cData[])

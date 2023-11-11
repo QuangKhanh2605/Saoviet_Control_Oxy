@@ -15,7 +15,7 @@ sEvent_struct               sEventAppRelay[] =
 
 };
 
-Struct_StatusRelay          sStatusRelay={OFF_RELAY};                
+Struct_StatusRelay      sStatusRelay={OFF_RELAY};                
 static GPIO_TypeDef*    RELAY_PORT[NUMBER_RELAY] = {MCU_RL1_GPIO_Port, MCU_RL2_GPIO_Port, 
                                                    MCU_RL3_GPIO_Port, MCU_RL4_GPIO_Port,
                                                    MCU_RL5_GPIO_Port, MCU_RL6_GPIO_Port,
@@ -27,7 +27,6 @@ static uint16_t         RELAY_PIN[NUMBER_RELAY] = {MCU_RL1_Pin, MCU_RL2_Pin,
                                                     MCU_RL5_Pin, MCU_RL6_Pin,
                                                     MCU_RL7_Pin, MCU_RL8_Pin,
                                                     MCU_RL9_Pin};
-
 
 /*================= Function Handle ==============*/
 static uint8_t fevent_relay_entry(uint8_t event)
@@ -97,25 +96,25 @@ void ControlRelay(uint8_t Relay, uint8_t State, uint8_t RelayDebug)
             sStatusRelay.RL5 = State;
             break;
             
-          case RELAY_6: 
-            OnOff_Relay(RELAY_6, State);
-            sStatusRelay.RL6 = State;
-            break;
-            
-          case RELAY_7: 
-            OnOff_Relay(RELAY_7, State);
-            sStatusRelay.RL7 = State;
-            break;
-            
-          case RELAY_8: 
-            OnOff_Relay(RELAY_8, State);
-            sStatusRelay.RL8 = State;
-            break;
-            
-          case RELAY_9: 
-            OnOff_Relay(RELAY_9, State);
-            sStatusRelay.RL9 = State;
-            break;
+//          case RELAY_6: 
+//            OnOff_Relay(RELAY_6, State);
+//            sStatusRelay.RL6 = State;
+//            break;
+//            
+//          case RELAY_7: 
+//            OnOff_Relay(RELAY_7, State);
+//            sStatusRelay.RL7 = State;
+//            break;
+//            
+//          case RELAY_8: 
+//            OnOff_Relay(RELAY_8, State);
+//            sStatusRelay.RL8 = State;
+//            break;
+//            
+//          case RELAY_9: 
+//            OnOff_Relay(RELAY_9, State);
+//            sStatusRelay.RL9 = State;
+//            break;
             
          default:
             break;
@@ -146,8 +145,6 @@ void Init_AppRelay(void)
 {
   
 }
-
-
 
 /*
     @brief  Hien thi debug bat tat relay
@@ -191,21 +188,21 @@ void Relay_Debug(uint8_t State_Debug, uint8_t KindRelay, uint8_t Status)
            UTIL_Printf(DBLEVEL_M, (uint8_t*)"RELAY_5 ", sizeof("RELAY_5 ")); 
            break;
            
-        case RELAY_6:
-           UTIL_Printf(DBLEVEL_M, (uint8_t*)"RELAY_6 ", sizeof("RELAY_6 ")); 
-           break;
-           
-        case RELAY_7:
-           UTIL_Printf(DBLEVEL_M, (uint8_t*)"RELAY_7 ", sizeof("RELAY_7 ")); 
-           break;
-           
-        case RELAY_8:
-           UTIL_Printf(DBLEVEL_M, (uint8_t*)"RELAY_8 ", sizeof("RELAY_8 ")); 
-           break;
-           
-        case RELAY_9:
-           UTIL_Printf(DBLEVEL_M, (uint8_t*)"RELAY_9 ", sizeof("RELAY_9 ")); 
-           break;
+//        case RELAY_6:
+//           UTIL_Printf(DBLEVEL_M, (uint8_t*)"RELAY_6 ", sizeof("RELAY_6 ")); 
+//           break;
+//           
+//        case RELAY_7:
+//           UTIL_Printf(DBLEVEL_M, (uint8_t*)"RELAY_7 ", sizeof("RELAY_7 ")); 
+//           break;
+//           
+//        case RELAY_8:
+//           UTIL_Printf(DBLEVEL_M, (uint8_t*)"RELAY_8 ", sizeof("RELAY_8 ")); 
+//           break;
+//           
+//        case RELAY_9:
+//           UTIL_Printf(DBLEVEL_M, (uint8_t*)"RELAY_9 ", sizeof("RELAY_9 ")); 
+//           break;
 
         default:
            break;

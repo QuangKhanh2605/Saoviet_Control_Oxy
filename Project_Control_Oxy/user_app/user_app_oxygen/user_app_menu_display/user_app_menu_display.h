@@ -9,6 +9,7 @@
 #include "event_driven.h"
 #include "user_util.h"
 
+#include "user_app_ctrl_oxy.h"
 
 #define TIME_BACK_MAIN_1        60000
 
@@ -124,12 +125,6 @@ typedef enum
 
 typedef struct
 {
-    uint8_t Obj1;
-    uint8_t Obj2;
-    uint8_t Obj3;
-    uint8_t Obj4;
-    uint8_t Obj5;
-    uint8_t Obj6;
     uint8_t Pass1;
     uint8_t Pass2;
     uint8_t Pass3;
@@ -153,20 +148,15 @@ typedef struct
 
 typedef struct
 {
-    uint16_t TimeRunCtrlOxy;            //Stamp Time Run Slave
-    uint16_t TimeFreeCtrlOxy;           //Stamp Time Free Slave
     uint16_t Salinity;                  //Stamp Salinity
     uint16_t Temperature;               //Stamp Temperature
     uint16_t TimeDelay;                 //Stamp Time Delay
     uint16_t TimeWarning;               //Stamp Time Warning
     uint16_t OxyUpper;                  //Stamp Oxy Upper
     uint16_t OxyLower;                  //Stamp Oxy Lower
-    uint8_t  Pass1;                     //Stamp Pass1
-    uint8_t  Pass2;                     //Stamp Pass2
-    uint8_t  Pass3;                     //Stamp Pass3
-    uint8_t  Pass4;                     //Stamp Pass4
-    uint8_t  Pass5;                     //Stamp Pass5
-    uint8_t  Pass6;                     //Stamp Pass6
+    Struct_TimeSlave        sTimeSlave;
+    Struct_Password         sPassLogin; 
+    Struct_Password         sPassWord; 
 }Struct_Menu_Stamp;
 
 extern sEvent_struct        sEventAppMenu[];

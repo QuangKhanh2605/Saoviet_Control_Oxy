@@ -28,10 +28,6 @@ sEvent_struct               sEventAppButton[]=
   {_EVENT_BUTTON_HOLD_EXIT,             0, 5, 5,            fevent_button_hold_exit},
 };
 
-static GPIO_TypeDef*    BUTTON_PORT[NUMBER_BUTTON] = {BUTTON_ENTER_PORT, BUTTON_UP_PORT, 
-                                                      BUTTON_DOWN_PORT, BUTTON_EXIT_PORT};
-static const uint16_t   BUTTON_PIN[NUMBER_BUTTON]  = {BUTTON_ENTER_PIN, BUTTON_UP_PIN, 
-                                                      BUTTON_DOWN_PIN, BUTTON_EXIT_PIN};
 /*=====================Function Handle=================*/
 static uint8_t fevent_button_entry(uint8_t event)
 {
@@ -40,10 +36,12 @@ static uint8_t fevent_button_entry(uint8_t event)
 
 static uint8_t fevent_button_click_enter(uint8_t event)
 {
+/*------------------Xu ly click va hold cylce button Enter-----------------*/
+#ifdef USING_BUTTON_ENTER
     static uint8_t state_current = 0;
     static uint8_t state_before  = BUTTON_OFF;
     
-    state_current = HAL_GPIO_ReadPin(BUTTON_PORT[BT_ENTER], BUTTON_PIN[BT_ENTER]);
+    state_current = HAL_GPIO_ReadPin(BUTTON_ENTER_PORT, BUTTON_ENTER_PIN);
     if(state_current == BUTTON_ON)
     {   
         if(sEventAppButton[_EVENT_BUTTON_HOLD_ENTER].e_status == 0)
@@ -68,12 +66,15 @@ static uint8_t fevent_button_click_enter(uint8_t event)
   
     state_before = state_current;
     fevent_enable(sEventAppButton, event);
+#endif
     return 1;
 }
 
 static uint8_t fevent_button_hold_enter(uint8_t event)
 {
-    if(HAL_GPIO_ReadPin(BUTTON_PORT[BT_ENTER], BUTTON_PIN[BT_ENTER]) == BUTTON_ON)
+/*---------------------Xu ly hold once button Enter---------------------*/
+#ifdef USING_BUTTON_ENTER
+    if(HAL_GPIO_ReadPin(BUTTON_ENTER_PORT, BUTTON_ENTER_PIN) == BUTTON_ON)
     {
         if(sEventAppButton[_EVENT_BUTTON_HOLD_ENTER].e_period == TIME_HOLD_BUTTON_ENTER)
         {
@@ -91,15 +92,18 @@ static uint8_t fevent_button_hold_enter(uint8_t event)
     {
         fevent_enable(sEventAppButton, _EVENT_BUTTON_CLICK_ENTER);
     }
+#endif
     return 1;
 }
 
 static uint8_t fevent_button_click_up(uint8_t event)
 {
+/*--------------------Xu ly click va hold cycle button Up-----------------*/
+#ifdef  USING_BUTTON_UP
     static uint8_t state_current = 0;
     static uint8_t state_before  = BUTTON_OFF;
     
-    state_current = HAL_GPIO_ReadPin(BUTTON_PORT[BT_UP], BUTTON_PIN[BT_UP]);
+    state_current = HAL_GPIO_ReadPin(BUTTON_UP_PORT, BUTTON_UP_PIN);
     if(state_current == BUTTON_ON)
     {    
         if(sEventAppButton[_EVENT_BUTTON_HOLD_UP].e_status == 0)
@@ -124,12 +128,15 @@ static uint8_t fevent_button_click_up(uint8_t event)
   
     state_before = state_current;
     fevent_enable(sEventAppButton, event);
+#endif
     return 1;
 }
 
 static uint8_t fevent_button_hold_up(uint8_t event)
 {
-    if(HAL_GPIO_ReadPin(BUTTON_PORT[BT_UP], BUTTON_PIN[BT_UP]) == BUTTON_ON)
+/*--------------------Xu ly hold once button Up--------------------*/
+#ifdef  USING_BUTTON_UP
+    if(HAL_GPIO_ReadPin(BUTTON_UP_PORT, BUTTON_UP_PIN) == BUTTON_ON)
     {
         if(sEventAppButton[_EVENT_BUTTON_HOLD_UP].e_period == TIME_HOLD_BUTTON_UP)
         {
@@ -147,15 +154,18 @@ static uint8_t fevent_button_hold_up(uint8_t event)
     {
         fevent_enable(sEventAppButton, _EVENT_BUTTON_CLICK_UP);
     }
+#endif
     return 1;
 }
 
 static uint8_t fevent_button_click_down(uint8_t event)
 {
+/*--------------------Xu ly click va hold cycle button down-----------------*/
+#ifdef  USING_BUTTON_DOWN
     static uint8_t state_current = 0;
     static uint8_t state_before  = BUTTON_OFF;
     
-    state_current = HAL_GPIO_ReadPin(BUTTON_PORT[BT_DOWN], BUTTON_PIN[BT_DOWN]);
+    state_current = HAL_GPIO_ReadPin(BUTTON_DOWN_PORT, BUTTON_DOWN_PIN);
     if(state_current == BUTTON_ON)
     {
         if(sEventAppButton[_EVENT_BUTTON_HOLD_DOWN].e_status == 0)
@@ -181,12 +191,15 @@ static uint8_t fevent_button_click_down(uint8_t event)
   
     state_before = state_current;
     fevent_enable(sEventAppButton, event);
+#endif
     return 1;
 }
 
 static uint8_t fevent_button_hold_down(uint8_t event)
 {
-    if(HAL_GPIO_ReadPin(BUTTON_PORT[BT_DOWN], BUTTON_PIN[BT_DOWN]) == BUTTON_ON)
+/*----------------------Xu ly hold once button Down--------------------*/
+#ifdef  USING_BUTTON_DOWN
+    if(HAL_GPIO_ReadPin(BUTTON_DOWN_PORT, BUTTON_DOWN_PIN) == BUTTON_ON)
     {
         if(sEventAppButton[_EVENT_BUTTON_HOLD_DOWN].e_period == TIME_HOLD_BUTTON_DOWN)
         {
@@ -204,16 +217,18 @@ static uint8_t fevent_button_hold_down(uint8_t event)
     {
         fevent_enable(sEventAppButton, _EVENT_BUTTON_CLICK_DOWN);
     }
-
+#endif
     return 1;
 }
 
 static uint8_t fevent_button_click_exit(uint8_t event)
 {
+/*----------------------Xu ly click va hold cyce button Exit-----------------*/
+#ifdef  USING_BUTTON_EXIT
     static uint8_t state_current = 0;
     static uint8_t state_before  = BUTTON_OFF;
     
-    state_current = HAL_GPIO_ReadPin(BUTTON_PORT[BT_EXIT], BUTTON_PIN[BT_EXIT]);
+    state_current = HAL_GPIO_ReadPin(BUTTON_EXIT_PORT, BUTTON_EXIT_PIN);
     if(state_current == BUTTON_ON)
     {
         if(sEventAppButton[_EVENT_BUTTON_HOLD_EXIT].e_status == 0)
@@ -239,12 +254,15 @@ static uint8_t fevent_button_click_exit(uint8_t event)
   
     state_before = state_current;
     fevent_enable(sEventAppButton, event);
+#endif
     return 1;
 }
 
 static uint8_t fevent_button_hold_exit(uint8_t event)
 {
-    if(HAL_GPIO_ReadPin(BUTTON_PORT[BT_EXIT], BUTTON_PIN[BT_EXIT]) == BUTTON_ON)
+/*----------------------Xu ly hold once button Exit-------------------*/
+#ifdef  USING_BUTTON_EXIT
+    if(HAL_GPIO_ReadPin(BUTTON_EXIT_PORT, BUTTON_EXIT_PIN) == BUTTON_ON)
     {
         if(sEventAppButton[_EVENT_BUTTON_HOLD_EXIT].e_period == TIME_HOLD_BUTTON_EXIT)
         {
@@ -262,6 +280,7 @@ static uint8_t fevent_button_hold_exit(uint8_t event)
     {
         fevent_enable(sEventAppButton, _EVENT_BUTTON_CLICK_EXIT);
     }
+#endif
     return 1;
 }
 

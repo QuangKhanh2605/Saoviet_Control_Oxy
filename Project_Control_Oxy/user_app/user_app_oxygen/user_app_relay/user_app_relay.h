@@ -42,7 +42,6 @@ typedef struct
     uint8_t RL7;
     uint8_t RL8;
     uint8_t RL9;
-    uint8_t RL10;
 }Struct_StatusRelay;
 
 typedef enum

@@ -874,6 +874,20 @@ __weak void _rREQUEST_SETTING(sData *str_Receiv, int16_t Pos)
                     DCU_Respond(_AT_REQUEST_SERVER, (uint8_t *)"FAIL", 4, 0);
                 break;
                 
+            case OBIS_FREQ_SEND:
+                TempU16 = 0;
+                TempLeng = *(str_Receiv->Data_a8 + PosFix++);
+                for (i = 0; i < TempLeng; i++)
+                    TempU16 = (TempU16 << 8 ) | *(str_Receiv->Data_a8 + PosFix++);
+                
+                sFreqInfor.FreqSendOnline_u32 = TempU16;
+                //Luu lai
+                Save_Freq_Send_Data ();
+                //Set lai timer
+                AppComm_Set_Next_TxTimer();
+                DCU_Respond(_AT_REQUEST_SERVER, (uint8_t *)"\r\nOK!", 5, 0);
+                break;
+                
             case OBIS_ENVI_SET_OXY_UPPER:
                 TempU16 = 0;
                 TempLeng = *(str_Receiv->Data_a8 + PosFix++);

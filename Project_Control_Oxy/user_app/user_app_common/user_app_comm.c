@@ -63,7 +63,7 @@ char aSaoVietCom[15][71] =
 };
 
 
-sData   sFirmVersion = {(uint8_t *) "SVTH_SVM_OXY_V1_1_0", 19};
+sData   sFirmVersion = {(uint8_t *) "SVTH_SVM_OXY_V1_1_1", 19};
 
 static UTIL_TIMER_Object_t TimerTx;
 

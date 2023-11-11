@@ -4,9 +4,11 @@
 
 #include "user_util.h"
 
+uint32_t    Calculator_Scale(uint8_t Scale);
+uint32_t    Calculator_Value_Scale(uint32_t Value, uint8_t Scale, uint8_t Scale_Default);
+
 uint8_t     Convert_Int_To_String_Scale(uint8_t cData[], int var, uint8_t Scale);
 uint8_t     Convert_Int_To_String(uint8_t cData[], int var);
-uint32_t    Scale_To_Int(uint8_t Scale);
 void        Convert_Var_Packet_Integer (uint8_t *pTarget, uint16_t *LenTarget, uint32_t Data);
 
 

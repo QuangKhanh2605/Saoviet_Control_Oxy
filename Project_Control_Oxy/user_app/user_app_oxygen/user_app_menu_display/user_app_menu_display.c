@@ -21,7 +21,7 @@ sEvent_struct       sEventAppMenu[]=
 
 Struct_Menu_State               sMenuState={0};
 Struct_Menu_Stamp               sMenuStamp={0};
-Struct_Password                 sPassword    = {0};
+Struct_Password                 sPassword ={0};
 /*================== Function Handle ===================*/
 static uint8_t fevent_menu_entry(uint8_t event)
 {
@@ -76,6 +76,7 @@ static uint8_t fevent_menu_display_calib_oxy(uint8_t event)
         oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_PLEASE_CLICK].Status = 1;
         oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_STATE_DONE].Status = 1;
         DLCD_Calib_Oxy();
+        
         oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_TEMPERATURE].Object = &sParamMeasure.Temp;
         oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_SALINITY].Object = &sParamMeasure.Salinity;
         Stamp_Menu_Exit();
@@ -86,6 +87,7 @@ static uint8_t fevent_menu_display_calib_oxy(uint8_t event)
         oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_PLEASE_CLICK].Status = 1;
         oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_STATE_ERROR].Status = 1;
         DLCD_Calib_Oxy();
+        
         oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_TEMPERATURE].Object = &sParamMeasure.Temp;
         oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_SALINITY].Object = &sParamMeasure.Salinity;
         Stamp_Menu_Exit();
@@ -102,6 +104,7 @@ static uint8_t fevent_menu_display_back_main_1(uint8_t event)
           sMenuState.Screen = _MENU_MAIN_1;
           Clear_Rol_LCD(2, 7);
           DLCD_Main_1_Entry();
+          
           Stamp_Menu_Exit();
           Menu_ResetState();
           Check_Password();
@@ -191,7 +194,7 @@ void    BT_Menu_Main_1(uint8_t KindButton)
     {
         case _BT_ENTER_CLICK:
           sMenuState.Screen = _MENU_MAIN_2;
-          Clear_Rol_LCD(3, 5);
+          Clear_Rol_LCD(3, 7);
           DLCD_Main_2_Entry();
           break;
           
@@ -229,7 +232,7 @@ void    BT_Menu_Main_2(uint8_t KindButton)
     {
         case _BT_ENTER_CLICK:
           sMenuState.Screen = _MENU_MAIN_1;
-          Clear_Rol_LCD(3, 5);
+          Clear_Rol_LCD(3, 7);
           DLCD_Main_1_Entry();
           break;
           
@@ -238,7 +241,7 @@ void    BT_Menu_Main_2(uint8_t KindButton)
           
         case _BT_EXIT_CLICK:
           sMenuState.Screen = _MENU_MAIN_1;
-          Clear_Rol_LCD(3, 5);
+          Clear_Rol_LCD(3, 7);
           DLCD_Main_1_Entry();
           break;
           
@@ -330,7 +333,9 @@ void    BT_Menu_Login(uint8_t KindButton)
           {
               case _LOGIN_PASS_1:
                 sMenuState.Screen = _MENU_MAIN_1;
+                Check_Password();
                 Menu_ResetState();
+                
                 Clear_Rol_LCD(3, 7);
                 DLCD_Main_1_Entry();
                 break;
@@ -372,27 +377,27 @@ void    BT_Menu_Login(uint8_t KindButton)
           switch(sMenuState.Login)
           {
             case _LOGIN_PASS_1:
-              if(sPassword.Obj1 <9)  sPassword.Obj1++;
+              if(sMenuStamp.sPassLogin.Pass1 <9)  sMenuStamp.sPassLogin.Pass1++;
               break;
             
             case _LOGIN_PASS_2:
-              if(sPassword.Obj2 <9)  sPassword.Obj2++;
+              if(sMenuStamp.sPassLogin.Pass2 <9)  sMenuStamp.sPassLogin.Pass2++;
               break;
               
             case _LOGIN_PASS_3:
-              if(sPassword.Obj3 <9)  sPassword.Obj3++;
+              if(sMenuStamp.sPassLogin.Pass3 <9)  sMenuStamp.sPassLogin.Pass3++;
               break;
               
             case _LOGIN_PASS_4:
-              if(sPassword.Obj4 <9)  sPassword.Obj4++;
+              if(sMenuStamp.sPassLogin.Pass4 <9)  sMenuStamp.sPassLogin.Pass4++;
               break;
               
             case _LOGIN_PASS_5:
-              if(sPassword.Obj5 <9)  sPassword.Obj5++;
+              if(sMenuStamp.sPassLogin.Pass5 <9)  sMenuStamp.sPassLogin.Pass5++;
               break;
               
             case _LOGIN_PASS_6:
-              if(sPassword.Obj6 <9)  sPassword.Obj6++;
+              if(sMenuStamp.sPassLogin.Pass6 <9)  sMenuStamp.sPassLogin.Pass6++;
               break;
               
               default:
@@ -405,27 +410,27 @@ void    BT_Menu_Login(uint8_t KindButton)
           switch(sMenuState.Login)
           {
             case _LOGIN_PASS_1:
-              if(sPassword.Obj1 > 0)    sPassword.Obj1--;
+              if(sMenuStamp.sPassLogin.Pass1 > 0)    sMenuStamp.sPassLogin.Pass1--;
               break;
             
             case _LOGIN_PASS_2:
-              if(sPassword.Obj2 > 0)    sPassword.Obj2--;
+              if(sMenuStamp.sPassLogin.Pass2 > 0)    sMenuStamp.sPassLogin.Pass2--;
               break;
               
             case _LOGIN_PASS_3:
-              if(sPassword.Obj3 > 0)    sPassword.Obj3--;
+              if(sMenuStamp.sPassLogin.Pass3 > 0)    sMenuStamp.sPassLogin.Pass3--;
               break;
               
             case _LOGIN_PASS_4:
-              if(sPassword.Obj4 > 0)    sPassword.Obj4--;
+              if(sMenuStamp.sPassLogin.Pass4 > 0)    sMenuStamp.sPassLogin.Pass4--;
               break;
               
             case _LOGIN_PASS_5:
-              if(sPassword.Obj5 > 0)    sPassword.Obj5--;
+              if(sMenuStamp.sPassLogin.Pass5 > 0)    sMenuStamp.sPassLogin.Pass5--;
               break;
               
             case _LOGIN_PASS_6:
-              if(sPassword.Obj6 > 0)    sPassword.Obj6--;
+              if(sMenuStamp.sPassLogin.Pass6 > 0)    sMenuStamp.sPassLogin.Pass6--;
               break;
               
               default:
@@ -465,18 +470,21 @@ void    BT_Menu_Setting_Main(uint8_t KindButton)
                 oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_SALINITY].Object = &sParamMeasure.Salinity;
                 oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_TEMPERATURE].Object = &sParamMeasure.Temp;
                 Clear_Rol_LCD(2, 6);
+                
                 DLCD_Setting_Calib_Entry();
                 break;
                 
             case _SETTING_MAIN_PARAMETER:
                 sMenuState.Screen = _MENU_SETTING_PARAMETER;
                 Clear_Rol_LCD(2, 6);
+                
                 DLCD_Setting_Parameter_Entry();
                 break;
                 
             case _SETTING_MAIN_PASSWORD:
                 sMenuState.Screen = _MENU_SETTING_PASSWORD;
                 Clear_Rol_LCD(2, 7);
+                
                 DLCD_Setting_Password_Entry();
                 break;
                 
@@ -594,15 +602,15 @@ void    BT_Menu_Setting_Cycle(uint8_t KindButton)
                 
             case _SETTING_CYCLE_RUN_CHANGE:
                 sMenuState.SettingCycle = _SETTING_CYCLE_RUN_CHOOSE;
-                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CALIB_PLEASE].Status = 1;
-                Save_Time_Ctrl_Flash(sMenuStamp.TimeRunCtrlOxy, sMenuStamp.TimeFreeCtrlOxy);
+                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_PLEASE].Status = 1;
+                Save_TimeSlave(sMenuStamp.sTimeSlave.RunCtrl, sMenuStamp.sTimeSlave.FreeCtrl);
                 GLCD_ClearArea(3, 120, 6, 127);
                 break;
                 
             case _SETTING_CYCLE_FREE_CHANGE:
                 sMenuState.SettingCycle = _SETTING_CYCLE_FREE_CHOOSE;
-                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CALIB_PLEASE].Status = 1;
-                Save_Time_Ctrl_Flash(sMenuStamp.TimeRunCtrlOxy, sMenuStamp.TimeFreeCtrlOxy);
+                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_PLEASE].Status = 1;
+                Save_TimeSlave(sMenuStamp.sTimeSlave.RunCtrl, sMenuStamp.sTimeSlave.FreeCtrl);
                 GLCD_ClearArea(3, 120, 6, 127);
                 break;
                 
@@ -657,28 +665,26 @@ void    BT_Menu_Setting_Cycle(uint8_t KindButton)
           {
               case _SETTING_CYCLE_RUN_CHOOSE:
                 sMenuState.SettingCycle = _SETTING_CYCLE_SEND_SLAVE;
-                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_CLICK].Status = 1;
                 Display_Control_Setting_Left(oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_SLAVE].Rol);
                 break;
                 
               case _SETTING_CYCLE_FREE_CHOOSE:
                 sMenuState.SettingCycle = _SETTING_CYCLE_RUN_CHOOSE;
-                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_CLICK].Status = 1;
                 Display_Control_Setting_Left(oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_RUN].Rol);
                 break;
                 
               case _SETTING_CYCLE_SEND_SLAVE:
                 sMenuState.SettingCycle = _SETTING_CYCLE_FREE_CHOOSE;
-                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_CLICK].Status = 1;
+                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_PLEASE].Status = 1;
                 Display_Control_Setting_Left(oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_FREE].Rol);
                 break;
                 
               case _SETTING_CYCLE_RUN_CHANGE:
-                if(sMenuStamp.TimeRunCtrlOxy < TIME_MAX)     sMenuStamp.TimeRunCtrlOxy++;
+                if(sMenuStamp.sTimeSlave.RunCtrl < TIME_MAX)     sMenuStamp.sTimeSlave.RunCtrl++;
                 break;
                 
               case _SETTING_CYCLE_FREE_CHANGE:
-                if(sMenuStamp.TimeFreeCtrlOxy < TIME_MAX)    sMenuStamp.TimeFreeCtrlOxy++;
+                if(sMenuStamp.sTimeSlave.FreeCtrl < TIME_MAX)    sMenuStamp.sTimeSlave.FreeCtrl++;
                 break;
                 
               default:
@@ -693,29 +699,26 @@ void    BT_Menu_Setting_Cycle(uint8_t KindButton)
           {
               case _SETTING_CYCLE_RUN_CHOOSE:
                 sMenuState.SettingCycle = _SETTING_CYCLE_FREE_CHOOSE;
-                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_CLICK].Status = 1;
                 Display_Control_Setting_Left(oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_FREE].Rol);
                 break;
                 
               case _SETTING_CYCLE_FREE_CHOOSE:
                 sMenuState.SettingCycle = _SETTING_CYCLE_SEND_SLAVE;
-                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_CLICK].Status = 1;
                 Display_Control_Setting_Left(oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_SLAVE].Rol);
                 break;
                 
               case _SETTING_CYCLE_SEND_SLAVE:
                 sMenuState.SettingCycle = _SETTING_CYCLE_RUN_CHOOSE;
-                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_CLICK].Status = 1;
+                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_PLEASE].Status = 1;
                 Display_Control_Setting_Left(oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_RUN].Rol);
                 break;
                 
               case _SETTING_CYCLE_RUN_CHANGE:
-                if(sMenuStamp.TimeRunCtrlOxy > TIME_MIN)     sMenuStamp.TimeRunCtrlOxy--;
-                
+                if(sMenuStamp.sTimeSlave.RunCtrl > TIME_MIN)     sMenuStamp.sTimeSlave.RunCtrl--;
                 break;
                 
               case _SETTING_CYCLE_FREE_CHANGE:
-                if(sMenuStamp.TimeFreeCtrlOxy > TIME_MIN)     sMenuStamp.TimeFreeCtrlOxy--;
+                if(sMenuStamp.sTimeSlave.FreeCtrl > TIME_MIN)     sMenuStamp.sTimeSlave.FreeCtrl--;
                 break;
                 
               default:
@@ -755,24 +758,26 @@ void    BT_Menu_Setting_Calib(uint8_t KindButton)
                 break;
             
             case _SETTING_CALIB_100_CALIB_ENTER:
-                DCU_Notify_Server(_RESPOND_NOTIFY_CALIB_OXY);
                 sMenuState.Screen = _MENU_CALIB_OXY;
                 sMenuState.CalibSensor = _CALIB_ON_GOING,
+                
+                sKindMode485.Trans = _RS485_CALIB_OXY_100_CALIB;
                 fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WAIT_CALIB);
                 fevent_enable(sEventAppMenu, _EVENT_MENU_DISPLAY_CALIB_OXY);
-                if(KindTrans485 == _TRANSMIT_OPERA) KindTrans485 = _TRANSMIT_CALIB_OXY_100_CALIB;
+                
                 Clear_Rol_LCD(2, 7);
                 oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_0].Status = 1;
                 DLCD_Calib_Oxy_Entry();
                 break;
                 
-            case _SETTING_CALIB_RESET_CALIB_ENTER:
-                DCU_Notify_Server(_RESPOND_NOTIFY_RESET_CALIB);
+            case _SETTING_CALIB_RESET_CALIB_ENTER: 
                 sMenuState.Screen = _MENU_CALIB_OXY;
                 sMenuState.CalibSensor = _CALIB_ON_GOING,
+                
+                sKindMode485.Trans = _RS485_RESET_CALIB;
                 fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WAIT_CALIB);
                 fevent_enable(sEventAppMenu, _EVENT_MENU_DISPLAY_CALIB_OXY);
-                if(KindTrans485 == _TRANSMIT_OPERA) KindTrans485 = _TRANSMIT_RESET_CALIB;
+
                 Clear_Rol_LCD(2, 7);
                 oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_100].Status = 1;
                 DLCD_Calib_Oxy_Entry();
@@ -783,6 +788,7 @@ void    BT_Menu_Setting_Calib(uint8_t KindButton)
                 oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_SALINITY].Object = &sMenuStamp.Salinity;
                 oLCD_C_Setting_Calib[_LCD_C_SETTING_CALIB_SELECT].Status = 1;
                 DLCD_Setting_Calib();
+                
                 sMenuState.SettingCalib = _SETTING_CALIB_SALINITY_CHANGE;
                 fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WAIT_CALIB);
                 Display_Control_Setting_Right(oLCD_C_Setting_Calib[_LCD_C_SETTING_CALIB_SALINITY].Rol);
@@ -793,30 +799,33 @@ void    BT_Menu_Setting_Calib(uint8_t KindButton)
                 oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_TEMPERATURE].Object = &sMenuStamp.Temperature;
                 oLCD_C_Setting_Calib[_LCD_C_SETTING_CALIB_SELECT].Status = 1;
                 DLCD_Setting_Calib();
+                
                 sMenuState.SettingCalib = _SETTING_CALIB_TEMPERATURE_CHANGE;
                 fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WAIT_CALIB);
                 Display_Control_Setting_Right(oLCD_C_Setting_Calib[_LCD_C_SETTING_CALIB_TEMPERATURE].Rol);
                 break;
                 
             case _SETTING_CALIB_SALINITY_CHANGE:
-                DCU_Notify_Server(_RESPOND_NOTIFY_CALIB_SALINITY);
                 sMenuState.Screen = _MENU_CALIB_OXY;
                 sMenuState.CalibSensor = _CALIB_ON_GOING,
+                
+                sKindMode485.Trans = _RS485_CALIB_SALINITY;
                 fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WAIT_CALIB);
                 fevent_enable(sEventAppMenu, _EVENT_MENU_DISPLAY_CALIB_OXY);
-                if(KindTrans485 == _TRANSMIT_OPERA) KindTrans485 = _TRANSMIT_CALIB_SALINITY;
+                
                 Clear_Rol_LCD(2, 7);
                 oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_SALINITY].Status = 1;
                 DLCD_Calib_Oxy_Entry();
                 break;
                 
             case _SETTING_CALIB_TEMPERATURE_CHANGE:
-                DCU_Notify_Server(_RESPOND_NOTIFY_CALIB_TEMPERATURE);
                 sMenuState.Screen = _MENU_CALIB_OXY;
                 sMenuState.CalibSensor = _CALIB_ON_GOING,
+                
+                sKindMode485.Trans = _RS485_CALIB_TEMP;
                 fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WAIT_CALIB);
                 fevent_enable(sEventAppMenu, _EVENT_MENU_DISPLAY_CALIB_OXY);
-                if(KindTrans485 == _TRANSMIT_OPERA) KindTrans485 = _TRANSMIT_CALIB_TEMP;
+                
                 Clear_Rol_LCD(2, 7);
                 oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_TEMPERATURE].Status = 1;
                 DLCD_Calib_Oxy_Entry();
@@ -856,9 +865,10 @@ void    BT_Menu_Setting_Calib(uint8_t KindButton)
                 break;
                 
               case _SETTING_CALIB_SALINITY_CHANGE:
-                oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_SALINITY].Object = &sParamMeasure.Salinity;
                 Stamp_Menu_Exit();
+                oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_SALINITY].Object = &sParamMeasure.Salinity;
                 sMenuState.SettingCalib = _SETTING_CALIB_SALINITY_CHOOSE;
+                
                 oLCD_C_Setting_Calib[_LCD_C_SETTING_CALIB_PLEASE].Status = 1;
                 DLCD_Setting_Calib();
                 GLCD_ClearArea(3, 120, 6, 127);
@@ -866,9 +876,10 @@ void    BT_Menu_Setting_Calib(uint8_t KindButton)
                 break;
                 
               case _SETTING_CALIB_TEMPERATURE_CHANGE:
-                oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_TEMPERATURE].Object = &sParamMeasure.Temp;
                 Stamp_Menu_Exit();
+                oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_TEMPERATURE].Object = &sParamMeasure.Temp;
                 sMenuState.SettingCalib = _SETTING_CALIB_TEMPERATURE_CHOOSE;
+                
                 oLCD_C_Setting_Calib[_LCD_C_SETTING_CALIB_PLEASE].Status = 1;
                 DLCD_Setting_Calib();
                 GLCD_ClearArea(3, 120, 6, 127);
@@ -908,13 +919,17 @@ void    BT_Menu_Setting_Calib(uint8_t KindButton)
                 break;
                 
               case _SETTING_CALIB_SALINITY_CHANGE:
-                if(sMenuStamp.Salinity <= SALINITY_MAX - 100)          sMenuStamp.Salinity +=100;
-                else sMenuStamp.Salinity = SALINITY_MAX;
+                if(sMenuStamp.Salinity <= SALINITY_MAX - 100)          
+                  sMenuStamp.Salinity +=100;
+                else 
+                  sMenuStamp.Salinity = SALINITY_MAX;
                 break;
                 
               case _SETTING_CALIB_TEMPERATURE_CHANGE:
-                if(sMenuStamp.Temperature <= TEMPERATURE_MAX - 10)    sMenuStamp.Temperature +=10;
-                else    sMenuStamp.Temperature = TEMPERATURE_MAX;
+                if(sMenuStamp.Temperature <= TEMPERATURE_MAX - 10)    
+                  sMenuStamp.Temperature +=10;
+                else    
+                  sMenuStamp.Temperature = TEMPERATURE_MAX;
                 break;
 
               default:
@@ -947,13 +962,17 @@ void    BT_Menu_Setting_Calib(uint8_t KindButton)
                 break;
                 
               case _SETTING_CALIB_SALINITY_CHANGE:
-                if(sMenuStamp.Salinity >= SALINITY_MIN + 100)          sMenuStamp.Salinity-=100;
-                else    sMenuStamp.Salinity = SALINITY_MIN;
+                if(sMenuStamp.Salinity >= SALINITY_MIN + 100)          
+                  sMenuStamp.Salinity-=100;
+                else    
+                  sMenuStamp.Salinity = SALINITY_MIN;
                 break;
                 
               case _SETTING_CALIB_TEMPERATURE_CHANGE:
-                if(sMenuStamp.Temperature > TEMPERATURE_MIN + 10)    sMenuStamp.Temperature-=10;
-                else    sMenuStamp.Temperature = TEMPERATURE_MIN;
+                if(sMenuStamp.Temperature > TEMPERATURE_MIN + 10)    
+                  sMenuStamp.Temperature-=10;
+                else    
+                  sMenuStamp.Temperature = TEMPERATURE_MIN;
                 break;
       
               default:
@@ -1018,14 +1037,14 @@ void    BT_Menu_Setting_Parameter(uint8_t KindButton)
                 break;
                 
               case _SETTING_TIMEDELAY_CHANGE:
-                Save_TimeCtrl(sMenuStamp.TimeDelay, sParamCtrlOxy.TimeChange,sParamCtrlOxy.TimeWarning);
+                Save_TimeCtrlOxy(sMenuStamp.TimeDelay, sParamCtrlOxy.TimeChange,sParamCtrlOxy.TimeWarning);
                 sMenuState.SettingParameter = _SETTING_TIMEDELAY_CHOOSE;
                 oLCD_C_Setting_Parameter[_LCD_C_SETTING_PARAMETER_PLEASE].Status = 1;
                 GLCD_ClearArea(3, 120, 6, 127);
                 break;
                 
               case _SETTING_TIMEWARNING_CHANGE:
-                Save_TimeCtrl(sParamCtrlOxy.TimeDelay, sParamCtrlOxy.TimeChange,sMenuStamp.TimeWarning);
+                Save_TimeCtrlOxy(sParamCtrlOxy.TimeDelay, sParamCtrlOxy.TimeChange,sMenuStamp.TimeWarning);
                 sMenuState.SettingParameter = _SETTING_TIMEWARNING_CHOOSE;
                 oLCD_C_Setting_Parameter[_LCD_C_SETTING_PARAMETER_PLEASE].Status = 1;
                 GLCD_ClearArea(3, 120, 6, 127);
@@ -1268,7 +1287,6 @@ void    BT_Menu_Setting_Password(uint8_t KindButton)
                 break;
                 
             case _SUCCESS_PASS:
-                DCU_Notify_Server(_RESPOND_NOTIFY_CHANGE_PASSWORD);
                 sMenuState.Screen = _MENU_MAIN_1;
                 Menu_ResetState();
                 Clear_Rol_LCD(2, 7);
@@ -1338,27 +1356,27 @@ void    BT_Menu_Setting_Password(uint8_t KindButton)
           switch(sMenuState.SettingPassword)
           {
             case _CHANGE_PASS_1:
-              if(sMenuStamp.Pass1 <9)  sMenuStamp.Pass1++;
+              if(sMenuStamp.sPassWord.Pass1 <9)  sMenuStamp.sPassWord.Pass1++;
               break;
             
             case _CHANGE_PASS_2:
-              if(sMenuStamp.Pass2 <9)  sMenuStamp.Pass2++;
+              if(sMenuStamp.sPassWord.Pass2 <9)  sMenuStamp.sPassWord.Pass2++;
               break;
               
             case _CHANGE_PASS_3:
-              if(sMenuStamp.Pass3 <9)  sMenuStamp.Pass3++;
+              if(sMenuStamp.sPassWord.Pass3 <9)  sMenuStamp.sPassWord.Pass3++;
               break;
               
             case _CHANGE_PASS_4:
-              if(sMenuStamp.Pass4 <9)  sMenuStamp.Pass4++;
+              if(sMenuStamp.sPassWord.Pass4 <9)  sMenuStamp.sPassWord.Pass4++;
               break;
               
             case _CHANGE_PASS_5:
-              if(sMenuStamp.Pass5 <9)  sMenuStamp.Pass5++;
+              if(sMenuStamp.sPassWord.Pass5 <9)  sMenuStamp.sPassWord.Pass5++;
               break;
               
             case _CHANGE_PASS_6:
-              if(sMenuStamp.Pass6 <9)  sMenuStamp.Pass6++;
+              if(sMenuStamp.sPassWord.Pass6 <9)  sMenuStamp.sPassWord.Pass6++;
               break;
               
               default:
@@ -1371,27 +1389,27 @@ void    BT_Menu_Setting_Password(uint8_t KindButton)
           switch(sMenuState.SettingPassword)
           {
             case _CHANGE_PASS_1:
-              if(sMenuStamp.Pass1 > 0)    sMenuStamp.Pass1--;
+              if(sMenuStamp.sPassWord.Pass1 > 0)    sMenuStamp.sPassWord.Pass1--;
               break;
             
             case _CHANGE_PASS_2:
-              if(sMenuStamp.Pass2 > 0)    sMenuStamp.Pass2--;
+              if(sMenuStamp.sPassWord.Pass2 > 0)    sMenuStamp.sPassWord.Pass2--;
               break;
               
             case _CHANGE_PASS_3:
-              if(sMenuStamp.Pass3 > 0)    sMenuStamp.Pass3--;
+              if(sMenuStamp.sPassWord.Pass3 > 0)    sMenuStamp.sPassWord.Pass3--;
               break;
               
             case _CHANGE_PASS_4:
-              if(sMenuStamp.Pass4 > 0)    sMenuStamp.Pass4--;
+              if(sMenuStamp.sPassWord.Pass4 > 0)    sMenuStamp.sPassWord.Pass4--;
               break;
               
             case _CHANGE_PASS_5:
-              if(sMenuStamp.Pass5 > 0)    sMenuStamp.Pass5--;
+              if(sMenuStamp.sPassWord.Pass5 > 0)    sMenuStamp.sPassWord.Pass5--;
               break;
               
             case _CHANGE_PASS_6:
-              if(sMenuStamp.Pass6 > 0)    sMenuStamp.Pass6--;
+              if(sMenuStamp.sPassWord.Pass6 > 0)    sMenuStamp.sPassWord.Pass6--;
               break;
               
               default:
@@ -1493,21 +1511,21 @@ void    Handle_Menu_Button(uint8_t KindButton)
 uint8_t Check_Password(void)
 {
     uint8_t Result = 0;
-    if(sPassword.Obj1 == sPassword.Pass1 &&
-       sPassword.Obj2 == sPassword.Pass2 &&
-       sPassword.Obj3 == sPassword.Pass3 &&
-       sPassword.Obj4 == sPassword.Pass4 &&
-       sPassword.Obj5 == sPassword.Pass5 &&
-       sPassword.Obj6 == sPassword.Pass6 )
+    if(sMenuStamp.sPassLogin.Pass1 == sPassword.Pass1 &&
+       sMenuStamp.sPassLogin.Pass2 == sPassword.Pass2 &&
+       sMenuStamp.sPassLogin.Pass3 == sPassword.Pass3 &&
+       sMenuStamp.sPassLogin.Pass4 == sPassword.Pass4 &&
+       sMenuStamp.sPassLogin.Pass5 == sPassword.Pass5 &&
+       sMenuStamp.sPassLogin.Pass6 == sPassword.Pass6 )
     {
         Result = 1;
     }
-    sPassword.Obj1 = 0;
-    sPassword.Obj2 = 0;
-    sPassword.Obj3 = 0; 
-    sPassword.Obj4 = 0;
-    sPassword.Obj5 = 0;
-    sPassword.Obj6 = 0; 
+    sMenuStamp.sPassLogin.Pass1 = 0;
+    sMenuStamp.sPassLogin.Pass2 = 0;
+    sMenuStamp.sPassLogin.Pass3 = 0; 
+    sMenuStamp.sPassLogin.Pass4 = 0;
+    sMenuStamp.sPassLogin.Pass5 = 0;
+    sMenuStamp.sPassLogin.Pass6 = 0; 
     
     return Result;
 }
@@ -1517,16 +1535,16 @@ void Save_Password(void)
     uint8_t aData[8] = {0};
     uint8_t length = 0;
     
-    if(sMenuStamp.Pass1 <= 0x09 && sMenuStamp.Pass2 <= 0x09 && 
-       sMenuStamp.Pass3 <= 0x09 && sMenuStamp.Pass4 <= 0x09 && 
-       sMenuStamp.Pass5 <= 0x09 && sMenuStamp.Pass6 <= 0x09 )
+    if(sMenuStamp.sPassWord.Pass1 <= 0x09 && sMenuStamp.sPassWord.Pass2 <= 0x09 && 
+       sMenuStamp.sPassWord.Pass3 <= 0x09 && sMenuStamp.sPassWord.Pass4 <= 0x09 && 
+       sMenuStamp.sPassWord.Pass5 <= 0x09 && sMenuStamp.sPassWord.Pass6 <= 0x09 )
     {
-        sPassword.Pass1 = sMenuStamp.Pass1;
-        sPassword.Pass2 = sMenuStamp.Pass2;
-        sPassword.Pass3 = sMenuStamp.Pass3;
-        sPassword.Pass4 = sMenuStamp.Pass4;
-        sPassword.Pass5 = sMenuStamp.Pass5;
-        sPassword.Pass6 = sMenuStamp.Pass6;
+        sPassword.Pass1 = sMenuStamp.sPassWord.Pass1;
+        sPassword.Pass2 = sMenuStamp.sPassWord.Pass2;
+        sPassword.Pass3 = sMenuStamp.sPassWord.Pass3;
+        sPassword.Pass4 = sMenuStamp.sPassWord.Pass4;
+        sPassword.Pass5 = sMenuStamp.sPassWord.Pass5;
+        sPassword.Pass6 = sMenuStamp.sPassWord.Pass6;
         aData[length++] = sPassword.Pass1;
         aData[length++] = sPassword.Pass2;
         aData[length++] = sPassword.Pass3;
@@ -1547,38 +1565,41 @@ void Init_Password(void)
         sPassword.Pass3  = *(__IO uint8_t*)(ADDR_PASSWORD_SETTING+5) ;
         sPassword.Pass3  = *(__IO uint8_t*)(ADDR_PASSWORD_SETTING+6) ;
         sPassword.Pass3  = *(__IO uint8_t*)(ADDR_PASSWORD_SETTING+7) ;
-        if(sPassword.Pass1 > 0x09 || sPassword.Pass2 > 0x09 || 
-           sPassword.Pass3 > 0x09 || sPassword.Pass4 > 0x09 ||
-           sPassword.Pass5 > 0x09 || sPassword.Pass6 > 0x09)
-        {
-            sPassword.Pass1 = 0x00;
-            sPassword.Pass2 = 0x00;
-            sPassword.Pass3 = 0x00;
-            sPassword.Pass4 = 0x00;
-            sPassword.Pass5 = 0x00;
-            sPassword.Pass6 = 0x00;
-            Save_Password();
-        }
+    }
+    if(sPassword.Pass1 > 0x09 || sPassword.Pass2 > 0x09 || 
+       sPassword.Pass3 > 0x09 || sPassword.Pass4 > 0x09 ||
+       sPassword.Pass5 > 0x09 || sPassword.Pass6 > 0x09)
+    {
+        sPassword.Pass1 = 0x00;
+        sPassword.Pass2 = 0x00;
+        sPassword.Pass3 = 0x00;
+        sPassword.Pass4 = 0x00;
+        sPassword.Pass5 = 0x00;
+        sPassword.Pass6 = 0x00;
+        Save_Password();
     }
     Stamp_Menu_Exit();
 }
 
 void Stamp_Menu_Exit(void)
 {
-    sMenuStamp.Pass1 = sPassword.Pass1;
-    sMenuStamp.Pass2 = sPassword.Pass2;
-    sMenuStamp.Pass3 = sPassword.Pass3;
-    sMenuStamp.Pass4 = sPassword.Pass4;
-    sMenuStamp.Pass5 = sPassword.Pass5;
-    sMenuStamp.Pass6 = sPassword.Pass6;
-    sMenuStamp.Salinity = sParamMeasure.Salinity;
+    sMenuStamp.sPassWord.Pass1 = sPassword.Pass1;
+    sMenuStamp.sPassWord.Pass2 = sPassword.Pass2;
+    sMenuStamp.sPassWord.Pass3 = sPassword.Pass3;
+    sMenuStamp.sPassWord.Pass4 = sPassword.Pass4;
+    sMenuStamp.sPassWord.Pass5 = sPassword.Pass5;
+    sMenuStamp.sPassWord.Pass6 = sPassword.Pass6;
+    
+    sMenuStamp.Salinity    = sParamMeasure.Salinity;
     sMenuStamp.Temperature = sParamMeasure.Temp;
-    sMenuStamp.TimeDelay = sParamCtrlOxy.TimeDelay;
-    sMenuStamp.TimeWarning = sParamCtrlOxy.TimeWarning;
-    sMenuStamp.TimeFreeCtrlOxy = sTimeCtrlOxy.FreeCtrl;
-    sMenuStamp.TimeRunCtrlOxy  = sTimeCtrlOxy.RunCtrl;
-    sMenuStamp.OxyUpper = sParamCtrlOxy.Oxy_Upper;
-    sMenuStamp.OxyLower = sParamCtrlOxy.Oxy_Lower;
+    
+    sMenuStamp.TimeDelay    = sParamCtrlOxy.TimeDelay;
+    sMenuStamp.TimeWarning  = sParamCtrlOxy.TimeWarning;
+    sMenuStamp.OxyUpper     = sParamCtrlOxy.Oxy_Upper;
+    sMenuStamp.OxyLower     = sParamCtrlOxy.Oxy_Lower;
+    
+    sMenuStamp.sTimeSlave.FreeCtrl = sTimeSlave.FreeCtrl;
+    sMenuStamp.sTimeSlave.RunCtrl  = sTimeSlave.RunCtrl;
 }
 
 /*============================ Function Handle =========================*/
