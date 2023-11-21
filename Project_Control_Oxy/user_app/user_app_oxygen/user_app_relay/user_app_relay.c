@@ -17,16 +17,16 @@ sEvent_struct               sEventAppRelay[] =
 
 Struct_StatusRelay      sStatusRelay={OFF_RELAY};                
 static GPIO_TypeDef*    RELAY_PORT[NUMBER_RELAY] = {MCU_RL1_GPIO_Port, MCU_RL2_GPIO_Port, 
-                                                   MCU_RL3_GPIO_Port, MCU_RL4_GPIO_Port,
-                                                   MCU_RL5_GPIO_Port, MCU_RL6_GPIO_Port,
-                                                   MCU_RL7_GPIO_Port, MCU_RL8_GPIO_Port,
-                                                   MCU_RL9_GPIO_Port};
+                                                    MCU_RL3_GPIO_Port, MCU_RL4_GPIO_Port,
+                                                    MCU_RL5_GPIO_Port, MCU_RL6_GPIO_Port,
+                                                    MCU_RL7_GPIO_Port, MCU_RL8_GPIO_Port,
+                                                    MCU_RL9_GPIO_Port};
 
 static uint16_t         RELAY_PIN[NUMBER_RELAY] = {MCU_RL1_Pin, MCU_RL2_Pin, 
-                                                    MCU_RL3_Pin, MCU_RL4_Pin,
-                                                    MCU_RL5_Pin, MCU_RL6_Pin,
-                                                    MCU_RL7_Pin, MCU_RL8_Pin,
-                                                    MCU_RL9_Pin};
+                                                   MCU_RL3_Pin, MCU_RL4_Pin,
+                                                   MCU_RL5_Pin, MCU_RL6_Pin,
+                                                   MCU_RL7_Pin, MCU_RL8_Pin,
+                                                   MCU_RL9_Pin};
 
 /*================= Function Handle ==============*/
 static uint8_t fevent_relay_entry(uint8_t event)

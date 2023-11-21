@@ -257,10 +257,10 @@ typedef enum
 /*--------------------------------Enum calib oxy---------------------------*/
 typedef enum
 {
-    _LCD_C_CALIB_OXY_0,
     _LCD_C_CALIB_OXY_100,
     _LCD_C_CALIB_OXY_SALINITY,
     _LCD_C_CALIB_OXY_TEMPERATURE,
+    _LCD_C_CALIB_OXY_RESET,
     _LCD_C_CALIB_OXY_STATE_LOAD,
     _LCD_C_CALIB_OXY_STATE_DONE,
     _LCD_C_CALIB_OXY_STATE_ERROR,
@@ -324,17 +324,24 @@ extern sEvent_struct       sEventAppVibSensor[];
 
 extern LCD_Char_Display                    oLCD_C_Main_1[];
 extern LCD_Uint_Display                    oLCD_U_Main_1[];
+
 extern LCD_Char_Display                    oLCD_C_Main_2[];
 extern LCD_Uint_Display                    oLCD_U_Main_2[];
+
 extern LCD_Char_Display                    oLCD_C_Login[];
 extern LCD_Uint_Display                    oLCD_U_Login[];
+
 extern LCD_Char_Display                    oLCD_C_Setting_Main[];
+
 extern LCD_Char_Display                    oLCD_C_Setting_Calib[];
 extern LCD_Uint_Display                    oLCD_U_Setting_Calib[];
+
 extern LCD_Char_Display                    oLCD_C_Setting_Cycle[];
 extern LCD_Uint_Display                    oLCD_U_Setting_Cycle[];
+
 extern LCD_Char_Display                    oLCD_C_Setting_Parameter[];
 extern LCD_Uint_Display                    oLCD_U_Setting_Parameter[];
+
 extern LCD_Char_Display                    oLCD_C_Setting_Password[];
 extern LCD_Uint_Display                    oLCD_U_Setting_Password[];
 extern LCD_Char_Display                    oLCD_C_Calib_Oxy[];
@@ -349,6 +356,7 @@ void        Display_Control_Setting_Left(uint8_t Page);
 void        Display_Control_Setting_Right(uint8_t Page);
 void        Clear_Rol_LCD(uint8_t PageStart, uint8_t PageEnd);
 
+//--------------Function Display-----------
 void        DLCD_Main_1(void);
 void        DLCD_Main_2(void);
 void        DLCD_Login(void);
@@ -359,6 +367,7 @@ void        DLCD_Setting_Parameter(void);
 void        DLCD_Setting_Password(void);
 void        DLCD_Calib_Oxy(void);
 
+//-------------Function Entry--------------
 void        DLCD_Main_1_Entry(void);
 void        DLCD_Main_2_Entry(void);
 void        DLCD_Login_Entry(void);
@@ -369,6 +378,7 @@ void        DLCD_Setting_Parameter_Entry(void);
 void        DLCD_Setting_Password_Entry(void);
 void        DLCD_Calib_Oxy_Entry(void);
 
+//-------------Function Alter---------------
 void        DLCD_Main_1_Alter(void);
 void        DLCD_Main_2_Alter(void);
 void        DLCD_Login_Alter(void);

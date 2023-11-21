@@ -36,7 +36,7 @@ static void AppSim_Process_Server_DL (sData *sUartSim);
 
 sFuncCallbackHandlerSim     sAppSimCallBack = 
 {
-    .pSim_Common_Reset_MCU      = Reset_Chip,
+    .pSim_Common_Reset_MCU      = Reset_Chip,       
     .pSim_Common_Handler_AT     = AppSim_Process_AT_Event,
     .pSim_Common_Handler_URC    = AppSim_Process_URC_Callback,
     .pSim_Common_Config_Update  = AppSim_Set_Config_UpdateFw,

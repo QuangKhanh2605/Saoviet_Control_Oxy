@@ -94,7 +94,7 @@
 #define MAX_MESS_IN_PACKET                              1       //1 ban tin 31 byte. Max 512 byte - 45 byte header
 
 /*--- ID cua thiet bi -------*/
-#define DEVICE_ID                                       "SVWMCO23000001"  
+#define DEVICE_ID                                       "SVWMCO23009999"  
 
 
 #define DEFAULT_FREQ_SEND_ONLINE                        2

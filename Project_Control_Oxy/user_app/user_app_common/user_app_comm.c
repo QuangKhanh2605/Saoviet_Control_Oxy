@@ -225,7 +225,10 @@ static uint8_t _Cb_Tx_Timer(uint8_t event)
 #endif
     
 #ifdef USING_APP_CTRL_OXY
-    fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_LOG_TSVH);
+    if(sStateCtrlOxy.StateDCU == 1)
+    {
+        fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_LOG_TSVH);  
+    }
 #endif 
  
     if (sModem.ModeSimPower_u8 == _POWER_MODE_SAVE)
@@ -363,7 +366,7 @@ void Main_Task (void)
     Temp_Humid_Init();
 #endif
     
-    HAL_Delay(2000);
+    HAL_Delay(1500);
 //    uint32_t test = 0;
 //    while(1)
 //    {

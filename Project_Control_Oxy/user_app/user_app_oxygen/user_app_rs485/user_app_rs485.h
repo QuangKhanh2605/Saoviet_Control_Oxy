@@ -25,6 +25,7 @@ typedef enum
     _RS485_CALIB_OXY_100_CALIB,
     _RS485_CALIB_SALINITY,
     _RS485_CALIB_TEMP,
+    _RS485_RESET_SENSOR,
     
     _RS485_RESET_CALIB,
     
@@ -62,6 +63,6 @@ uint8_t    AppRs485_Task(void);
 void       Init_AppRs485(void);
 void       Save_IdSlave(uint8_t ID_Oxy, uint8_t ID_pH);
 void       Init_IdSlave(void);
-
+void       Average_MeasureOxy(uint16_t Oxy_Mg_L, uint16_t Oxy_Percent);
 #endif
 

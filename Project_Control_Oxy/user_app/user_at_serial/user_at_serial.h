@@ -106,6 +106,8 @@ typedef enum
     _SET_OXY_LOWER,
     
     _GET_OXY_MEASURE,
+    _GET_MODE_OXY,
+    _GET_CYCLE_SLAVE_CTRL,
     
     _END_AT_CMD,
 }Type_Command_AT_PC;
@@ -225,5 +227,6 @@ void        fGET_OXY_LOWER (sData *str_Receiv, uint16_t Pos);
 void        fSET_OXY_LOWER (sData *str_Receiv, uint16_t Pos);
 
 void        fGET_OXY_MEASURE (sData *str_Receiv, uint16_t Pos);
-
+void        fGET_MODE_OXY (sData *str_Receiv, uint16_t Pos);
+void        fGET_CYCLE_SLAVE_CTRL (sData *str_Receiv, uint16_t Pos);
 #endif

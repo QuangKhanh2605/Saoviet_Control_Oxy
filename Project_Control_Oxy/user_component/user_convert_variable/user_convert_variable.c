@@ -46,6 +46,10 @@ uint32_t Calculator_Value_Scale(uint32_t Value, uint8_t Scale, uint8_t Scale_Def
 
 /*=============== Convert Int To String ==============*/
 
+/*
+    @brief  Convert Int to String
+    @return Length var
+*/
 uint8_t Convert_Int_To_String(uint8_t cData[], int var)
 {
     uint8_t length = 0;
@@ -76,6 +80,10 @@ uint8_t Convert_Int_To_String(uint8_t cData[], int var)
     return length;
 }
 
+/*
+    @brief  Convert Int to String(Scale)
+    @return Length Data
+*/
 uint8_t Convert_Int_To_String_Scale(uint8_t cData[], int var, uint8_t Scale)
 {
     uint8_t length = 0;
@@ -133,6 +141,11 @@ uint8_t Convert_Int_To_String_Scale(uint8_t cData[], int var, uint8_t Scale)
 }
 
 //---------------------- Convert Int to String Point ---------------------
+/*
+    @brief  Convert Int to String at Point
+    @param  *Pos location in array cData
+    @return Length Data
+*/
 uint8_t Convert_Point_Int_To_String(uint8_t cData[], uint16_t *Pos, int var)
 {
     uint16_t length = 0;
@@ -164,13 +177,20 @@ uint8_t Convert_Point_Int_To_String(uint8_t cData[], uint16_t *Pos, int var)
     *Pos = length;
     return length;
 }
-
+/*
+    @brief  Convert Int to String at Point (Scale)
+    @param  *Pos location in array cData
+    @return Length Data
+*/
 uint8_t Convert_Point_Int_To_String_Scale(uint8_t cData[], uint16_t *Pos, int var, uint8_t Scale)
 {
-    uint16_t length = 0;
-    uint32_t division = 0;
-    uint32_t stamp = 0;
+    uint16_t length = 0;            //Vi tri du lieu 
+    uint16_t location_pos = 0;      //Vi tri dau tien cua Pos
+    uint32_t division = 0;          //Kiem tra do dai du lieu cua variable tu scale
+    uint32_t stamp = 0;             //Stamp cua variable
     uint8_t size_cData = 0;
+    
+    location_pos = *Pos;
     if(var < 0)
     {
         stamp = 0 - var;
@@ -195,7 +215,7 @@ uint8_t Convert_Point_Int_To_String_Scale(uint8_t cData[], uint16_t *Pos, int va
         {
             for(uint8_t i = length; ; i--)
             {
-                if(cData[i-1] == '-' ||i == 0)
+                if(cData[i-1] == '-' ||i == location_pos)
                 {
                     cData[i] = '0';
                     break;
@@ -228,6 +248,9 @@ uint8_t Convert_Point_Int_To_String_Scale(uint8_t cData[], uint16_t *Pos, int va
 
 //---------------------Convert Variable Packet Integer ----------------------
 
+/*
+    @brief  Dong goi bien Integer vao mang
+*/
 void Convert_Var_Packet_Integer (uint8_t *pTarget, uint16_t *LenTarget, uint32_t Data)
 {
     uint16_t Pos = *LenTarget;
@@ -249,6 +272,9 @@ void Convert_Var_Packet_Integer (uint8_t *pTarget, uint16_t *LenTarget, uint32_t
 }
 
 //------------------------Insert String------------------------
+/*
+    @brief  Insert String to String
+*/
 void Insert_String_To_String(uint8_t destination[], uint16_t *PosDes, uint8_t source[], uint16_t PosSour, uint32_t length)
 {
     for(uint16_t i = 0; i< length; i++)

@@ -197,10 +197,10 @@ LCD_Uint_Display                    oLCD_U_Setting_Password[]=
 /*===== Object LCD ================ Screen Calib Oxy ================*/
 LCD_Char_Display                    oLCD_C_Calib_Oxy[]=
 {
-  {_LCD_C_CALIB_OXY_0,                  0,2,30,                 (char*)"CALIB OXY 0"},
   {_LCD_C_CALIB_OXY_100,                0,2,25,                 (char*)"CALIB OXY 100"},
   {_LCD_C_CALIB_OXY_SALINITY,           0,2,20,                 (char*)"CALIB SALINITY"},
   {_LCD_C_CALIB_OXY_TEMPERATURE,        0,2,13,                 (char*)"CALIB TEMPERATURE"},
+  {_LCD_C_CALIB_OXY_RESET,              0,2,30,                 (char*)"RESET CALIB"},
   {_LCD_C_CALIB_OXY_STATE_LOAD,         0,4,35,                 (char*)"Loading..."},
   {_LCD_C_CALIB_OXY_STATE_DONE,         0,4,35,                 (char*)"   Done!  "},
   {_LCD_C_CALIB_OXY_STATE_ERROR,        0,4,35,                 (char*)"  Error!  "},
@@ -289,7 +289,6 @@ void DLCD_Setting_Parameter_Alter(void)
     static uint16_t stampTimeWarning= 0;
     static uint16_t stampOxyUpper = 0;
     static uint16_t stampOxyLower = 0;
-    
     
     if(*oLCD_U_Setting_Parameter[_LCD_U_SETTING_PARAMETER_TIME_DELAY].Object != stampTimeDelay)
     {
@@ -628,6 +627,9 @@ void DLCD_Setting_Calib_Entry(void)
     
     oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_SALINITY].Status = 1;
     oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_TEMPERATURE].Status = 1;
+    
+    oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_SALINITY].Object = &sParamMeasure.Salinity;
+    oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_TEMPERATURE].Object = &sParamMeasure.Temp;
     
     DLCD_Setting_Calib();
     Display_Control_Setting_Left(oLCD_C_Setting_Calib[_LCD_C_SETTING_CALIB_100_CALIB].Rol);

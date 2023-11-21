@@ -345,8 +345,19 @@ uint8_t _mDATA_INTAN_TSVH(int Kind_Send)
 
 uint8_t _mDATA_ON_FLASH(int Kind_Send)
 {
-    
-    
+#ifdef USING_APP_CTRL_OXY
+    uint16_t i = 0;
+
+    sMQTT.sPayload.Data_a8 = aPAYLOAD_MQTT;
+	sMQTT.sPayload.Length_u16 = MAX_LENGTH_MQTT;
+
+	Reset_Buff(&sMQTT.sPayload);
+
+    for (i = 0; i < sModem.strATResp.Length_u16; i++)
+      *(sMQTT.sPayload.Data_a8 +  sMQTT.sPayload.Length_u16++) = *(sModem.strATResp.Data_a8 + i);
+
+    mData_MQTT(Kind_Send, MY_QOS);
+#endif
     return 1;
 }
 

@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2022 STMicroelectronics.
+  * Copyright (c) 2023 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -25,7 +25,6 @@
 /* USER CODE BEGIN Includes */
 #include "onchipflash.h"
 #include "user_internal_mem.h"
-#include "GLCD192x64.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -35,6 +34,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -52,7 +52,6 @@ uint32_t	i = 0;
 
 typedef  void (*pFunction)(void);
 pFunction Jump_To_Application;
-
 
 /* USER CODE END PV */
 
@@ -97,7 +96,6 @@ int main(void)
   MX_GPIO_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-  
     UTIL_Printf_Str (DBLEVEL_L, "\r\n=========================\r\n");
     UTIL_Printf_Str (DBLEVEL_L,     "=====USER BOOT LOADER====\r\n");
     UTIL_Printf_Str (DBLEVEL_L,     "=========================\r\n");
@@ -106,15 +104,7 @@ int main(void)
 	NewFirmwareSize = *(__IO uint32_t*)(ADDR_FLAG_HAVE_NEW_FW + 0x04);
 	if (HaveNewFirmware == 0xAA)
 	{
-	    GLCD_Initialize();
-        GLCD_ClearScreen();
-        GLCD_WriteString((char*)"MACHINE CONTROL OXY",0,7,1);
-        GLCD_WriteString((char*)"SAO VIET",3,42,1);
-        GLCD_WriteString((char*)"Update Firmware",5,20,1);
-        GLCD_WriteString((char*)"Please wait...",7,25,1);
-      
         UTIL_Printf_Str (_VLEVEL_DEBUG, "u_main: find new image\r\n");
-        HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_SET);  
         
         UTIL_Printf_Str (_VLEVEL_DEBUG, "u_main: erase main image\r\n");
         Erase_Firmware (ADDR_MAIN_PROGRAM, FIRMWARE_SIZE_PAGE);
@@ -125,12 +115,10 @@ int main(void)
 		
 		//Clear new firmware flag
         UTIL_Printf_Str (_VLEVEL_DEBUG, "u_main: erase mark new image\r\n");
-//        HAL_GPIO_WritePin(LED_2_GPIO_Port, LED_2_Pin, GPIO_PIN_SET);  
 		OnchipFlashPageErase(ADDR_FLAG_HAVE_NEW_FW);
 	}
 		
     UTIL_Printf_Str (_VLEVEL_DEBUG, "u_main: jum to application\r\n");
-//    HAL_GPIO_WritePin(LED_3_GPIO_Port, LED_3_Pin, GPIO_PIN_SET);  
     
     /*  them 21_04 */
 	HAL_RCC_DeInit();

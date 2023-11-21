@@ -129,6 +129,7 @@
 //    #define ADDR_RELAY_SETTING          0x0803F600    
 
     //Register Inverter 
+    #define ADDR_FLAG_RESET_DCU         0x0803F300
     #define ADDR_CTRL_OXY_RUN_FREE      0x0803F400
     #define ADDR_PASSWORD_SETTING       0x0803F500
     #define ADDR_TIME_CONTROL_SETTING   0x0803F600

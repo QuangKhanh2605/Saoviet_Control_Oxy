@@ -71,30 +71,31 @@ static uint8_t fevent_menu_display_alter(uint8_t event)
 
 static uint8_t fevent_menu_display_calib_oxy(uint8_t event)
 {
-    if(sMenuState.CalibSensor == _CALIB_COMPLETE)
-    {
+  switch(sMenuState.CalibSensor)
+  {
+      case _CALIB_ON_GOING:
+        fevent_enable(sEventAppMenu, event);
+        break;
+        
+      case _CALIB_COMPLETE:
+      case _CALIB_ERROR:
+        if(sMenuState.CalibSensor == _CALIB_COMPLETE)
+            oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_STATE_DONE].Status = 1;
+        else
+            oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_STATE_ERROR].Status = 1;
+        
         oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_PLEASE_CLICK].Status = 1;
-        oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_STATE_DONE].Status = 1;
         DLCD_Calib_Oxy();
         
         oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_TEMPERATURE].Object = &sParamMeasure.Temp;
         oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_SALINITY].Object = &sParamMeasure.Salinity;
         Stamp_Menu_Exit();
-        return 1; 
-    }
-    else if(sMenuState.CalibSensor == _CALIB_ERROR)
-    {
-        oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_PLEASE_CLICK].Status = 1;
-        oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_STATE_ERROR].Status = 1;
-        DLCD_Calib_Oxy();
+        break;
         
-        oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_TEMPERATURE].Object = &sParamMeasure.Temp;
-        oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_SALINITY].Object = &sParamMeasure.Salinity;
-        Stamp_Menu_Exit();
-        return 1; 
-    }
-    fevent_enable(sEventAppMenu, event);
-    return 1;
+      default:
+        break;
+  }
+  return 1;
 }
 
 static uint8_t fevent_menu_display_back_main_1(uint8_t event)
@@ -308,12 +309,16 @@ void    BT_Menu_Login(uint8_t KindButton)
                 Menu_ResetState();
                 if(Check_Password() == 1)   
                 {
+                  DCU_Respond_Debug((uint8_t*)"Login_Setting",13);
+                  UTIL_Log_Str(DBLEVEL_M, "u_app_oxy: Login_SETTING!\r\n");
                   sMenuState.Screen = _MENU_SETTING_MAIN;
                   Clear_Rol_LCD(2, 7);
                   DLCD_Setting_Main_Entry();
                 }
                 else
                 {
+                  DCU_Respond_Debug((uint8_t*)"Login_Fail",13);
+                  UTIL_Log_Str(DBLEVEL_M, "u_app_oxy: Login_Fail!\r\n");
                   DLCD_Login_Entry();
                   oLCD_C_Login[_LCD_C_LOGIN_WRONG].Status = 1;
                 }
@@ -467,8 +472,6 @@ void    BT_Menu_Setting_Main(uint8_t KindButton)
                 
             case _SETTING_MAIN_CALIB:
                 sMenuState.Screen = _MENU_SETTING_CALIB;
-                oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_SALINITY].Object = &sParamMeasure.Salinity;
-                oLCD_U_Setting_Calib[_LCD_U_SETTING_CALIB_TEMPERATURE].Object = &sParamMeasure.Temp;
                 Clear_Rol_LCD(2, 6);
                 
                 DLCD_Setting_Calib_Entry();
@@ -601,14 +604,11 @@ void    BT_Menu_Setting_Cycle(uint8_t KindButton)
                 break;
                 
             case _SETTING_CYCLE_RUN_CHANGE:
-                sMenuState.SettingCycle = _SETTING_CYCLE_RUN_CHOOSE;
-                oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_PLEASE].Status = 1;
-                Save_TimeSlave(sMenuStamp.sTimeSlave.RunCtrl, sMenuStamp.sTimeSlave.FreeCtrl);
-                GLCD_ClearArea(3, 120, 6, 127);
-                break;
-                
             case _SETTING_CYCLE_FREE_CHANGE:
-                sMenuState.SettingCycle = _SETTING_CYCLE_FREE_CHOOSE;
+                if(sMenuState.SettingCycle == _SETTING_CYCLE_RUN_CHANGE)
+                  sMenuState.SettingCycle = _SETTING_CYCLE_RUN_CHOOSE;
+                else
+                  sMenuState.SettingCycle = _SETTING_CYCLE_FREE_CHOOSE;
                 oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_PLEASE].Status = 1;
                 Save_TimeSlave(sMenuStamp.sTimeSlave.RunCtrl, sMenuStamp.sTimeSlave.FreeCtrl);
                 GLCD_ClearArea(3, 120, 6, 127);
@@ -636,16 +636,12 @@ void    BT_Menu_Setting_Cycle(uint8_t KindButton)
               break;
               
             case _SETTING_CYCLE_RUN_CHANGE:
-              Stamp_Menu_Exit();
-              sMenuState.SettingCycle = _SETTING_CYCLE_RUN_CHOOSE;
-              oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_PLEASE].Status = 1;
-              DLCD_Setting_Cycle();
-              GLCD_ClearArea(3, 120, 6, 127);
-              break;
-              
             case _SETTING_CYCLE_FREE_CHANGE:
               Stamp_Menu_Exit();
-              sMenuState.SettingCycle = _SETTING_CYCLE_FREE_CHOOSE;
+              if(sMenuState.SettingCycle == _SETTING_CYCLE_RUN_CHANGE)
+                sMenuState.SettingCycle = _SETTING_CYCLE_RUN_CHOOSE;
+              else
+                sMenuState.SettingCycle = _SETTING_CYCLE_FREE_CHOOSE;
               oLCD_C_Setting_Cycle[_LCD_C_SETTING_CYCLE_PLEASE].Status = 1;
               DLCD_Setting_Cycle();
               GLCD_ClearArea(3, 120, 6, 127);
@@ -758,28 +754,47 @@ void    BT_Menu_Setting_Calib(uint8_t KindButton)
                 break;
             
             case _SETTING_CALIB_100_CALIB_ENTER:
+            case _SETTING_CALIB_RESET_CALIB_ENTER:
+            case _SETTING_CALIB_SALINITY_CHANGE:
+            case _SETTING_CALIB_TEMPERATURE_CHANGE:
                 sMenuState.Screen = _MENU_CALIB_OXY;
-                sMenuState.CalibSensor = _CALIB_ON_GOING,
-                
-                sKindMode485.Trans = _RS485_CALIB_OXY_100_CALIB;
-                fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WAIT_CALIB);
-                fevent_enable(sEventAppMenu, _EVENT_MENU_DISPLAY_CALIB_OXY);
-                
-                Clear_Rol_LCD(2, 7);
-                oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_0].Status = 1;
-                DLCD_Calib_Oxy_Entry();
-                break;
-                
-            case _SETTING_CALIB_RESET_CALIB_ENTER: 
-                sMenuState.Screen = _MENU_CALIB_OXY;
-                sMenuState.CalibSensor = _CALIB_ON_GOING,
-                
-                sKindMode485.Trans = _RS485_RESET_CALIB;
-                fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WAIT_CALIB);
-                fevent_enable(sEventAppMenu, _EVENT_MENU_DISPLAY_CALIB_OXY);
+                sMenuState.CalibSensor = _CALIB_ON_GOING;
+                switch(sMenuState.SettingCalib)
+                {
+                    case _SETTING_CALIB_100_CALIB_ENTER:
+                      sKindMode485.Trans = _RS485_CALIB_OXY_100_CALIB;
+                      oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_100].Status = 1;
+                      UTIL_Log_Str(DBLEVEL_M, "u_app_oxy: Calib_OXY_100!\r\n");
+                      DCU_Respond_Debug((uint8_t*)"Calib_Oxy_100",13);
+                      break; 
+                      
+                    case _SETTING_CALIB_RESET_CALIB_ENTER:
+                      sKindMode485.Trans = _RS485_RESET_CALIB;
+                      oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_RESET].Status = 1;
+                      UTIL_Log_Str(DBLEVEL_M, "u_app_oxy: Calib_RESET!\r\n");
+                      DCU_Respond_Debug((uint8_t*)"Calib_Reset",11);
+                      break;
+                      
+                    case _SETTING_CALIB_SALINITY_CHANGE:
+                      sKindMode485.Trans = _RS485_CALIB_SALINITY;
+                      oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_SALINITY].Status = 1;
+                      UTIL_Log_Str(DBLEVEL_M, "u_app_oxy: Calib_SALINITY!\r\n");
+                      DCU_Respond_Debug((uint8_t*)"Calib_Salinity",14);
+                      break;
+                      
+                    case _SETTING_CALIB_TEMPERATURE_CHANGE:
+                      sKindMode485.Trans = _RS485_CALIB_TEMP;
+                      oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_TEMPERATURE].Status = 1;
+                      UTIL_Log_Str(DBLEVEL_M, "u_app_oxy: Calib_TEMPERATURE!\r\n");
+                      DCU_Respond_Debug((uint8_t*)"Calib_Temperature",17);
+                      break;
 
+                    default:
+                      break;
+                }
+                fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WAIT_CALIB);
+                fevent_active(sEventAppMenu, _EVENT_MENU_DISPLAY_CALIB_OXY);
                 Clear_Rol_LCD(2, 7);
-                oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_100].Status = 1;
                 DLCD_Calib_Oxy_Entry();
                 break;
                 
@@ -803,32 +818,6 @@ void    BT_Menu_Setting_Calib(uint8_t KindButton)
                 sMenuState.SettingCalib = _SETTING_CALIB_TEMPERATURE_CHANGE;
                 fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WAIT_CALIB);
                 Display_Control_Setting_Right(oLCD_C_Setting_Calib[_LCD_C_SETTING_CALIB_TEMPERATURE].Rol);
-                break;
-                
-            case _SETTING_CALIB_SALINITY_CHANGE:
-                sMenuState.Screen = _MENU_CALIB_OXY;
-                sMenuState.CalibSensor = _CALIB_ON_GOING,
-                
-                sKindMode485.Trans = _RS485_CALIB_SALINITY;
-                fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WAIT_CALIB);
-                fevent_enable(sEventAppMenu, _EVENT_MENU_DISPLAY_CALIB_OXY);
-                
-                Clear_Rol_LCD(2, 7);
-                oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_SALINITY].Status = 1;
-                DLCD_Calib_Oxy_Entry();
-                break;
-                
-            case _SETTING_CALIB_TEMPERATURE_CHANGE:
-                sMenuState.Screen = _MENU_CALIB_OXY;
-                sMenuState.CalibSensor = _CALIB_ON_GOING,
-                
-                sKindMode485.Trans = _RS485_CALIB_TEMP;
-                fevent_active(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WAIT_CALIB);
-                fevent_enable(sEventAppMenu, _EVENT_MENU_DISPLAY_CALIB_OXY);
-                
-                Clear_Rol_LCD(2, 7);
-                oLCD_C_Calib_Oxy[_LCD_C_CALIB_OXY_TEMPERATURE].Status = 1;
-                DLCD_Calib_Oxy_Entry();
                 break;
     
               default: 
@@ -1027,6 +1016,7 @@ void    BT_Menu_Setting_Parameter(uint8_t KindButton)
                 sMenuState.SettingParameter = _SETTING_OXY_UPPER_CHOOSE;
                 oLCD_C_Setting_Parameter[_LCD_C_SETTING_PARAMETER_PLEASE].Status = 1;
                 GLCD_ClearArea(3, 120, 6, 127);
+                DCU_Respond_Debug((uint8_t*)"Setup_OxyUpper",14);
                 break;
                 
               case _SETTING_OXY_LOWER_CHANGE:
@@ -1034,6 +1024,7 @@ void    BT_Menu_Setting_Parameter(uint8_t KindButton)
                 sMenuState.SettingParameter = _SETTING_OXY_LOWER_CHOOSE;
                 oLCD_C_Setting_Parameter[_LCD_C_SETTING_PARAMETER_PLEASE].Status = 1;
                 GLCD_ClearArea(3, 120, 6, 127);
+                DCU_Respond_Debug((uint8_t*)"Setup_OxyLower",14);
                 break;
                 
               case _SETTING_TIMEDELAY_CHANGE:
@@ -1041,6 +1032,7 @@ void    BT_Menu_Setting_Parameter(uint8_t KindButton)
                 sMenuState.SettingParameter = _SETTING_TIMEDELAY_CHOOSE;
                 oLCD_C_Setting_Parameter[_LCD_C_SETTING_PARAMETER_PLEASE].Status = 1;
                 GLCD_ClearArea(3, 120, 6, 127);
+                DCU_Respond_Debug((uint8_t*)"Setup_TimeDelay",15);
                 break;
                 
               case _SETTING_TIMEWARNING_CHANGE:
@@ -1048,6 +1040,7 @@ void    BT_Menu_Setting_Parameter(uint8_t KindButton)
                 sMenuState.SettingParameter = _SETTING_TIMEWARNING_CHOOSE;
                 oLCD_C_Setting_Parameter[_LCD_C_SETTING_PARAMETER_PLEASE].Status = 1;
                 GLCD_ClearArea(3, 120, 6, 127);
+                DCU_Respond_Debug((uint8_t*)"Setup_TimeWarning",17);
                 break;
 
               default:
@@ -1074,32 +1067,32 @@ void    BT_Menu_Setting_Parameter(uint8_t KindButton)
                 break;
                 
               case _SETTING_OXY_UPPER_CHANGE:
-                Stamp_Menu_Exit();
-                sMenuState.SettingParameter = _SETTING_OXY_UPPER_CHOOSE;
-                oLCD_C_Setting_Parameter[_LCD_C_SETTING_PARAMETER_PLEASE].Status = 1;
-                DLCD_Setting_Parameter();
-                GLCD_ClearArea(3, 120, 6, 127);
-                break;
-                
               case _SETTING_OXY_LOWER_CHANGE:
-                Stamp_Menu_Exit();
-                sMenuState.SettingParameter = _SETTING_OXY_LOWER_CHOOSE;
-                oLCD_C_Setting_Parameter[_LCD_C_SETTING_PARAMETER_PLEASE].Status = 1;
-                DLCD_Setting_Parameter();
-                GLCD_ClearArea(3, 120, 6, 127);
-                break;
-                
               case _SETTING_TIMEDELAY_CHANGE:
-                Stamp_Menu_Exit();
-                sMenuState.SettingParameter = _SETTING_TIMEDELAY_CHOOSE;
-                oLCD_C_Setting_Parameter[_LCD_C_SETTING_PARAMETER_PLEASE].Status = 1;
-                DLCD_Setting_Parameter();
-                GLCD_ClearArea(3, 120, 6, 127);
-                break;
-                
               case _SETTING_TIMEWARNING_CHANGE:
+                switch(sMenuState.SettingParameter)
+                {
+                  case _SETTING_OXY_UPPER_CHANGE:
+                    sMenuState.SettingParameter = _SETTING_OXY_UPPER_CHOOSE;
+                    break;
+                    
+                  case _SETTING_OXY_LOWER_CHANGE:
+                    sMenuState.SettingParameter = _SETTING_OXY_LOWER_CHOOSE;
+                    break;
+                    
+                  case _SETTING_TIMEDELAY_CHANGE:
+                    sMenuState.SettingParameter = _SETTING_TIMEDELAY_CHOOSE;
+                    break;
+                    
+                  case _SETTING_TIMEWARNING_CHANGE:
+                    sMenuState.SettingParameter = _SETTING_TIMEWARNING_CHOOSE;
+                    break;
+                    
+                    default:
+                      break;
+                }
+
                 Stamp_Menu_Exit();
-                sMenuState.SettingParameter = _SETTING_TIMEWARNING_CHOOSE;
                 oLCD_C_Setting_Parameter[_LCD_C_SETTING_PARAMETER_PLEASE].Status = 1;
                 DLCD_Setting_Parameter();
                 GLCD_ClearArea(3, 120, 6, 127);
@@ -1280,6 +1273,8 @@ void    BT_Menu_Setting_Password(uint8_t KindButton)
                 break;
                 
             case _CHANGE_PASS_6:
+                UTIL_Log_Str(DBLEVEL_M, "u_app_oxy: Change_Password!\r\n");
+                DCU_Respond_Debug((uint8_t*)"Change_Password",15);
                 Save_Password();
                 sMenuState.SettingPassword = _SUCCESS_PASS;
                 oLCD_C_Setting_Password[_LCD_C_SETTING_PASSWORD_SUCCESS].Status = 1;

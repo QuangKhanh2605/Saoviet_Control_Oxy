@@ -19,7 +19,7 @@
 #define TIME_MIN            2
 
 
-#define TIMECHANGE_DEFAULT  120
+#define TIMECHANGE_DEFAULT  15
 #define TIMEWARNING_DEFAULT 10
 #define TIMEWARNING_MAX     1000
 #define TIMEWARNING_MIN     1
@@ -48,10 +48,12 @@ typedef enum
     
     _EVENT_CTRL_OXY_SW_MAN_AUTO,
     _EVENT_CTRL_OXY_LOG_TSVH,
+    _EVENT_CTRL_OXY_SW_NOTIFY,
     _EVENT_CTRL_OXY_PW_DETECT,
     _EVENT_CTRL_OXY_STATE_SLAVE,
     _EVENT_CTRL_OXY_WARNING,
     _EVENT_CTRL_OXY_FREQ_NOTIFY,
+    _EVENT_CTRL_OXY_RESET_DCU,
     
     _EVENT_CTRL_OXY_END,
 }eKindEventCtrlOxy;
@@ -131,7 +133,7 @@ typedef struct
 
 typedef struct
 {
-    uint8_t StateDCU;               //Trang thai DCU
+    uint8_t StateDCU;               //Trang thai DCU san sang gui TSVH
     uint8_t StateMachine;           //Trang thai Auto hoac Manual
     uint8_t StateSensorOxy;         //Trang thai ket noi vs Sensor OXY
     uint8_t StateSensorPH;          //Trang thai ket noi vs Sensor PH
@@ -166,10 +168,14 @@ extern Struct_ParamCtrlOxy              sParamCtrlOxy;
 /*================= Function Handle ================*/
 uint8_t     AppCtrlOxy_Task(void);
 void        Init_AppCtrlOxy(void);
+
 void        Save_TimeCtrlOxy(uint16_t TimeDelay, uint16_t TimeChange, uint16_t TimeWarning);
 void        Init_TimeCtrlOxy(void);
+
 void        Save_StateOxy(void);
 void        Init_StateOxy(void);
+
+void        Init_FlagDCU(void);
 
 void        AppCtrlOxy_Log_Data_TSVH (void);
 uint8_t     AppCtrlOxy_Packet_TSVH (uint8_t *pData);
@@ -200,5 +206,6 @@ uint32_t    Calculator_Value_Scale(uint32_t Value, uint8_t Scale, uint8_t Scale_
 void        Compensation_Salinity(uint16_t *Oxy_Concentration, uint16_t Sal_x100, uint16_t Temp_x100);
 void        DCU_Notify_Server(uint8_t KindNotify);
 void        DCU_Respond_ID_Server(uint32_t ID_Server);
+void        DCU_Respond_Debug(uint8_t *data, uint16_t length);
 #endif
 

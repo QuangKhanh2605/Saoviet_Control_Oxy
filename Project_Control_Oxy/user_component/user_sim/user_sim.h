@@ -94,7 +94,7 @@
 #define SIM_TCP_TIMEOUT		60000
 #define SIM_MAX_CGATT  	    10
      
-#define MAX_HARD_RESET		20
+#define MAX_HARD_RESET		30     //Default 20
 #define MAX_RETRY_CHANGE_SERVER     5
 #define MAX_SOFT_RESET		2
      

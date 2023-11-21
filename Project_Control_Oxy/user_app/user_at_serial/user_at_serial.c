@@ -112,7 +112,9 @@ const struct_CheckList_AT CheckList_AT_CONFIG[] =
         {_GET_OXY_LOWER,        fGET_OXY_LOWER,             {(uint8_t*)"at+oxylower?",12}},
         {_SET_OXY_LOWER,        fSET_OXY_LOWER,             {(uint8_t*)"at+oxylower=",12}},     //Ex: at+oxylower=500
       
-        {_GET_OXY_MEASURE,      fGET_OXY_MEASURE,           {(uint8_t*)"at+oxymeasure?",14}},
+        {_GET_OXY_MEASURE,      fGET_OXY_MEASURE,           {(uint8_t*)"at+oxymeasure?",14}},   //Gia tri do luong sensor
+        {_GET_MODE_OXY,         fGET_MODE_OXY,              {(uint8_t*)"at+oxymode?",11}},      //Trang thai hoat dong cua may va 4 cuc oxy
+        {_GET_CYCLE_SLAVE_CTRL, fGET_CYCLE_SLAVE_CTRL,      {(uint8_t*)"at+cycleslavectrl?",17}},// Chu ki Run vs Free Slave control oxy
         
         {_END_AT_CMD,	        NULL,	                    {(uint8_t*)"at+end",6}},
 };
@@ -1929,4 +1931,41 @@ void        fGET_OXY_MEASURE (sData *str_Receiv, uint16_t Pos)
 #endif
 }
 
+void        fGET_MODE_OXY (sData *str_Receiv, uint16_t Pos)
+{
+#ifdef USING_APP_OXYGEN
+    uint8_t aTemp[20] = "Oxy_Mode:";   //11 ki tu dau tien
+    uint16_t length = 9;
+    
+    if(sStateCtrlOxy.StateMachine == _MACHINE_MAN)
+      Insert_String_To_String(aTemp, &length, (uint8_t*)"MAN_",0 , 4);
+    else if (sStateCtrlOxy.StateMachine == _MACHINE_AUTO)
+      Insert_String_To_String(aTemp, &length, (uint8_t*)"AUTO_",0 , 5);
+    else    
+      Insert_String_To_String(aTemp, &length, (uint8_t*)"OFF_",0 , 4);
+
+    aTemp[length++] = sStateCtrlOxy.aStateOxy[0] + 0x30;
+    aTemp[length++] = sStateCtrlOxy.aStateOxy[1] + 0x30;
+    aTemp[length++] = sStateCtrlOxy.aStateOxy[2] + 0x30;
+    aTemp[length++] = sStateCtrlOxy.aStateOxy[3] + 0x30;
+
+	DCU_Respond(PortConfig, aTemp, length, 0);
+#endif
+}
+
+void        fGET_CYCLE_SLAVE_CTRL (sData *str_Receiv, uint16_t Pos)
+{
+#ifdef USING_APP_OXYGEN
+    uint8_t aTemp[60] = "Oxy_Slave_Ctrl:Run=";   //11 ki tu dau tien
+    uint16_t length = 19;
+
+    Convert_Point_Int_To_String_Scale (aTemp, &length, (int)(sTimeSlave.RunCtrl), 0xFF);
+    Insert_String_To_String(aTemp, &length, (uint8_t*)"s,Free=",0 , 7);
+    
+    Convert_Point_Int_To_String_Scale (aTemp, &length, (int)(sTimeSlave.FreeCtrl), 0xFE);
+    Insert_String_To_String(aTemp, &length, (uint8_t*)"s",0 , 1);
+
+	DCU_Respond(PortConfig, aTemp, length, 0);
+#endif
+}
 
