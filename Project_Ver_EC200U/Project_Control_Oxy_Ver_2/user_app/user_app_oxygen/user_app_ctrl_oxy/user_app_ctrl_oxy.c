@@ -11,6 +11,7 @@
 #include "iwdg.h"
 /*====================Function Static===================*/
 static uint8_t fevent_ctrl_oxy_entry(uint8_t event);
+static uint8_t fevent_entry_tsvh(uint8_t event);
 static uint8_t fevent_ctrl_oxy_iwdg(uint8_t event);
 static uint8_t fevent_send_slave_cycle(uint8_t event);
 static uint8_t fevent_ctrl_oxy_wait_calib(uint8_t event);
@@ -28,6 +29,7 @@ static uint8_t fevent_send_log_eeprom(uint8_t event);
 sEvent_struct               sEventAppCtrlOxy[]=
 {
   {_EVENT_CTRL_OXY_ENTRY,           1, 5, 20000,        fevent_ctrl_oxy_entry}, //doi sensor do on dinh thi bat dau xet cac truong hop
+  {_EVENT_ENTRY_TSVH,               1, 5, 30000,        fevent_entry_tsvh},
   {_EVENT_CTRL_OXY_IWDG,            1, 5, 500,          fevent_ctrl_oxy_iwdg},
   
   {_EVENT_SEND_SLAVE_CYCLE,         0, 5, 1000,         fevent_send_slave_cycle},
@@ -90,6 +92,12 @@ static uint8_t fevent_ctrl_oxy_entry(uint8_t event)
     fevent_enable(sEventAppCtrlOxy, _EVENT_CTRL_OXY_STATE_SLAVE);
     fevent_enable(sEventAppCtrlOxy, _EVENT_CTRL_OXY_WARNING);
     fevent_enable(sEventAppCtrlOxy, _EVENT_CTRL_OXY_PW_DETECT);
+    return 1;
+}
+
+static uint8_t fevent_entry_tsvh(uint8_t event)
+{
+    sStateCtrlOxy.StateSendOpera = 1;
     return 1;
 }
 
@@ -321,7 +329,7 @@ static uint8_t fevent_ctrl_oxy_warning(uint8_t event)
             Log_EventWarnig(OBIS_WARNING_OXY_LOWER, 0x01);
         }
     }
-  
+    
     fevent_enable(sEventAppCtrlOxy, event);
     return 1;
 }
@@ -1030,6 +1038,8 @@ void Init_StateOxy(void)
 */
 void AppCtrlOxy_Log_Data_TSVH (void)
 {
+  if(sRTC.year > 20)
+  {
     uint8_t     aMessData[256] = {0};
     uint8_t     Length = 0;
     
@@ -1038,9 +1048,10 @@ void AppCtrlOxy_Log_Data_TSVH (void)
     
     Length = AppCtrlOxy_Packet_TSVH (&aMessData[0]);
 #ifdef USING_APP_MEM
-    if(sStateCtrlOxy.StateDCU == 1)
+    if(sStateCtrlOxy.StateSendOpera == 1)
         AppMem_Write_Data(_MEM_DATA_TSVH_A, &aMessData[0], Length, sRecTSVH.SizeRecord_u16);
 #endif
+  }
 }
 
 /*
@@ -1226,6 +1237,10 @@ uint8_t Calculator_Addr_Read_Write_EEPROM(uint16_t CountRec, uint16_t *AddrRec)
 
 void Log_EventWarnig(uint8_t Obis, uint8_t State)
 {
+  Get_RTC();
+  
+  if(sRTC.year > 20)
+  {
     uint8_t     aData[10]={0};
     uint16_t    length = 0;
     uint16_t	i = 0;
@@ -1247,6 +1262,7 @@ void Log_EventWarnig(uint8_t Obis, uint8_t State)
 #ifdef USING_APP_MEM
     AppMem_Write_Data(_MEM_DATA_EVENT_A, &aData[0], length, sRecEvent.SizeRecord_u16);
 #endif
+  }
 }
 
 
@@ -1321,11 +1337,6 @@ void Save_GetTickMs(void)
     aData[length++] = sGettickMs.GettickMs >> 8;
     aData[length++] = sGettickMs.GettickMs;
     
-    aData[length++] = sGettickMs.Oxy_Warning >> 24;
-    aData[length++] = sGettickMs.Oxy_Warning >> 16;
-    aData[length++] = sGettickMs.Oxy_Warning >> 8;
-    aData[length++] = sGettickMs.Oxy_Warning;
-    
     aData[length++] = sGettickMs.Oxy_Change >> 24;
     aData[length++] = sGettickMs.Oxy_Change >> 16;
     aData[length++] = sGettickMs.Oxy_Change >> 8;
@@ -1349,20 +1360,15 @@ void Init_GetTickMs(void)
         sGettickMs.GettickMs |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+4) <<8;
         sGettickMs.GettickMs |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+5) ;
         
-        sGettickMs.Oxy_Warning = *(__IO uint8_t*)(ADDR_OXY_GETTICK+6) <<24;
-        sGettickMs.Oxy_Warning |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+7) <<16;
-        sGettickMs.Oxy_Warning |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+8) <<8;
-        sGettickMs.Oxy_Warning |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+9) ;
+        sGettickMs.Oxy_Change = *(__IO uint8_t*)(ADDR_OXY_GETTICK+6) <<24;
+        sGettickMs.Oxy_Change |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+7) <<16;
+        sGettickMs.Oxy_Change |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+8) <<8;
+        sGettickMs.Oxy_Change |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+9) ;
         
-        sGettickMs.Oxy_Change = *(__IO uint8_t*)(ADDR_OXY_GETTICK+10) <<24;
-        sGettickMs.Oxy_Change |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+11) <<16;
-        sGettickMs.Oxy_Change |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+12) <<8;
-        sGettickMs.Oxy_Change |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+13) ;
-        
-        sGettickMs.Oxy_Delay = *(__IO uint8_t*)(ADDR_OXY_GETTICK+14) <<24;
-        sGettickMs.Oxy_Delay |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+15) <<16;
-        sGettickMs.Oxy_Delay |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+16) <<8;
-        sGettickMs.Oxy_Delay |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+17) ;
+        sGettickMs.Oxy_Delay = *(__IO uint8_t*)(ADDR_OXY_GETTICK+10) <<24;
+        sGettickMs.Oxy_Delay |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+11) <<16;
+        sGettickMs.Oxy_Delay |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+12) <<8;
+        sGettickMs.Oxy_Delay |= *(__IO uint8_t*)(ADDR_OXY_GETTICK+13) ;
         
 
         OnchipFlashPageErase(ADDR_OXY_GETTICK);
@@ -1370,7 +1376,6 @@ void Init_GetTickMs(void)
     else
     {
         sGettickMs.GettickMs = 0;
-        sGettickMs.Oxy_Warning = 0;
         sGettickMs.Oxy_Change = 0;
         sGettickMs.Oxy_Delay = 0;
     }

@@ -51,6 +51,7 @@
 typedef enum
 {
     _EVENT_CTRL_OXY_ENTRY,
+    _EVENT_ENTRY_TSVH,
     _EVENT_CTRL_OXY_IWDG,
     _EVENT_SEND_SLAVE_CYCLE,
     _EVENT_CTRL_OXY_WAIT_CALIB,
@@ -153,7 +154,8 @@ typedef struct
     uint8_t StateSensorOxy;         //Trang thai ket noi vs Sensor OXY
     uint8_t StatePower;             //Trang thai nguon cap
     uint8_t StateOxyLower;          //Trang thai canh bao Oxy thap
-
+    uint8_t StateSendOpera;
+    
     uint8_t *aStateOxy;             //Trang thai Oxy
 }Struct_StateCtrlOxy;
 
@@ -190,7 +192,6 @@ typedef struct
     uint32_t GettickMs;
     uint32_t Oxy_Delay;
     uint32_t Oxy_Change;
-    uint32_t Oxy_Warning;
 }Struct_GettickMs;
 
 extern sEvent_struct                    sEventAppCtrlOxy[];

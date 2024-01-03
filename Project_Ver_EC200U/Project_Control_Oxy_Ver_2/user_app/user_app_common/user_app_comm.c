@@ -64,7 +64,7 @@ char aSaoVietCom[15][71] =
 };
 
 
-sData   sFirmVersion = {(uint8_t *) "SVTH_SVM_OXY_V1_1_1", 19};
+sData   sFirmVersion = {(uint8_t *) "SVTH_SVM_OXY_V1_2_1", 19};
 
 static UTIL_TIMER_Object_t TimerTx;
 
@@ -276,10 +276,6 @@ static uint8_t _Cb_Save_Box (uint8_t event)
 /*=========================== Func App Main ========================*/
 void SysApp_Init (void)
 {       
-#ifdef USING_APP_OXYGEN
-    Oxygen_Init();
-#endif
-  
 #ifdef USING_APP_EMET
     __HAL_IWDG_START(&hiwdg);
 #endif
@@ -321,9 +317,13 @@ void SysApp_Setting (void)
 #ifdef USING_APP_MEM
     AppMem_Init();
 #endif
+    
+#ifdef USING_APP_OXYGEN
+    Oxygen_Init();
+#endif
     //Dang ki cac event
 	UTIL_TIMER_Create(&TimerTx,  0xFFFFFFFFU, UTIL_TIMER_ONESHOT, Cb_TX_Timer_Event, NULL);
-	UTIL_TIMER_SetPeriod (&TimerTx, 15000);   //Set sFreqInfor.FreqSendUnitMin_u32 * 60000
+	UTIL_TIMER_SetPeriod (&TimerTx, 20000);   //Set sFreqInfor.FreqSendUnitMin_u32 * 60000
 	UTIL_TIMER_Start (&TimerTx);
 }
 

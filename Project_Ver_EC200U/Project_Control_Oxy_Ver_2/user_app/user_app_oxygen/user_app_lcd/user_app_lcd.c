@@ -222,6 +222,14 @@ static uint8_t fevent_lcd_get_time_rtc(uint8_t event)
         Time_To_Char(cTime_RTC);
         Display_Time();
     }
+    
+    if(aDCU_ID[0] == 0x00 || aDCU_ID[1] == 0x00 )
+    {
+        OnchipFlashPageErase(ADDR_DCUID);
+        HAL_Delay(1000);
+        Reset_Chip();
+    }
+    
     fevent_enable(sEventAppLcd, event);
     return 1;
 }
@@ -289,7 +297,6 @@ void DLCD_Setting_Parameter_Alter(void)
         oLCD_U_Setting_Parameter[_LCD_U_SETTING_PARAMETER_TIME_DELAY].Status = 1;
     }
 
-    
     if(*oLCD_U_Setting_Parameter[_LCD_U_SETTING_PARAMETER_OXY_UPPER].Object != stampOxyUpper)
     {
         stampOxyUpper = *oLCD_U_Setting_Parameter[_LCD_U_SETTING_PARAMETER_OXY_UPPER].Object;

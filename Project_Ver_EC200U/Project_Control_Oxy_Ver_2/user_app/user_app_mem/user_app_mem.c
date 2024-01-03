@@ -648,7 +648,7 @@ void AppMem_Init(void)
 {
 #ifdef MEMORY_ON_FLASH
 	AppMem_Init_Index_Record();
-    //Init queue
+    //Init queue*
     OnFlash_Init();
     sOnFlash.Status_u8 = true;
      
@@ -1385,8 +1385,11 @@ void AppMem_Init_Index_Record (void)
     sRecTSVH.IndexSave_u16 = mInit_u16 (sRecTSVH.AddIndexSave_u32, sRecTSVH.MaxRecord_u16);
     sRecTSVH.IndexSend_u16 = mInit_u16 (sRecTSVH.AddIndexSend_u32, sRecTSVH.MaxRecord_u16);
 
+    if(*(__IO uint8_t*)(ADDR_INIT_STATE_MACHINE) == BYTE_TEMP_FIRST)
+    {
     sRecEvent.IndexSave_u16 = mInit_u16 (sRecEvent.AddIndexSave_u32, sRecEvent.MaxRecord_u16);
     sRecEvent.IndexSend_u16 = mInit_u16 (sRecEvent.AddIndexSend_u32, sRecEvent.MaxRecord_u16);
+    }
     
     sRecLog.IndexSave_u16 = mInit_u16 (sRecLog.AddIndexSave_u32, sRecLog.MaxRecord_u16);
     sRecLog.IndexSend_u16 = mInit_u16 (sRecLog.AddIndexSend_u32, sRecLog.MaxRecord_u16);
@@ -1398,8 +1401,11 @@ void AppMem_Init_Index_Record (void)
     sRecTSVH.AddA_u32 = sRecTSVH.AddAStart_u32 + sRecTSVH.IndexSave_u16 * sRecTSVH.SizeRecord_u16;
     sRecTSVH.AddB_u32 = sRecTSVH.AddBStart_u32 + sRecTSVH.IndexSend_u16 * sRecTSVH.SizeRecord_u16;
     
+    if(*(__IO uint8_t*)(ADDR_INIT_STATE_MACHINE) == BYTE_TEMP_FIRST)
+    {
     sRecEvent.AddA_u32 = sRecEvent.AddAStart_u32 + sRecEvent.IndexSave_u16 * sRecEvent.SizeRecord_u16;
     sRecEvent.AddB_u32 = sRecEvent.AddBStart_u32 + sRecEvent.IndexSend_u16 * sRecEvent.SizeRecord_u16;
+    }
     
     sRecLog.AddA_u32 = sRecLog.AddAStart_u32 + sRecLog.IndexSave_u16 * sRecLog.SizeRecord_u16;
     sRecLog.AddB_u32 = sRecLog.AddBStart_u32 + sRecLog.IndexSend_u16 * sRecLog.SizeRecord_u16;
