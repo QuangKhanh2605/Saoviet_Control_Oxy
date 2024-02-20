@@ -1066,21 +1066,30 @@ uint8_t AppCtrlOxy_Packet_TSVH (uint8_t *pData)
     //----------sTime--------------------
     AppComm_SV_Protocol_Packet_Data(pData, &length, OBIS_TIME_DEVICE, &sRTC, 6, 0xAA);
     
-    //----------  Temperature ------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_TEMPERATURE, &sParamMeasure.Temp, 2, 0xFE);
-
-    //----------  pH_Water ------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_PH_WATER, &sParamMeasure.pH_Water, 2, 0xFE);
+    if(sStateCtrlOxy.StateSensorOxy == _OXY_CONNECT)
+    {
+        //----------  Temperature ------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_TEMPERATURE, &sParamMeasure.Temp, 2, 0xFE);
+    }
     
-    //----------  Oxy mg/L ---------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_MG_L, &sParamMeasure.Oxy_Mg_L, 2, 0xFE);
+    if(sStateCtrlOxy.StateSensorPH == _OXY_CONNECT)
+    {
+        //----------  pH_Water ------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_PH_WATER, &sParamMeasure.pH_Water, 2, 0xFE);
+    }
     
-    //----------  Salinity ------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_SALINITY, &sParamMeasure.Salinity, 2, 0xFE);
+    if(sStateCtrlOxy.StateSensorOxy == _OXY_CONNECT)
+    {
+        //----------  Oxy mg/L ---------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_MG_L, &sParamMeasure.Oxy_Mg_L, 2, 0xFE);
+        
+        //----------  Salinity ------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_SALINITY, &sParamMeasure.Salinity, 2, 0xFE);
 
-    //----------  Oxy Percent ------
-    AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_PERCENT, &sParamMeasure.Oxy_Percent, 2, 0xFE);
-
+        //----------  Oxy Percent ------
+        AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_OXY_PERCENT, &sParamMeasure.Oxy_Percent, 2, 0xFE);
+    }
+    
     //---------- Oxy State ---------
     AppCtrlOxy_Packet_Data(pData, &length, OBIS_ENVI_STATE_MACHINE, &sStateCtrlOxy.StateMachine, 1, 0xAA);
     AppCtrlOxy_Packet_Data(pData, &length, OBIS_STATE_OXY_1, &sStateCtrlOxy.aStateOxy[0], 1, 0xAA);

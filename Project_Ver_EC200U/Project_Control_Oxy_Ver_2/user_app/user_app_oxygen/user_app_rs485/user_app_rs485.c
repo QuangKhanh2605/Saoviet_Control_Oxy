@@ -134,68 +134,82 @@ static uint8_t fevent_rs485_receive_complete(uint8_t event)
     uint16_t Crc_Check = 0;
     uint16_t Crc_Recv  = 0;
 
-    Crc_Recv = (sUart485.Data_a8[sUart485.Length_u16-1] << 8) |
-               (sUart485.Data_a8[sUart485.Length_u16-2]);
-    Crc_Check = ModRTU_CRC(sUart485.Data_a8, sUart485.Length_u16 - 2);
-    if(Crc_Check == Crc_Recv)
+    if(sUart485.Length_u16 > 2)
     {
-        if(sKindMode485.Recv == _RS485_OPERA_PH)
+        Crc_Recv = (sUart485.Data_a8[sUart485.Length_u16-1] << 8) |
+                   (sUart485.Data_a8[sUart485.Length_u16-2]);
+        Crc_Check = ModRTU_CRC(sUart485.Data_a8, sUart485.Length_u16 - 2);
+        if(Crc_Check == Crc_Recv)
         {
-            CountDisconnectPH = 0;
-            sStateCtrlOxy.StateSensorPH = _OXY_CONNECT;
+            if(sKindMode485.Recv == _RS485_OPERA_PH)
+            {
+                CountDisconnectPH = 0;
+                sStateCtrlOxy.StateSensorPH = _OXY_CONNECT;
+            }
+            else
+            {
+                CountDisconnectOxy = 0;
+                sStateCtrlOxy.StateSensorOxy = _OXY_CONNECT;
+                fevent_enable(sEventAppRs485, _EVENT_RESET_SENSOR_OXY);
+            }
+            
+            switch(sKindMode485.Recv)
+            {
+                case _RS485_OPERA_PH:
+                  sParamMeasure.pH_Water = sUart485.Data_a8[3]<<8 | sUart485.Data_a8[4];
+                  break;
+              
+                case _RS485_OPERA_OXY:
+                  //Doc Oxy Calib 2 diem
+        //            sParamMeasure.Oxy_Mg_L = sUart485.Data_a8[45]<<8 | sUart485.Data_a8[46];
+        //            sParamMeasure.Oxy_Percent = sUart485.Data_a8[47]<<8 | sUart485.Data_a8[48];
+                    
+                  //Doc Oxy Calib 1 diem bao hoa 100%
+                    
+                    Oxy_Mg_L = sUart485.Data_a8[3]<<8 | sUart485.Data_a8[4];
+                    Oxy_Percent = sUart485.Data_a8[9]<<8 | sUart485.Data_a8[10];
+
+                    sParamMeasure.Salinity = sUart485.Data_a8[13]<<8 | sUart485.Data_a8[14];
+                    sParamMeasure.Temp = sUart485.Data_a8[17]<<8 | sUart485.Data_a8[18];    
+                    
+                    if(Oxy_Mg_L != 5000 && Oxy_Percent != 50000)
+                    {
+                        Compensation_Salinity(&Oxy_Mg_L, sParamMeasure.Salinity, sParamMeasure.Temp);
+    //                    Average_MeasureOxy(Oxy_Mg_L, Oxy_Percent);
+                        sParamMeasure.Oxy_Mg_L = Oxy_Mg_L;
+                        sParamMeasure.Oxy_Percent = Oxy_Percent;
+                    }
+                    else
+                    {
+                        sStateCtrlOxy.StateSensorOxy = _OXY_DISCONNECT;
+                        sParamMeasure.Oxy_Mg_L = 1;
+                        sParamMeasure.Oxy_Percent = 1;
+                        sParamMeasure.Salinity = 1;
+                    }
+                    break;
+                    
+                case _RS485_CALIB_OXY_100_CALIB:
+                case _RS485_CALIB_SALINITY:
+                case _RS485_CALIB_TEMP:
+                    sMenuState.CalibSensor = _CALIB_COMPLETE;
+                    sKindMode485.Trans = _RS485_OPERA_OXY;
+                    break;
+              
+                default:
+                  break;
+            }
         }
         else
         {
-            CountDisconnectOxy = 0;
-            sStateCtrlOxy.StateSensorOxy = _OXY_CONNECT;
-            fevent_enable(sEventAppRs485, _EVENT_RESET_SENSOR_OXY);
-        }
-        
-        switch(sKindMode485.Recv)
-        {
-            case _RS485_OPERA_PH:
-              sParamMeasure.pH_Water = sUart485.Data_a8[3]<<8 | sUart485.Data_a8[4];
-              break;
-          
-            case _RS485_OPERA_OXY:
-              //Doc Oxy Calib 2 diem
-    //            sParamMeasure.Oxy_Mg_L = sUart485.Data_a8[45]<<8 | sUart485.Data_a8[46];
-    //            sParamMeasure.Oxy_Percent = sUart485.Data_a8[47]<<8 | sUart485.Data_a8[48];
-                
-              //Doc Oxy Calib 1 diem bao hoa 100%
-                
-                Oxy_Mg_L = sUart485.Data_a8[3]<<8 | sUart485.Data_a8[4];
-                Oxy_Percent = sUart485.Data_a8[9]<<8 | sUart485.Data_a8[10];
-
-                sParamMeasure.Salinity = sUart485.Data_a8[13]<<8 | sUart485.Data_a8[14];
-                sParamMeasure.Temp = sUart485.Data_a8[17]<<8 | sUart485.Data_a8[18];
-
-                if(Oxy_Mg_L != 5000 && Oxy_Percent != 50000)
-                {
-                    Compensation_Salinity(&Oxy_Mg_L, sParamMeasure.Salinity, sParamMeasure.Temp);
-//                    Average_MeasureOxy(Oxy_Mg_L, Oxy_Percent);
-                    sParamMeasure.Oxy_Mg_L = Oxy_Mg_L;
-                    sParamMeasure.Oxy_Percent = Oxy_Percent;
-                }
-                else
-                {
-                    sStateCtrlOxy.StateSensorOxy = _OXY_DISCONNECT;
-                    sParamMeasure.Oxy_Mg_L = 1;
-                    sParamMeasure.Oxy_Percent = 1;
-                    sParamMeasure.Salinity = 1;
-                }
-                break;
-                
-            case _RS485_CALIB_OXY_100_CALIB:
-            case _RS485_CALIB_SALINITY:
-            case _RS485_CALIB_TEMP:
-                sMenuState.CalibSensor = _CALIB_COMPLETE;
-                sKindMode485.Trans = _RS485_OPERA_OXY;
-                break;
-          
-            default:
-              break;
-        }
+            if(sKindMode485.Recv == _RS485_OPERA_PH)
+            {
+                CountDisconnectPH++;
+            }
+            else
+            {
+                CountDisconnectOxy++;
+            }
+        } 
     }
     else
     {

@@ -3,13 +3,13 @@
     <StLinkDriver>
         <stlinkserialNo>31531457</stlinkserialNo>
         <stlinkfoundProbes />
-        <CStepIntDis>_ 0</CStepIntDis>
-        <LeaveTargetRunning>_ 0</LeaveTargetRunning>
         <stlinkResetStyle>0</stlinkResetStyle>
         <stlinkResetStrategy>2</stlinkResetStrategy>
+        <CStepIntDis>_ 0</CStepIntDis>
+        <LeaveTargetRunning>_ 0</LeaveTargetRunning>
     </StLinkDriver>
     <DebugChecksum>
-        <Checksum>2671289916</Checksum>
+        <Checksum>1814297129</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -68,22 +68,24 @@
         <Fmt5>ST_TIME_FORMAT-sec	3	0</Fmt5>
         <Fmt6>ST_TIME_FORMAT-year	3	0</Fmt6>
         <Fmt7>StructSimVariable-CountHardReset_u8	3	0</Fmt7>
-        <Fmt8>Struct_Menu_State-SettingCalib	3	0</Fmt8>
-        <Fmt9>Struct_StateCtrlOxy-StateDCU	3	0</Fmt9>
-        <Fmt10>Struct_StateCtrlOxy-StateMachine	3	0</Fmt10>
-        <Fmt11>Struct_StateCtrlOxy-StateOxyLower	3	0</Fmt11>
-        <Fmt12>Struct_StateCtrlOxy-StatePower	3	0</Fmt12>
-        <Fmt13>Struct_StateCtrlOxy-StateSensorOxy	3	0</Fmt13>
-        <Fmt14>Struct_StateCtrlOxy-StateSensorPH	3	0</Fmt14>
-        <Fmt15>Struct_StatusRelay-RL1	3	0</Fmt15>
-        <Fmt16>Struct_StatusRelay-RL2	3	0</Fmt16>
-        <Fmt17>Struct_StatusRelay-RL3	3	0</Fmt17>
-        <Fmt18>Struct_StatusRelay-RL4	3	0</Fmt18>
-        <Fmt19>Struct_StatusRelay-RL5	3	0</Fmt19>
-        <Fmt20>Struct_StatusRelay-RL6	3	0</Fmt20>
-        <Fmt21>Struct_StatusRelay-RL7	3	0</Fmt21>
-        <Fmt22>Struct_StatusRelay-RL8	3	0</Fmt22>
-        <Fmt23>Struct_StatusRelay-RL9	3	0</Fmt23>
+        <Fmt8>Struct_IdSlave-Oxy	3	0</Fmt8>
+        <Fmt9>Struct_IdSlave-pH	3	0</Fmt9>
+        <Fmt10>Struct_Menu_State-SettingCalib	3	0</Fmt10>
+        <Fmt11>Struct_StateCtrlOxy-StateDCU	3	0</Fmt11>
+        <Fmt12>Struct_StateCtrlOxy-StateMachine	3	0</Fmt12>
+        <Fmt13>Struct_StateCtrlOxy-StateOxyLower	3	0</Fmt13>
+        <Fmt14>Struct_StateCtrlOxy-StatePower	3	0</Fmt14>
+        <Fmt15>Struct_StateCtrlOxy-StateSensorOxy	3	0</Fmt15>
+        <Fmt16>Struct_StateCtrlOxy-StateSensorPH	3	0</Fmt16>
+        <Fmt17>Struct_StatusRelay-RL1	3	0</Fmt17>
+        <Fmt18>Struct_StatusRelay-RL2	3	0</Fmt18>
+        <Fmt19>Struct_StatusRelay-RL3	3	0</Fmt19>
+        <Fmt20>Struct_StatusRelay-RL4	3	0</Fmt20>
+        <Fmt21>Struct_StatusRelay-RL5	3	0</Fmt21>
+        <Fmt22>Struct_StatusRelay-RL6	3	0</Fmt22>
+        <Fmt23>Struct_StatusRelay-RL7	3	0</Fmt23>
+        <Fmt24>Struct_StatusRelay-RL8	3	0</Fmt24>
+        <Fmt25>Struct_StatusRelay-RL9	3	0</Fmt25>
     </struct_types>
     <array_types>
         <Fmt0>uint8_t[5]	3	0</Fmt0>
@@ -152,12 +154,6 @@
         <ShowTimeSum>1</ShowTimeSum>
         <SumSortOrder>0</SumSortOrder>
     </EventLog>
-    <DisassembleMode>
-        <mode>0</mode>
-    </DisassembleMode>
-    <Breakpoints2>
-        <Count>0</Count>
-    </Breakpoints2>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -167,6 +163,25 @@
         <LogFile>_ ""</LogFile>
         <Category>_ 0</Category>
     </LogFile>
+    <DriverProfiling>
+        <Enabled>0</Enabled>
+        <Mode>3</Mode>
+        <Graph>0</Graph>
+        <Symbiont>0</Symbiont>
+        <Exclusions />
+    </DriverProfiling>
+    <CallStackLog>
+        <Enabled>0</Enabled>
+    </CallStackLog>
+    <CallStackStripe>
+        <ShowTiming>1</ShowTiming>
+    </CallStackStripe>
+    <DisassembleMode>
+        <mode>0</mode>
+    </DisassembleMode>
+    <Breakpoints2>
+        <Count>0</Count>
+    </Breakpoints2>
     <Aliases>
         <A0>_ "D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_hal.c" ""</A0>
         <A1>_ "D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_hal_dma.c" ""</A1>
@@ -203,17 +218,4 @@
         <Count>32</Count>
         <SuppressDialog>0</SuppressDialog>
     </Aliases>
-    <DriverProfiling>
-        <Enabled>0</Enabled>
-        <Mode>3</Mode>
-        <Graph>0</Graph>
-        <Symbiont>0</Symbiont>
-        <Exclusions />
-    </DriverProfiling>
-    <CallStackLog>
-        <Enabled>0</Enabled>
-    </CallStackLog>
-    <CallStackStripe>
-        <ShowTiming>1</ShowTiming>
-    </CallStackStripe>
 </settings>
