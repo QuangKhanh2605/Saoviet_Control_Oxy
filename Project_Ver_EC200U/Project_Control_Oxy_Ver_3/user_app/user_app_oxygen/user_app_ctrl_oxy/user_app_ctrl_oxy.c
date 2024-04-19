@@ -38,8 +38,8 @@ static uint8_t fevent_ctrl_oxy_sw_man_auto(uint8_t event);
 /*========================Struct========================*/
 sEvent_struct               sEventAppCtrlOxy[]=
 {
-  {_EVENT_CTRL_OXY_ENTRY,           1, 5, 20000,        fevent_ctrl_oxy_entry}, //doi sensor do on dinh thi bat dau xet cac truong hop
-  {_EVENT_ENTRY_TSVH,               1, 5, 30000,        fevent_entry_tsvh},
+  {_EVENT_CTRL_OXY_ENTRY,           1, 5, 30000,        fevent_ctrl_oxy_entry}, //doi sensor do on dinh thi bat dau xet cac truong hop
+  {_EVENT_ENTRY_TSVH,               1, 5, 40000,        fevent_entry_tsvh},
   {_EVENT_CTRL_OXY_IWDG,            1, 5, 500,          fevent_ctrl_oxy_iwdg},
   
   {_EVENT_SEND_SLAVE_CYCLE,         0, 5, 1000,         fevent_send_slave_cycle},

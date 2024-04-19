@@ -103,14 +103,19 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(PW_Detect_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PAPin PAPin PAPin PAPin
-                           PAPin PAPin PAPin PAPin
-                           PAPin PAPin */
-  GPIO_InitStruct.Pin = SIM_RESET_Pin|SIM_PWR_KEY_Pin|SIM_DTR_Pin|SIM_RI_Pin
-                          |SIM_RTS_Pin|MCU_RL1_Pin|RS485_TXDE_Pin|MCU_LCD_D1_Pin
-                          |MCU_LCD_D2_Pin|MCU_LCD_D3_Pin;
+                           PAPin PAPin PAPin PAPin */
+  GPIO_InitStruct.Pin = SIM_RESET_Pin|SIM_PWR_KEY_Pin|SIM_RTS_Pin|MCU_RL1_Pin
+                          |RS485_TXDE_Pin|MCU_LCD_D1_Pin|MCU_LCD_D2_Pin|MCU_LCD_D3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PAPin PAPin */
+  GPIO_InitStruct.Pin = SIM_DTR_Pin|SIM_RI_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin

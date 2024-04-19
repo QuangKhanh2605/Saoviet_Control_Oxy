@@ -323,7 +323,7 @@ void SysApp_Setting (void)
 #endif
     //Dang ki cac event
 	UTIL_TIMER_Create(&TimerTx,  0xFFFFFFFFU, UTIL_TIMER_ONESHOT, Cb_TX_Timer_Event, NULL);
-	UTIL_TIMER_SetPeriod (&TimerTx, 20000);   //Set sFreqInfor.FreqSendUnitMin_u32 * 60000
+	UTIL_TIMER_SetPeriod (&TimerTx, 30000);   //Set sFreqInfor.FreqSendUnitMin_u32 * 60000
 	UTIL_TIMER_Start (&TimerTx);
 }
 

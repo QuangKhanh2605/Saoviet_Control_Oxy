@@ -953,7 +953,7 @@
                     <item>sRecLog</item>
                     <item>sGettickMs</item>
                     <item>Uart485Buff</item>
-                    <item></item>
+                    <item />
                 </expressions>
                 <col-names>
                     <item>Expression</item>

@@ -14,7 +14,7 @@ static uint8_t fevent_wait_sensor_oxy_on(uint8_t event);
 sEvent_struct               sEventAppRs485[]=
 {
   {_EVENT_RS485_ENTRY,              1, 5, 15000,            fevent_rs485_entry},            //Doi slave khoi dong moi truyen opera
-  {_EVENT_RS485_TRANSMIT,           1, 0, 2500,             fevent_rs485_transmit},
+  {_EVENT_RS485_TRANSMIT,           0, 0, 2500,             fevent_rs485_transmit},
   {_EVENT_RS485_RECEIVE_HANDLE,     0, 5, 5,                fevent_rs485_receive_handle},
   {_EVENT_RS485_RECEIVE_COMPLETE,   0, 5, 500,              fevent_rs485_receive_complete},
   
@@ -39,6 +39,8 @@ Struct_KindMode485  sKindMode485=
 static uint8_t fevent_rs485_entry(uint8_t event)
 {
     fevent_enable(sEventAppRs485, _EVENT_RESET_SENSOR_OXY);
+    fevent_enable(sEventAppRs485, _EVENT_RS485_TRANSMIT);
+    sKindMode485.Trans = _RS485_OPERA_OXY;
     return 1;
 }
 
@@ -220,7 +222,7 @@ static uint8_t fevent_rs485_receive_complete(uint8_t event)
         sParamMeasure.Oxy_Mg_L = 0;
         sParamMeasure.Oxy_Percent = 0;
         sParamMeasure.Temp = 0;
-        sKindMode485.Trans = _RS485_OPERA_OXY;
+//        sKindMode485.Trans = _RS485_OPERA_OXY;
     }
 
     if(CountDisconnectPH >= 3)

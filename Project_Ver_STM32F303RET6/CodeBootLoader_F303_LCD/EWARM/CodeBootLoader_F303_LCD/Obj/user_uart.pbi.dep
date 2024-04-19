@@ -1,0 +1,4 @@
+user_uart.pbi: \
+  D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Ver_STM32F303RET6\CodeBootLoader_F303_LCD\user_lib\user_uart.c \
+  D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Ver_STM32F303RET6\CodeBootLoader_F303_LCD\user_lib/user_uart.h \
+  D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Ver_STM32F303RET6\CodeBootLoader_F303_LCD\user_lib/user_util.h
