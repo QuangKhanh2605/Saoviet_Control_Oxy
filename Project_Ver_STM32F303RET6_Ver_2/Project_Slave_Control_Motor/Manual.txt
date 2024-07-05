@@ -1,0 +1,64 @@
+Hướng dẫn sử dụng mạch điều khiển bơm và đo áp suất (có cảnh báo)
+I.Thông số điều khiển
+- Giới hạn dòng điện trên (sử dụng để phát hiện dòng điện quá cao, giảm thời gian lấy mẫu để tắt motor khi mất pha, hoặc tắt khi động cơ bị chập cháy).
+- Delta dòng điện (sử dụng kiểm tra độ lệch dòng giữa dòng điện lớn nhất và dòng điện nhỏ nhất để xác định mất pha).
+- Áp suất ngưỡng trên (sử dụng để cảnh báo áp suất)
+- Áp suất ngưỡng dưới (sử dụng để cảnh báo áp suất)
+
+II.Hoạt động
+- Mạch sẽ đo và cảnh báo áp suất và dòng điện
+- Baudrate Rs485: 9600
+- Gửi tín hiệu điều khiển qua cổng Rs485 để bơm chạy hoặc dừng. Bản tin phản hồi gồm trạng thái của mạch đang hoạt động và các cảnh báo nếu có.
+1. Dòng điện
+- Sẽ có 2 Option hoạt động: ON và OFF cảnh báo (kiểm tra trong phần cài đặt)
+- Nếu được chuyển sang ON hoặc OFF switch cứng. Sẽ ngắt tín hiệu điều khiển từ mạch đến contactor
+- Mạch sẽ đo 3 pha của dòng điện sử dụng biến dòng. Khi mạch mới khởi động sẽ lập tức bật contactor, đo dòng điện và lấy mẫu. Nếu dòng lớn nhất và dòng nhỏ nhất lệch nhau (lớn hơn Delta dòng điện cài đặt), hoặc dòng đo được lớn nhất lớn hơn giới hạn dòng trên, thì sẽ tắt motor sau 2-4s, và bật lại motor sau 5 phút và tiếp tục lấy mẫu. Nếu không phát hiện lỗi thì motor sẽ tiếp tục hoạt động.
+-Nếu ở trạng thái switch ON. Mạch sẽ đo và cảnh báo dòng điện, áp suất nhưng sẽ không tự động ngắt bật mất pha.
+- Ở trạng thái OFF cảnh báo. Mạch vẫn sẽ bật tắt Motor nếu nếu pha nhưng sẽ không bật đèn cảnh báo cũng như gửi tín hiệu qua 485.
+2. Áp suất
+-Sẽ có 3 Option hoạt động: OFF, ON (kiểm tra trong phần cài đặt)
++ OFF: Tắt cảnh báo (tín hiệu và gửi lệnh qua Rs485, màn hình hiển thị áp đo qua cổng P1)
++ ON: Thực hiện đo, hiển thị và cảnh báo sử dụng tín hiệu từ cổng với áp suất từ 0-x Bar (4-20mA) (x thay đổi trong cài đặt)
+- Nếu không sử dụng kiểm tra lỗi pha thì sẽ vào trực tiếp lấy mẫu để cảnh báo áp suất. Nếu có sử dụng kiểm tra lỗi pha dòng điện thì sẽ lấy mẫu sau 60s kể từ khi phát hiện không bị lỗi khi kiểm tra dòng điện.
+- Nếu áp suất nhỏ hơn ngưỡng áp suất dưới hoặc lớn hơn ngưỡng áp suất trên liên tục sau 5 giây thì sẽ gửi tín hiệu cảnh báo và gửi lệnh qua Rs485 (khi sử dụng Option ON). 
+III. Hướng dẫn sử dụng
+- Tại màn hình chính nhấn phím Enter để xem các thông số cài đặt (Cảnh báo dòng điện ngưỡng trên, Delta dòng điện cảnh báo, áp suất ngưỡng trên, áp suất ngưỡng dưới)
+- Nhấn giữ phím Enter để vào đăng nhập (Mật khẩu mặc định là 000000)
+- Trong phần cài đặt sẽ có 3 phần:
++ Parameter (cài đặt thông số cảnh báo)
++ Option (option sử dụng)
++ Password (thay đổi mật khẩu đăng nhập)
+- Phần cài đặt Parameter: Chọn thông số cần cài đặt và điều chỉnh
++ A_Upper: Cảnh báo dòng điện ngưỡng trên
++ A_Delta: Cảnh báo độ lệch Delta dòng điện
++ P_Upper: Cảnh báo áp suất ngưỡng trên
++ P_Lower: Cảnh báo áp suất ngưỡng dưới
+- Phần cài đặt Option:
++ Amperage: Chọn Option dòng điện
++ Pressure: Chọn Option áp suất
++ Pres_Bar: Chọn thông số phù hợp với cảm biến áp suất sử dụng 
+- Phần cài đặt Password:
++ Chọn password mới và lưu lại 
+III Giao tiếp Rs485
+1. Nhận bản tin 
+-Bản tin điều khiển gồm 8 Byte
+-1 Byte ID
+-1 Byte Function Code (0x06)
+-2 Byte ADDR Thanh ghi (0x0000)
+-2 Byte dữ liệu điều khiển (0x0001 bật bơm 0x0000 tắt bơm)
+-2 Byte CRC Modbus RTU
+2. Bản tin phản hồi 
+-Bản tin phản hồi gồm 8 Byte
+-1 Byte ID
+-1 Byte Function Code (0x06)
+-2 Byte ADDR thanh ghi (0x0000)
+-2 Byte dữ liệu phản hồi (bên ghi chú bên dưới)
+-2 Byte CRC Modbus RTU
+
++ Dữ liệu phản hồi (2 Byte)
+* Đọc từ phải qua trái
+* Bit 1 cảnh báo áp suất (1 FAIL, 0 OK)
+* Bit 2 cảnh báo điện áp (1 FAIL, 0 OK)
+* Bit 3 4 trạng thái điều khiển trước đó (00 OFF, 01 ON, 10 FAIL)
+* Bit 5 6 trạng thái điều khiển switchs (00 OFF, 01 ON, 10 AUTO)
+ 

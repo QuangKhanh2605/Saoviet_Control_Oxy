@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<settings>
+    <StLinkDriver>
+        <stlinkserialNo>31531457</stlinkserialNo>
+        <stlinkfoundProbes />
+        <stlinkResetStyle>0</stlinkResetStyle>
+        <stlinkResetStrategy>2</stlinkResetStrategy>
+        <CStepIntDis>_ 0</CStepIntDis>
+        <LeaveTargetRunning>_ 0</LeaveTargetRunning>
+    </StLinkDriver>
+    <DebugChecksum>
+        <Checksum>1366780133</Checksum>
+    </DebugChecksum>
+    <Exceptions>
+        <StopOnUncaught>_ 0</StopOnUncaught>
+        <StopOnThrow>_ 0</StopOnThrow>
+    </Exceptions>
+    <Stack>
+        <FillEnabled>0</FillEnabled>
+        <OverflowWarningsEnabled>1</OverflowWarningsEnabled>
+        <WarningThreshold>90</WarningThreshold>
+        <SpWarningsEnabled>1</SpWarningsEnabled>
+        <WarnLogOnly>1</WarnLogOnly>
+        <UseTrigger>1</UseTrigger>
+        <TriggerName>main</TriggerName>
+        <LimitSize>0</LimitSize>
+        <ByteLimit>50</ByteLimit>
+    </Stack>
+    <Disassembly>
+        <MixedMode>1</MixedMode>
+        <InstrCount>0</InstrCount>
+    </Disassembly>
+    <CodeCoverage>
+        <Enabled>0</Enabled>
+        <ShowSource>0</ShowSource>
+        <HideCovered>0</HideCovered>
+    </CodeCoverage>
+    <CallStack>
+        <ShowArgs>0</ShowArgs>
+    </CallStack>
+    <SWOTraceHWSettings>
+        <OverrideDefaultClocks>0</OverrideDefaultClocks>
+        <CpuClock>32000000</CpuClock>
+        <ClockAutoDetect>0</ClockAutoDetect>
+        <ClockWanted>2000000</ClockWanted>
+        <JtagSpeed>2000000</JtagSpeed>
+        <Prescaler>16</Prescaler>
+        <TimeStampPrescIndex>0</TimeStampPrescIndex>
+        <TimeStampPrescData>0</TimeStampPrescData>
+        <PcSampCYCTAP>1</PcSampCYCTAP>
+        <PcSampPOSTCNT>15</PcSampPOSTCNT>
+        <PcSampIndex>0</PcSampIndex>
+        <DataLogMode>0</DataLogMode>
+        <ITMportsEnable>0</ITMportsEnable>
+        <ITMportsTermIO>0</ITMportsTermIO>
+        <ITMportsLogFile>0</ITMportsLogFile>
+        <ITMlogFile>$PROJ_DIR$\ITM.log</ITMlogFile>
+    </SWOTraceHWSettings>
+    <FlashMemory>
+        <FlashEraseSelection>0 1 </FlashEraseSelection>
+    </FlashMemory>
+    <struct_types>
+        <Fmt0>ST_TIME_FORMAT-date	3	0</Fmt0>
+        <Fmt1>ST_TIME_FORMAT-day	3	0</Fmt1>
+        <Fmt2>ST_TIME_FORMAT-hour	3	0</Fmt2>
+        <Fmt3>ST_TIME_FORMAT-min	3	0</Fmt3>
+        <Fmt4>ST_TIME_FORMAT-month	3	0</Fmt4>
+        <Fmt5>ST_TIME_FORMAT-sec	3	0</Fmt5>
+        <Fmt6>ST_TIME_FORMAT-year	3	0</Fmt6>
+        <Fmt7>StructSimVariable-CountHardReset_u8	3	0</Fmt7>
+        <Fmt8>Struct_IdSlave-Oxy	3	0</Fmt8>
+        <Fmt9>Struct_IdSlave-pH	3	0</Fmt9>
+        <Fmt10>Struct_Menu_State-SettingCalib	3	0</Fmt10>
+        <Fmt11>Struct_StateCtrlOxy-StateDCU	3	0</Fmt11>
+        <Fmt12>Struct_StateCtrlOxy-StateMachine	3	0</Fmt12>
+        <Fmt13>Struct_StateCtrlOxy-StateOxyLower	3	0</Fmt13>
+        <Fmt14>Struct_StateCtrlOxy-StatePower	3	0</Fmt14>
+        <Fmt15>Struct_StateCtrlOxy-StateSensorOxy	3	0</Fmt15>
+        <Fmt16>Struct_StateCtrlOxy-StateSensorPH	3	0</Fmt16>
+        <Fmt17>Struct_StatusRelay-RL1	3	0</Fmt17>
+        <Fmt18>Struct_StatusRelay-RL2	3	0</Fmt18>
+        <Fmt19>Struct_StatusRelay-RL3	3	0</Fmt19>
+        <Fmt20>Struct_StatusRelay-RL4	3	0</Fmt20>
+        <Fmt21>Struct_StatusRelay-RL5	3	0</Fmt21>
+        <Fmt22>Struct_StatusRelay-RL6	3	0</Fmt22>
+        <Fmt23>Struct_StatusRelay-RL7	3	0</Fmt23>
+        <Fmt24>Struct_StatusRelay-RL8	3	0</Fmt24>
+        <Fmt25>Struct_StatusRelay-RL9	3	0</Fmt25>
+    </struct_types>
+    <array_types>
+        <Fmt0>uint8_t[5]	3	0</Fmt0>
+    </array_types>
+    <watch_formats>
+        <Fmt0>{W}1:Oxy_Log	4	0</Fmt0>
+        <Fmt1>{W}42:Flag_Reset_DCU	3	0</Fmt1>
+        <Fmt2>{W}42:Flag_User_Sim	3	0</Fmt2>
+        <Fmt3>{W}42:IndexUartError	3	0</Fmt3>
+        <Fmt4>{W}42:LengthF	3	0</Fmt4>
+        <Fmt5>{W}42:LengthR	3	0</Fmt5>
+        <Fmt6>{W}42:NumberQueueFree	3	0</Fmt6>
+        <Fmt7>{W}42:NumberQueueRun	3	0</Fmt7>
+        <Fmt8>{W}42:Reset_Sensor	3	0</Fmt8>
+        <Fmt9>{W}42:address	3	0</Fmt9>
+        <Fmt10>{W}42:log_date	3	0</Fmt10>
+        <Fmt11>{W}42:log_hours	3	0</Fmt11>
+        <Fmt12>{W}42:log_min	3	0</Fmt12>
+        <Fmt13>{W}42:log_oxy	3	0</Fmt13>
+        <Fmt14>{W}42:test	4	0</Fmt14>
+        <Fmt15>{W}42:test_date	3	0</Fmt15>
+        <Fmt16>{W}42:test_hours	3	0</Fmt16>
+        <Fmt17>{W}42:test_min	3	0</Fmt17>
+    </watch_formats>
+    <Trace2>
+        <Enabled>0</Enabled>
+        <ShowSource>0</ShowSource>
+    </Trace2>
+    <SWOTraceWindow>
+        <PcSampling>0</PcSampling>
+        <InterruptLogs>0</InterruptLogs>
+        <ForcedTimeStamps>0</ForcedTimeStamps>
+        <EventCPI>0</EventCPI>
+        <EventEXC>0</EventEXC>
+        <EventFOLD>0</EventFOLD>
+        <EventLSU>0</EventLSU>
+        <EventSLEEP>0</EventSLEEP>
+    </SWOTraceWindow>
+    <DataLog>
+        <LogEnabled>0</LogEnabled>
+        <GraphEnabled>0</GraphEnabled>
+        <ShowTimeLog>1</ShowTimeLog>
+        <SumEnabled>0</SumEnabled>
+        <ShowTimeSum>1</ShowTimeSum>
+    </DataLog>
+    <InterruptLog>
+        <LogEnabled>0</LogEnabled>
+        <GraphEnabled>0</GraphEnabled>
+        <ShowTimeLog>1</ShowTimeLog>
+        <SumEnabled>0</SumEnabled>
+        <ShowTimeSum>1</ShowTimeSum>
+        <SumSortOrder>0</SumSortOrder>
+    </InterruptLog>
+    <EventLog>
+        <Title_0>Ch3</Title_0>
+        <Symbol_0>0 0 1</Symbol_0>
+        <Title_1>Ch2</Title_1>
+        <Symbol_1>0 0 1</Symbol_1>
+        <Title_2>Ch1</Title_2>
+        <Symbol_2>0 0 1</Symbol_2>
+        <Title_3>Ch0</Title_3>
+        <Symbol_3>0 0 1</Symbol_3>
+        <LogEnabled>0</LogEnabled>
+        <GraphEnabled>0</GraphEnabled>
+        <ShowTimeLog>1</ShowTimeLog>
+        <SumEnabled>0</SumEnabled>
+        <ShowTimeSum>1</ShowTimeSum>
+        <SumSortOrder>0</SumSortOrder>
+    </EventLog>
+    <TermIOLog>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+    </TermIOLog>
+    <LogFile>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+        <Category>_ 0</Category>
+    </LogFile>
+    <DriverProfiling>
+        <Enabled>0</Enabled>
+        <Mode>3</Mode>
+        <Graph>0</Graph>
+        <Symbiont>0</Symbiont>
+        <Exclusions />
+    </DriverProfiling>
+    <CallStackLog>
+        <Enabled>0</Enabled>
+    </CallStackLog>
+    <CallStackStripe>
+        <ShowTiming>1</ShowTiming>
+    </CallStackStripe>
+    <DisassembleMode>
+        <mode>0</mode>
+    </DisassembleMode>
+    <Breakpoints2>
+        <Count>0</Count>
+    </Breakpoints2>
+    <Aliases>
+        <A0>_ "D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_hal.c" ""</A0>
+        <A1>_ "D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_hal_dma.c" ""</A1>
+        <A2>_ "D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_hal_flash.c" ""</A2>
+        <A3>_ "D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_hal_flash_ex.c" ""</A3>
+        <A4>_ "D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_hal_gpio.c" ""</A4>
+        <A5>_ "D:\Project_STM32\Saoviet_Control_Oxy\Project_Control_Oxy\Drivers\STM32L1xx_HAL_Driver\Src\stm32l1xx_hal_i2c.c" ""</A5>
+        <A6>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\Core\Src\stm32l1xx_it.c" ""</A6>
+        <A7>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\EWARM\startup_stm32l151xc.s" ""</A7>
+        <A8>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_app\user_app_oxygen\user_app_button\user_app_button.c" ""</A8>
+        <A9>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_app\user_app_oxygen\user_app_relay\user_app_relay.c" ""</A9>
+        <A10>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_app\user_app_oxygen\user_app_rs485\user_app_rs485.c" ""</A10>
+        <A11>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_app\user_app_oxygen\user_define_oxygen.c" ""</A11>
+        <A12>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_component\mqtt_lib\src\MQTTConnectClient.c" ""</A12>
+        <A13>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_component\mqtt_lib\src\MQTTPacket.c" ""</A13>
+        <A14>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_component\mqtt_lib\src\MQTTSerializePublish.c" ""</A14>
+        <A15>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_component\mqtt_lib\src\MQTTSubscribeClient.c" ""</A15>
+        <A16>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_component\user_convert_variable\user_convert_variable.c" ""</A16>
+        <A17>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_component\user_lcd\lcd_lcd12864j\GLCD192x64.c" ""</A17>
+        <A18>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_component\user_mem\user_internal_mem\user_internal_mem.c" ""</A18>
+        <A19>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_component\user_sim\user_l506\user_l506.c" ""</A19>
+        <A20>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_component\user_sim\user_sim.c" ""</A20>
+        <A21>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_component\user_sim\user_sim_common.c" ""</A21>
+        <A22>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_eventdriven\event_driven.c" ""</A22>
+        <A23>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_queue\queue_p.c" ""</A23>
+        <A24>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_timer\user_rtc.c" ""</A24>
+        <A25>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_timer\user_timer.c" ""</A25>
+        <A26>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_util\onchipflash.c" ""</A26>
+        <A27>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_util\user_lpm.c" ""</A27>
+        <A28>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_util\user_modbus_rtu.c" ""</A28>
+        <A29>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_util\user_string.c" ""</A29>
+        <A30>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_util\user_time.c" ""</A30>
+        <A31>_ "D:\Saoviet_Bitbucket\Saoviet_Control_Oxy\Project_Control_Oxy_Ver_2\user_util\user_util.c" ""</A31>
+        <Count>32</Count>
+        <SuppressDialog>0</SuppressDialog>
+    </Aliases>
+</settings>

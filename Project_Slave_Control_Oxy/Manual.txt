@@ -1,0 +1,19 @@
+Nguyên lý hoạt động điều khiển slave Oxy
+I.Thông số điều khiển 
+- Thời gian chạy 
+- Thời gian nghỉ
+
+II.Hoạt động
+- Mạch sẽ điều khiển thiết bị tạo Oxy có 2 van khí trái và phải
+B1: Oxy bên trái hoạt động trong thời gian chạy cài đặt sau đó đóng lại và nghỉ trong thời gian nghỉ
+B2: Hết thời gian nghỉ thì Oxy bên phải hoạt động trong thời gian chạy cài đặt sau đó đóng lại và nghỉ trong thời gian nghỉ
+B3: Quay lại hoạt động của bước 1.
+
+III.Hướng dẫn sử dụng
+- Khi cấp nguồn khởi động mạch. Thiết bị sẽ vào chu trình điều khiển. Tại màn hình có 3 led 7 Thanh. Mỗi led sẽ được sáng và đổi sang led tiếp theo hoặc quay lại led ban đầu (đổi sau 1 giây).
+- Ấn enter để vào cài thời gian chạy (ấn tăng/giảm để điều chỉnh). Tiếp tục nhấn enter để vào cài đặt thời gian nghỉ (ấn tăng/giảm để điều chỉnh). Tiếp tục ấn enter để lưu cài đặt.
+- Nếu trong thời gian cài đặt sau x giây không có nút nhấn được nhấn. Mạch sẽ quay về màn hình chính và thực hiện tiếp chu trình điều khiển. Thông số đang cài đặt sẽ không được lưu
+
+IV. Chuyên sâu.
+-Thời gian quét led được đặt trong ngắt systemTick
+-Thời gian điều khiển oxy và trạng thái chạy màn hình chính được đặt trong ngắt Timer (100ms).
